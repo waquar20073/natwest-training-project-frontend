@@ -18,11 +18,10 @@ function Main()  {
      <Header/>
     <BrowserRouter>
       <Routes>
-          <Route path='/' element={<Bankinfo />}>
-            <Route index element={<LoginComponent setToken={setToken} ></LoginComponent>} />
+            <Route path='/' element={<Bankinfo />}/>
+            <Route path='/home' element={<Bankinfo />}/>
             <Route path='/signup' element={<RegisterComponent />} /> 
-            <Route path='*' element={<LoginComponent setToken={setToken}/>} />
-          </Route>
+            <Route path='/login' element={<LoginComponent setToken={setToken}/>} />
       </Routes>
     </BrowserRouter> 
     <Footer/>
