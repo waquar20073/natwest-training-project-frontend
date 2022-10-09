@@ -1,7 +1,8 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './LoginComponent.css'
 import PropTypes from 'prop-types';
+
 
 
 
@@ -59,9 +60,12 @@ function  LoginComponent({setToken}){
             <label>Password</label>
             <input type="password" name="password" placeholder="Enter your password" onChange={handleFormChange} />
           </div> 
+          <Link to="/account" style={{textDecoration:"none"}}>
           <div id="button" className="row1">
-            <button type="button" value="Login" onClick={handleFormSubmit}>Log in</button>
+              <button type="button" value="Login" onClick={handleFormSubmit}>Log in</button>
+             
           </div>
+          </Link> 
         </form> 
       <div className = "signupbutton">
         <hr></hr>

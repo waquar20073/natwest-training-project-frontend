@@ -126,8 +126,8 @@ function  RegisterComponent(){
         <div className = "goBackToLogin">
         <hr></hr>
         <h4>Have an account ?</h4> 
-        <Link to="/login">
-          <h4>Log in</h4>
+        <Link to="/login" style={{textDecoration: "none",color:"rgb(58, 12, 104)"}}>
+          <button type="button">Log in</button>
         </Link>
         <br/>
         

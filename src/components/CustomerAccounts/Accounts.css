@@ -1,0 +1,52 @@
+.bank_search{
+    margin-left: 50px;
+}
+
+.banks .row{
+    margin-bottom: 40px;
+}
+
+.banks .row .card .card-body #i1{
+    width: 60px;
+    height: auto;
+}
+.banks .row .card .card-body #i2{
+    width: 65px;
+    height: auto;
+}
+.banks .row .card .card-body #i3{
+    width: 58px;
+    height: auto;
+}
+.banks .row .card .card-body #i4{
+    width: 70px;
+    height: auto;
+}
+.banks .row .card .card-body #i5{
+    width: 90px;
+    height: auto;
+}
+.banks .row .card .card-body #i6{
+    width: 72px;
+    height: auto;
+}
+
+.l-nl-banks{
+    text-align: center;
+    margin:0 auto 40px;
+    line-height: 60px;
+    position: relative;
+    color:#555;  
+    font-size: 30px;
+}
+.l-nl-banks::after{
+    content: '';
+    background: #ff523b;
+    width:80px;
+    height:5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 0;
+    left:50%;
+    transform: translateX(-50%);
+}

@@ -10,14 +10,11 @@ function Header() {
        <img src="Capture.PNG" alt="" id="logo" ></img>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link id="home-link" href="/home">Home</Nav.Link>
-            <div class = "login-signup">
-            
-            
-            <Nav.Link id="login" href="/login">Login</Nav.Link>
-            <Nav.Link id="signup" href="/signup">Register</Nav.Link>
-
+          <Nav >
+            <Nav.Link  id="nav-links" href="/home">Home</Nav.Link>
+            <div className = "login-signup">
+                <Nav.Link  id="nav-links" href="/login">Login</Nav.Link>
+                <Nav.Link  id="nav-links" href="/signup">Register</Nav.Link>
             </div>
             
           </Nav>

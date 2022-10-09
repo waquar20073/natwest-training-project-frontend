@@ -78,6 +78,7 @@
   border: 0px;
   cursor: pointer;
   transition: opacity 0.25s ease-out;
+  
 }
 
 .row1 button:hover{
@@ -112,43 +113,5 @@
   opacity: 0.8;
 }
 
-
-
-
-#facebookIcon{
-  background-image: url("../assets/logo/icons8-google-48.png");
-  width: 3rem;
-  height: 3rem;
-}
-
-#twitterIcon{
-  background-image: url("../assets/logo/icons8-google-48.png");
-  background-repeat: no-repeat;
-  width: 3rem;
-  height: 3rem;
-}
-
-#googleIcon{
-  background-image: url("../assets/logo/icons8-google-48.png");
-  background-repeat: no-repeat;
-  width: 3rem;
-  height: 3rem;
-}
-
-#iconGroup{
-  display: flex;
-  justify-content: center;
-  padding: 2rem 0;
-}
-
-#iconGroup a{
-  margin: 0 0.6rem;
-}
-
-#alternativeLogin {
-   text-align: center;
-   padding-top: 2rem;
-   margin-top: 1.5rem;
-}
 
 

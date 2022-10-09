@@ -4,30 +4,19 @@
     padding: 5px;
 }
 
+
 #logo{
     width:140px;
     height:45px;
 }
 .login-signup{
-    display: flex;
-    margin-left: 750px;
+    display: flex; 
+    
 }
-.login-signup #signup{
+
+
+#nav-links{
+    color:white;
+    font-size: 18px;
     margin-left: 30px;
 }
-
-#home-link{
-    margin-left: 20px;
-    margin-right: 20px;
-    color:white;
-    font-size: 18px;
-}
-#login{
-    color:white;
-    font-size: 18px;
-}
-#signup{
-    color:white;
-    font-size: 18px;
-}
-
