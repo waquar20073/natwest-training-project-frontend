@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600|Work+Sans:400,500,600,700&display=swap');
 
 
-
+.Login-component{
+  background-size: cover;
+  background-image: url("https://assets.website-files.com/5fc90bae06ffc61992fd0e1c/607ed5dab018c9b3398231fa_joint-us-img-large-p-2000.jpeg");
+}
 #loginform{
   border-width: 2px;
   border-style: solid;
@@ -10,8 +13,9 @@
   max-height: 700px;
   width: 30%;
   height: 60%;
-  margin:20px auto;
-  background-color: #FFFFFF;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #FFFF;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   border-radius: 30px;
   

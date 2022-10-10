@@ -2,11 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import './LoginComponent.css'
 import PropTypes from 'prop-types';
+import Header from "./header/header";
 
-
-
-
-  
 function  LoginComponent({setToken}){ 
   
 
@@ -48,8 +45,10 @@ function  LoginComponent({setToken}){
 
 
   return(
-    
-    <div id="loginform" >
+    <div className='Login-component'>
+    <Header/>
+    <br></br>
+    <div id="loginform">
       <h2 id="headerTitle">Login</h2>
         <form>
           <div className="row1">
@@ -74,6 +73,8 @@ function  LoginComponent({setToken}){
         </Link>
       </div>      
     </div> 
+    <br></br>
+    </div>
     
   )
 

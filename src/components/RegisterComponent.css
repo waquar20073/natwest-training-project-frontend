@@ -1,7 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600|Work+Sans:400,500,600,700&display=swap');
 
 
-
+.register_component{
+  background-color: #f2f2f8;
+}
+#register{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
 #registerform{
   border-width: 2px;
   border-style: solid;
@@ -9,14 +15,11 @@
   min-width: 300px;
   max-height: auto;
   width: 50%;
-  
-  margin-top: 30px;
-  margin-bottom: 30px;
   margin-left: auto;
+  margin-right: auto;
   background-color: #FFFFFF;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   border-radius: 30px;
-  margin-right: auto;
 }
 #headerTitle{
   text-align: left;

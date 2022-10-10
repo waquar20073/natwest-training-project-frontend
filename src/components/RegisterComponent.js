@@ -1,6 +1,7 @@
 import React from "react";
 import './RegisterComponent.css'
 import { Link, Outlet } from "react-router-dom";
+import Header from "./header/header";
 
 
 
@@ -90,7 +91,9 @@ function  RegisterComponent(){
   }
   
   return(
-    <div className="container">
+    <div className="register_component">
+    <Header/>
+    <div className="container" id="register">
     { isSubmit ? <FormSubmitMessage formErrors = {formErrors}/>: null }
     <div id="registerform" >
       <h2 id="headerTitle">Register</h2>
@@ -133,6 +136,7 @@ function  RegisterComponent(){
         
       </div>
     </div> 
+    </div>
     </div>
   )
 

@@ -3,12 +3,48 @@ import { Row , Col} from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 import Table from 'react-bootstrap/Table';
-
+import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveContainer} from 'recharts';
+import HeaderLogout from '../header1/headerLogout';
  
  
-const Dashboard = () => {
-
-    
+function Dashboard(){
+    const data = [
+        {
+          "name": "Page A",
+          "uv": 4000,
+          "pv": 2400
+        },
+        {
+          "name": "Page B",
+          "uv": 3000,
+          "pv": 1398
+        },
+        {
+          "name": "Page C",
+          "uv": 2000,
+          "pv": 9800
+        },
+        {
+          "name": "Page D",
+          "uv": 2780,
+          "pv": 3908
+        },
+        {
+          "name": "Page E",
+          "uv": 1890,
+          "pv": 4800
+        },
+        {
+          "name": "Page F",
+          "uv": 2390,
+          "pv": 3800
+        },
+        {
+          "name": "Page G",
+          "uv": 3490,
+          "pv": 4300
+        }
+      ]
    
    
  
@@ -16,19 +52,29 @@ const Dashboard = () => {
     
    
     return (
+    <div>
+         <HeaderLogout/>
+    
     <div class="col main pt-3 mt-3">
+       
          <Row id="main_row">
             <Col lg={3}>
                 <div id="sidebar">
                  <div class="sidebar-offcanvas"  role="navigation" style={{backgroundColor:"#e9ecef"}}>
                         <ul class="nav flex-column sticky-top pl-0 pt-4 p-3 mt-3 ">
                             <li class="nav-item mb-2 mt-3"><a class="nav-link text-dark" href="#"><h5>Features</h5></a></li>
-                            <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="profile.png" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"5px"}}></img>My Profile</span></a></li>
+                            <Link to="/profile" style={{textDecoration:"none"}}>
+                            <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="profile.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"5px"}}></img>My Profile</span></a></li>
+                            </Link>
                             <Link to="/account" style={{textDecoration:"none"}}>
                                 <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Choose Bank</span></a></li>
                             </Link>
+                            <Link to="/reports" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Reports</span></a></li>
+                            </Link>
+                            <Link to="/statements" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Bank Statements</span></a></li>
+                            </Link>
                             <Link to="/transfer" style={{textDecoration:"none"}}>
                                 <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transfer Money</span></a></li>
                             </Link>
@@ -38,7 +84,7 @@ const Dashboard = () => {
                             <br></br>
                             <br></br>
                             <Link to="/login" style={{textDecoration:"none"}}>
-                            <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="logout.png" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>   
+                            <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="logout.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>   
                             </Link>
                         </ul>
                     </div>
@@ -51,9 +97,11 @@ const Dashboard = () => {
                 <div class="row mb-3">
                     <div class="col-lg-4 col-sm-6 py-2">
                         <div class="card bg-success text-white h-100 text-center" id="dashboard_cards">
-                                    <div class="card-body bg-success" style={{backgroundColor:"#57b960"}}>
-                                        <h6 class="text-uppercase">Balance</h6>
-                                        <img style={{width:"50px",height:"auto"}}src="cash.png"></img>  
+                                    <div id="card_title" class="card-body bg-success" style={{backgroundColor:"#57b960"}}>
+                                       
+                                        <h6 class="text-uppercase " style={{color:"white"}}>Balance</h6>
+                                        <img style={{width:"50px",height:"auto"}} alt="" src="cash.png"></img>
+                                       
                                     </div>
                         </div>
                     </div>                       
@@ -61,7 +109,7 @@ const Dashboard = () => {
                         <div class="card text-white bg-danger h-100 text-center" id="dashboard_cards">
                             <div class="card-body bg-danger ">
                                 <h6 class="text-uppercase " style={{color:"white"}}>Income</h6>
-                                <img style={{width:"50px",height:"auto"}}src="business-and-finance.png"></img>
+                                <img style={{width:"50px",height:"auto"}} alt="" src="business-and-finance.png"></img>
                             </div>
         
                         </div>
@@ -74,7 +122,7 @@ const Dashboard = () => {
                                     <i class="fa fa-share fa-4x"></i>
                                 </div>
                                 <h6 class="text-uppercase">Expense</h6>
-                                <img style={{width:"50px",height:"auto"}}src="expense.png"></img>
+                                <img style={{width:"50px",height:"auto"}} alt="" src="expense.png"></img>
                             </div>
                         </div>
                     </div>
@@ -105,12 +153,28 @@ const Dashboard = () => {
                                 <td colSpan={2}>Larry the Bird</td>
                                
                                 </tr>
+                                <tr>
+                                <td>4</td>
+                                <td colSpan={2}>Larry the Bird</td>
+                                </tr>
+                                <tr>
+                                <td>5</td>
+                                <td colSpan={2}>Larry the Bird</td>
+                                </tr>
                             </tbody>
                         </Table>
                     </div>
-                    <div className="col-lg-6 ">
-                        <h4 className='title text-center text-secondary'>Data in Chart</h4>
-                        
+                    <div className="col-lg-6">
+                    <ResponsiveContainer width="95%" height={400}>
+                        <BarChart width={600} height={300} data={data}>
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="pv" fill="#8884d8" />
+                            <Bar dataKey="uv" fill="#82ca9d" />
+                        </BarChart>
+                    </ResponsiveContainer>
                     </div>
                 </div>
                    
@@ -124,6 +188,7 @@ const Dashboard = () => {
 
             </Col>
         </Row>
+    </div>
     </div>
     )
 }

@@ -12,6 +12,9 @@ import Accounts from './components/CustomerAccounts/Accounts';
 import TransferMoney from './components/Transfer/TransferMoney';
 import TransactionHistory from './components/Transactions/TransactionHistory';
 import Alerting from './components/Alert';
+import ReportComponent from './components/Reports/ReportComponent';
+import Statements from './components/BankStatements/Statements';
+import MyProfile from './components/Profile/MyProfile';
 
 
 function Main()  {
@@ -33,8 +36,9 @@ function Main()  {
             <Route path='/transfer' element={<TransferMoney />}/>
             <Route path='/transactions' element={<TransactionHistory />}/>
             <Route path='/alert' element={<Alerting/>}/>
-            
-
+            <Route path='/reports' element={<ReportComponent/>}/>
+            <Route path='/statements' element={<Statements/>}/>
+            <Route path='/profile' element={<MyProfile/>}/>
       </Routes>
     </BrowserRouter> 
     <Footer/>
@@ -44,7 +48,7 @@ function Main()  {
  
   return (
     <div>
-      <Header/>
+      
       <BrowserRouter>
             <Routes>                
                   <Route path='/' element={<Bankinfo />}/>
@@ -56,7 +60,9 @@ function Main()  {
                   <Route path='/transfer' element={<TransferMoney />}/>
                   <Route path='/transactions' element={<TransactionHistory />}/>
                   <Route path='/alert' element={<Alerting/>}/>
-                 
+                  <Route path='/reports' element={<ReportComponent/>}/>
+                  <Route path='/statements' element={<Statements/>}/>
+                  <Route path='/profile' element={<MyProfile/>}/>
             </Routes>
         </BrowserRouter>    
       <Footer/>

@@ -1,0 +1,130 @@
+#profile_page1 , #profile_page2 , #profile_page3{
+    padding-top: 35px;
+    padding-bottom: 35px;
+}
+#profile_page1 ul li a{
+    color: black;
+}
+#profile_page1 ul li a:hover{
+    color: #5a287d;
+}
+
+#profile_page2 .details{
+    text-align: center;
+    margin:0 auto 30px;
+    line-height: 60px;
+    position: relative;
+    color:black;  
+    font-size: 30px;
+    margin-top: 10px;
+}
+#profile_page2 .details::after{
+    content: '';
+    background: #ff523b;
+    width:80px;
+    height:5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 0;
+    left:50%;
+    transform: translateX(-50%);
+}
+
+#profile_row{
+    margin-right: 0px;
+}
+
+
+#details_table{
+  margin-left: 5px;
+  margin-top: 30px;
+}
+
+#details_table #c1{
+    padding-left: 50px;
+}
+#profile_card{
+    margin-left: 10px;
+}
+#phone_no , #email{
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+#email{
+    margin-bottom: 5px;
+}
+.phone_no , .email{
+    margin-bottom: 20px;
+}
+
+.card-img-top{
+    height:230px;
+}
+
+.card-no-border .card {
+    border-color: #d7dfe3;
+    border-radius: 4px;
+    margin-bottom: 30px;
+    -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05)
+}
+
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem
+}
+
+.pro-img {
+    margin-top: -80px;
+    margin-bottom: 20px
+}
+
+.little-profile .pro-img img {
+    width: 130px;
+    height: 130px;
+    -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 100%
+}
+
+html body .m-b-0 {
+    margin-bottom: 0px
+}
+
+h3 {
+    line-height: 30px;
+    font-size: 21px
+}
+
+
+html body .m-t-10 {
+    margin-top: 10px
+}
+
+
+
+.m-t-20 {
+    margin-top: 20px
+}
+
+.text-center {
+    text-align: center !important
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #455a64;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem
+}

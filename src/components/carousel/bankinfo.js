@@ -1,8 +1,11 @@
 import Carousel from 'react-bootstrap/Carousel';
+import Header from '../header/header';
 import './bankinfo.css';
 
 function Bankinfo() {
   return (
+    <div>
+    <Header/>
     <Carousel>
       <Carousel.Item interval={1000}>
         <img
@@ -40,6 +43,7 @@ function Bankinfo() {
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
+    </div>
   );
 }
 

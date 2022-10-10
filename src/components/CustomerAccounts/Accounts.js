@@ -4,11 +4,17 @@ import './Accounts.css'
 
 
 import { Button } from 'react-bootstrap';
+import HeaderLogout from '../header1/headerLogout';
 class Accounts extends Component {
+    
     render() {
+        
         return (
-            
-                
+         
+        <div className="acc">
+        <HeaderLogout/> 
+
+        
         <div className='container'>
 
                 <div className='bank_search'>
@@ -22,7 +28,7 @@ class Accounts extends Component {
                         />
                         <Button>Search</Button>
                     </Form> 
-                    <br></br>
+                    
                 </div>
             
 
@@ -48,7 +54,7 @@ class Accounts extends Component {
                             <div class="card-body text-center">
                                 <img id="i2" src ="rbs.jpg" alt=""></img>
                                 <h5 class="card-title">Royal Bank of Scotland</h5>
-                                <a href="#" class="btn btn-primary ">Enter</a>
+                                <a href="/bankDetails" class="btn btn-primary ">Enter</a>
                             </div>
                             </div>
                         </div>
@@ -57,7 +63,7 @@ class Accounts extends Component {
                             <div class="card-body text-center">
                                 <img id="i3" src="hdfc.jpg" alt=""></img>
                                 <h5 class="card-title">HDFC Bank</h5>
-                                <a href="#" class="btn btn-primary">Enter</a>
+                                <a href="/bankDetails" class="btn btn-primary">Enter</a>
                             </div>
                             </div>
                         </div>
@@ -74,7 +80,7 @@ class Accounts extends Component {
                             <div class="card-body text-center">
                                 <img id="i4" src="icici.png" alt=""></img>
                                 <h5 class="card-title">ICICI Bank</h5>
-                                <a href="#" class="btn btn-primary">Enter</a>
+                                <a href="/bankDetails" class="btn btn-primary">Enter</a>
                             </div>
                             </div>
                         </div>
@@ -85,7 +91,7 @@ class Accounts extends Component {
                             <div class="card-body text-center">
                                 <img id="i5" src="canara.jpg" alt=""></img>
                                 <h5 class="card-title">Canara Bank</h5>
-                                <a href="#" class="btn btn-primary">Enter</a>
+                                <a href="/bankDetails" class="btn btn-primary">Enter</a>
                             </div>
                             </div>
                         </div>
@@ -94,7 +100,7 @@ class Accounts extends Component {
                             <div class="card-body text-center">
                                 <img id="i6" src="standard-chartered.png" alt=""></img>
                                 <h5 class="card-title">Standard Chatered Bank</h5>
-                                <a href="#" class="btn btn-primary">Enter</a>
+                                <a href="/bankDetails" class="btn btn-primary">Enter</a>
                             </div>
                             </div>
                         </div>
@@ -102,6 +108,7 @@ class Accounts extends Component {
 
                     <br></br>
                     </div>
+            </div>
             </div>
         );
     }

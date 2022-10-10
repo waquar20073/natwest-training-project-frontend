@@ -1,10 +1,12 @@
 import React from 'react'
 import Alert from 'react-bootstrap/Alert';
 import { Link } from "react-router-dom";
+import HeaderLogout from './header1/headerLogout';
 function Alerting() {
     
           return (
             <div>
+            <HeaderLogout/>
             <br></br>
             <Alert id="alert" variant="primary" dismissible>
               <Alert.Heading>Money Transferred to the customer :)</Alert.Heading>
