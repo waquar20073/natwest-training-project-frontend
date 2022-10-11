@@ -91,50 +91,106 @@ function  RegisterComponent(){
   }
   
   return(
+    
     <div className="register_component">
     <Header/>
+    
+  
+ 
+ 
+
     <div className="container" id="register">
     { isSubmit ? <FormSubmitMessage formErrors = {formErrors}/>: null }
     <div id="registerform" >
       <h2 id="headerTitle">Register</h2>
         <form>
-          <div className="row1">
-            <label>FirstName</label>
-            <input type="text" name="firstName" placeholder="Enter your firstName" onChange={handleFormChange} />
+          <div className="row">
+          <div className="col-lg-6" id="name_col">
+                    <div class="form-outline">
+                      <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>First name</label>
+                      <input type="text" id="form3Example1m" class="form-control form-control-lg" placeholder="Enter your firstName" onChange={handleFormChange}/>
+                    </div>
+          </div>
+
+          <div className="col-lg-6" id="name_col">
+                    <div class="form-outline">
+                      <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Last name</label>
+                      <input type="text" id="form3Example1m" class="form-control form-control-lg" placeholder="Enter your lastName" onChange={handleFormChange}/>
+                    </div>
+              
+            </div>  
           </div> 
-          <div className="row1">  
-            <label>LastName</label>
-            <input type="text" name="lastName" placeholder="Enter your lastName" onChange={handleFormChange} />
+          <br></br>
+          <div className="row">
+              <div className="col-lg-6" id="name_col">
+              <div class="form-outline">
+                      <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Username</label>
+                      <input type="text" id="form3Example1m" class="form-control form-control-lg" placeholder="Enter your Username" onChange={handleFormChange}/>
+                </div>
+              </div>
+
+              <div className="col-lg-6" id="gender_col">
+                                      
+              <div class="d-md-flex justify-content-start align-items-center mb-4 py-2">
+
+                        <h6 class="mb-0 me-3 form-label" style={{marginLeft:"5px",fontSize:"17px"}}>Gender: </h6> 
+                        <div class="form-check form-check-inline mb-0 me-4">
+                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"
+                            value="option1" />
+                          <label class="form-check-label" for="femaleGender">Female</label>
+                        </div>
+
+                        <div class="form-check form-check-inline mb-0 me-4">
+                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maleGender"
+                            value="option2" />
+                          <label class="form-check-label" for="maleGender">Male</label>
+                        </div>
+
+                        <div class="form-check form-check-inline mb-0">
+                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="otherGender"
+                            value="option3" />
+                          <label class="form-check-label" for="otherGender">Other</label>
+                        </div>
+                  </div>
+              </div>  
           </div> 
-          <div className="row1">  
-            <label>Username</label>
-            <input type="text" name="username" placeholder="Enter your username" onChange={handleFormChange} />
-          </div>
-          <div className="row1">  
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Enter your email" onChange={handleFormChange} />
-          </div>
-          <div className="row1">  
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Enter your password" onChange={handleFormChange} />
-          </div>
-          <div className="row1">  
-            <label>Date of Birth</label>
-            <input type="date" name="dob" placeholder="Enter your dob" onChange={handleFormChange} />
-          </div>
-          <div id="button" className="row1">
+          
+          <br></br>
+          <div className="row">
+              <div className="col-lg-6" id="name_col">
+                        <div class="form-outline">
+                          <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Email</label>
+                          <input type="text" id="form3Example1m" class="form-control form-control-lg" placeholder="Enter your email" onChange={handleFormChange}/>
+                        </div>
+              </div>
+
+              <div className="col-lg-6" id="name_col">
+                       <div class="form-outline">
+                          <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Password</label>
+                          <input type="text" id="form3Example1m" class="form-control form-control-lg" placeholder="Enter your password" onChange={handleFormChange}/>
+                        </div>
+                     
+              </div>  
+          </div> 
+          <br></br>
+         
+          <div class="form-check d-flex justify-content-center mb-3 mt-1">
+                  <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+                  <label class="form-check-label" for="form2Example3g">
+                    I agree all statements in Terms of service
+                  </label>
+           </div>
+
+          <div id="button" className="reg_row1 text-center">
             <button type="button" value="Login" onClick={handleFormSubmit}>Create Account</button>
           </div>
-        </form> 
-        <div className = "goBackToLogin">
-        <hr></hr>
-        <h4>Have an account ?</h4> 
-        <Link to="/login" style={{textDecoration: "none",color:"rgb(58, 12, 104)"}}>
-          <button type="button">Log in</button>
-        </Link>
-        <br/>
         
-      </div>
+        </form> 
+        
+
+       
+        
+      
     </div> 
     </div>
     </div>
@@ -182,7 +238,10 @@ const FormSubmitMessage = (props) =>{
           <ListOfErrors errors= {props.formErrors} /> 
         </div>
       )}
+     
     </div>
+        
+    
   )
 }
 

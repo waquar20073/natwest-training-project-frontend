@@ -29,7 +29,7 @@ class MyProfile extends Component {
                             <br></br>
                             <br></br>
                             <hr style={{marginLeft:"10px",marginRight:"60px"}}></hr>
-                            <li class="nav-item mb-2"><a class="nav-link" href="#"><span className="ml-3"><img src="reset_password.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Reset Password</span></a></li>
+                            <li class="nav-item mb-2"><a class="nav-link" href="/reset"><span className="ml-3"><img src="reset_password.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Reset Password</span></a></li>
                             <Link to="/login" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link " href="#"><span className="ml-3"><img src="logout.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>   
                             </Link>

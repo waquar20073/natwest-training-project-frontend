@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./ReportComponent.css";
 import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveContainer} from 'recharts';
-
+import HeaderLogout from '../header1/headerLogout';
 function ReportComponent(){
     const data = [
         {
@@ -96,7 +96,10 @@ function ReportComponent(){
 
 
         return (
+          
             <div className='reports'>
+                <HeaderLogout/>
+                <div className='container'>
                 <br></br>
                 <div className='row'>
                     <div className='col-lg-6'>
@@ -147,6 +150,7 @@ function ReportComponent(){
                     </div>
                 </div>
             </div>
+          </div>
         );
     }
 

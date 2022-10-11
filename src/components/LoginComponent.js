@@ -47,33 +47,55 @@ function  LoginComponent({setToken}){
   return(
     <div className='Login-component'>
     <Header/>
-    <br></br>
+    
     <div id="loginform">
-      <h2 id="headerTitle">Login</h2>
+      
         <form>
-          <div className="row1">
+          <h2 id="headerTitle">Login</h2>
+          <div className="login_row1">
             <label>Username</label>
             <input type="text" name="userName" placeholder="Enter your username" onChange={handleFormChange} />
           </div> 
-          <div className="row1">  
+          <div className="login_row1">  
             <label>Password</label>
             <input type="password" name="password" placeholder="Enter your password" onChange={handleFormChange} />
           </div> 
           <Link to="/account" style={{textDecoration:"none"}}>
-          <div id="button" className="row1">
+          <div id="button" className="login_row1">
               <button type="button" value="Login" onClick={handleFormSubmit}>Log in</button>
              
           </div>
           </Link> 
+         
+          <hr></hr>
+          <div class="login_det">
+            <div> 
+                <Link to="/reset" style={{textDecoration:"none"}}>
+                  <span style={{color:"black",fontSize:"18px",fontFamily:"Sans-serif"}}>Forgot the password ?</span>
+                  <span style={{color:"rgb(58, 12, 104)",fontSize:"18px", fontWeight:"bold"}}> Reset</span> 
+                </Link>
+            </div>
+            <div> 
+                  
+                <Link to="/signup" style={{textDecoration:"none"}}>
+                  <span style={{color:"black",fontSize:"18px",fontFamily:"Sans-serif"}}>New User ?</span>
+                  <span style={{color:"rgb(58, 12, 104)",fontSize:"18px",fontWeight:"bold"}}> Signup</span>
+
+                </Link>
+                
+              </div>
+          </div>
+            
+  
+          
+          
         </form> 
-      <div className = "signupbutton">
-        <hr></hr>
-        <Link to="/signup">
-          <button>Create New Account</button>
-        </Link>
-      </div>      
+       
+          
+          
+           
     </div> 
-    <br></br>
+    
     </div>
     
   )

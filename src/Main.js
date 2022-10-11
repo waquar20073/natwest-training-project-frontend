@@ -15,6 +15,8 @@ import Alerting from './components/Alert';
 import ReportComponent from './components/Reports/ReportComponent';
 import Statements from './components/BankStatements/Statements';
 import MyProfile from './components/Profile/MyProfile';
+import Reset from './components/Reset/reset';
+
 
 
 function Main()  {
@@ -39,6 +41,8 @@ function Main()  {
             <Route path='/reports' element={<ReportComponent/>}/>
             <Route path='/statements' element={<Statements/>}/>
             <Route path='/profile' element={<MyProfile/>}/>
+            <Route path='/reset' element={<Reset/>}/>
+            
       </Routes>
     </BrowserRouter> 
     <Footer/>
@@ -63,6 +67,8 @@ function Main()  {
                   <Route path='/reports' element={<ReportComponent/>}/>
                   <Route path='/statements' element={<Statements/>}/>
                   <Route path='/profile' element={<MyProfile/>}/>
+                  <Route path='/reset' element={<Reset/>}/>
+                 
             </Routes>
         </BrowserRouter>    
       <Footer/>
