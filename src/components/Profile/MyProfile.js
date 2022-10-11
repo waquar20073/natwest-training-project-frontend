@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import HeaderLogout from '../header1/headerLogout';
 import "./MyProfile.css";
 import { Link } from "react-router-dom";
-import Table from 'react-bootstrap/Table';
 class MyProfile extends Component {
     render() {
         return (
@@ -29,7 +28,9 @@ class MyProfile extends Component {
                             <br></br>
                             <br></br>
                             <hr style={{marginLeft:"10px",marginRight:"60px"}}></hr>
-                            <li class="nav-item mb-2"><a class="nav-link" href="/reset"><span className="ml-3"><img src="reset_password.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Reset Password</span></a></li>
+                            <Link to="/reset" style={{textDecoration:"none"}}>
+                            <li class="nav-item mb-2"><a class="nav-link" href=""><span className="ml-3"><img src="reset_password.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Reset Password</span></a></li>
+                            </Link>
                             <Link to="/login" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link " href="#"><span className="ml-3"><img src="logout.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>   
                             </Link>
@@ -47,6 +48,10 @@ class MyProfile extends Component {
                                 <tr>
                                 <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Full name</td>
                                 <td >John Snow</td>
+                                </tr>
+                                <tr>
+                                <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Date of Birth</td>
+                                <td >13-05-1998</td>
                                 </tr>
                                 <tr>
                                 <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Age</td>

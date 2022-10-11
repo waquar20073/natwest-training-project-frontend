@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import './header.css';
+import { Link } from "react-router-dom";
 function Header() {
 
   return (
@@ -11,12 +12,10 @@ function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav >
-            <Nav.Link  id="nav-links" href="/home"><img id="home_icon" alt="" src="home.png"></img>Home</Nav.Link>
+            <Link to="/home" id="nav-links" href="" style={{textDecoration:"none"}}><img id="home_icon" alt="" src="home.png" ></img>Home</Link>
             
-            <Nav.Link  className="login1" id="nav-links" href="/login"><img id="login_icon" alt="" src="login.png"></img>Login </Nav.Link>
-            <Nav.Link  className="register_title" id="nav-links" href="/signup"><img id="register_icon" alt="" src="register.png"></img>Register</Nav.Link>
-            
-            
+            <Link to="/login" className="login1" id="nav-links" href="" style={{textDecoration:"none"}}><img id="login_icon" alt="" src="login.png"></img>Login </Link>
+            <Link to="/signup" className="register_title" id="nav-links" href="" style={{textDecoration:"none"}}><img id="register_icon" alt="" src="register.png"></img>Register</Link>   
           </Nav>
         </Navbar.Collapse>
       </Container>

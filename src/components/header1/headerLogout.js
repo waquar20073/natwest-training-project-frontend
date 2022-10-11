@@ -2,18 +2,19 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import './headerLogout.css';
+import { Link } from "react-router-dom";
 function HeaderLogout() {
 
   return (
-    <Navbar  expand="lg" class="navbar">
+    <Navbar  expand="lg" class="navbar1">
       <Container>
        <img src="Capture.PNG" alt="" id="logo" ></img>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav >
-            <Nav.Link  id="nav-links1" href="/home"><img id="home_icon1" alt="" src="home.png"></img>Home</Nav.Link>
+            <Link  to="/account" id="nav-links1" href="" style={{textDecoration:"none"}}><img id="home_icon1" alt="" src="home.png"></img>Bank of APIs</Link>
             
-            <Nav.Link className="logout" id="nav-links1" href="/login"><img id="logout_icon" alt="" src="logout_icon.png"></img>Logout</Nav.Link>
+            <Link to="/login" className="logout" id="nav-links1" href="" style={{textDecoration:"none"}}><img id="logout_icon" alt="" src="logout_icon.png"></img>Logout</Link>
            
             
             

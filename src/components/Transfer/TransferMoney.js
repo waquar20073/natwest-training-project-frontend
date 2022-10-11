@@ -11,7 +11,7 @@ function TransferMoney() {
     <div>
             <HeaderLogout/>
             <div class="col main pt-1 mt-1">
-                <Row id="tranfer_row">
+                <Row id="transfer_row">
                     <Col lg={3}>
                         <div id="sidebar1">
                             <div class="sidebar-offcanvas"  role="navigation" style={{backgroundColor:"#e9ecef"}}>

@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import { Row , Col} from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
@@ -65,9 +64,6 @@ function Dashboard(){
                             <li class="nav-item mb-2 mt-3"><a class="nav-link text-dark" href="#"><h5>Features</h5></a></li>
                             <Link to="/profile" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="profile.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"5px"}}></img>My Profile</span></a></li>
-                            </Link>
-                            <Link to="/account" style={{textDecoration:"none"}}>
-                                <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Choose Bank</span></a></li>
                             </Link>
                             <Link to="/reports" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Reports</span></a></li>
@@ -176,16 +172,8 @@ function Dashboard(){
                         </BarChart>
                     </ResponsiveContainer>
                     </div>
+                </div>               
                 </div>
-                   
-                </div>
-            
-               
-                
-                
-          
-            
-
             </Col>
         </Row>
     </div>

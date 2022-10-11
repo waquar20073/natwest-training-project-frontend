@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import './Accounts.css'
-
+import { Link } from "react-router-dom";
 
 import { Button } from 'react-bootstrap';
 import HeaderLogout from '../header1/headerLogout';
@@ -44,7 +44,9 @@ class Accounts extends Component {
                                     <img id="i1" src="SBI-logo.svg.png" alt=""></img>
                                     <h5 class="card-title">State Bank of India</h5> 
                                 </div>
-                                <a href="/bankDetails" class="btn btn-primary">Enter</a>
+                                <Link to="/bankDetails">
+                                <a href="" class="btn btn-primary">Enter</a>
+                                </Link>
                             </div>
                             </div>
                         </div>
@@ -54,7 +56,9 @@ class Accounts extends Component {
                             <div class="card-body text-center">
                                 <img id="i2" src ="rbs.jpg" alt=""></img>
                                 <h5 class="card-title">Royal Bank of Scotland</h5>
-                                <a href="/bankDetails" class="btn btn-primary ">Enter</a>
+                                <Link to="/bankDetails">
+                                <a href="" class="btn btn-primary ">Enter</a>
+                                </Link>
                             </div>
                             </div>
                         </div>
@@ -63,7 +67,9 @@ class Accounts extends Component {
                             <div class="card-body text-center">
                                 <img id="i3" src="hdfc.jpg" alt=""></img>
                                 <h5 class="card-title">HDFC Bank</h5>
-                                <a href="/bankDetails" class="btn btn-primary">Enter</a>
+                                <Link to="/bankDetails">
+                                <a href="" class="btn btn-primary">Enter</a>
+                                </Link>
                             </div>
                             </div>
                         </div>
@@ -80,7 +86,9 @@ class Accounts extends Component {
                             <div class="card-body text-center">
                                 <img id="i4" src="icici.png" alt=""></img>
                                 <h5 class="card-title">ICICI Bank</h5>
-                                <a href="/bankDetails" class="btn btn-primary">Enter</a>
+                                <Link to="/bankDetails">
+                                <a href="" class="btn btn-primary">Enter</a>
+                                </Link>
                             </div>
                             </div>
                         </div>
@@ -91,7 +99,9 @@ class Accounts extends Component {
                             <div class="card-body text-center">
                                 <img id="i5" src="canara.jpg" alt=""></img>
                                 <h5 class="card-title">Canara Bank</h5>
+                                <Link to="/bankDetails">
                                 <a href="/bankDetails" class="btn btn-primary">Enter</a>
+                                </Link>
                             </div>
                             </div>
                         </div>
@@ -100,7 +110,9 @@ class Accounts extends Component {
                             <div class="card-body text-center">
                                 <img id="i6" src="standard-chartered.png" alt=""></img>
                                 <h5 class="card-title">Standard Chatered Bank</h5>
+                                <Link to="/bankDetails">
                                 <a href="/bankDetails" class="btn btn-primary">Enter</a>
+                                </Link>
                             </div>
                             </div>
                         </div>

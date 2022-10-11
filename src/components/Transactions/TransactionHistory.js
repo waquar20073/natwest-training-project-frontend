@@ -10,7 +10,7 @@ class TransactionHistory extends Component {
             <div>
                 <HeaderLogout/>
            
-            <div class="col main pt-1 mt-1">
+            <div class="col main pt-1 mt-2">
                 
                 <Row id="transaction_row">
                     <Col lg={3}>

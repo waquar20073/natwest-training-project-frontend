@@ -1,6 +1,5 @@
 .navbar{
     background-color: rgb(67, 7, 102);
-    
     padding: 5px;
 }
 
@@ -55,6 +54,7 @@
     .register_title{
         position: relative;
         left: 0px;
-        margin-top: 30px;
+        margin-top: 50px;
+        margin-bottom: 10px;
     }
 }

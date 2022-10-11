@@ -31,7 +31,9 @@ export default function
                     class="btn btn-success btn-lg gradient-custom-4" style={{marginBottom:"5px"}}>Reset</button>
                   
                 </div>
-                <p class="text-center mt-2 mb-0" style={{fontSize:"18px"}}>Have already an account? <a href="/login" class="fw-bold text-body" style={{textDecoration:"none"}}>Login here</a></p>
+                
+                <p class="text-center mt-2 mb-0" style={{fontSize:"18px"}}>Have already an account? <Link to="/login"><a href="" class="fw-bold text-body" style={{textDecoration:"none"}}>Login here</a></Link></p>
+                
                 <br></br>
               </form>
               
