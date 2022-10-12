@@ -1,6 +1,6 @@
 .reset_title{
     text-align: center;
-    margin:0 auto 25px;
+    margin:0 auto 31px;
     line-height: 60px;
     position: relative;
     color:black;  
@@ -17,3 +17,11 @@
     left:50%;
     transform: translateX(-50%);
 }
+
+.formFieldError {
+    border: 1px solid #e11d48;
+  }
+  
+  .formFieldErrorMessage {
+    color: #e11d48;
+  }

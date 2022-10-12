@@ -68,15 +68,15 @@ function Dashboard(){
                             <Link to="/reports" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Reports</span></a></li>
                             </Link>
-                            <Link to="/statements" style={{textDecoration:"none"}}>
-                            <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Bank Statements</span></a></li>
-                            </Link>
+                    
                             <Link to="/transfer" style={{textDecoration:"none"}}>
                                 <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transfer Money</span></a></li>
                             </Link>
                             <Link to="/transactions" style={{textDecoration:"none"}}>
                                 <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transaction History</span></a></li>
                             </Link>
+                            <br></br>
+                            <br></br>
                             <br></br>
                             <br></br>
                             <Link to="/login" style={{textDecoration:"none"}}>

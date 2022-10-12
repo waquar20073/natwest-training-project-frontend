@@ -15,7 +15,8 @@ import Alerting from './components/Alert';
 import ReportComponent from './components/Reports/ReportComponent';
 import Statements from './components/BankStatements/Statements';
 import MyProfile from './components/Profile/MyProfile';
-import Reset from './components/Reset/reset';
+import ResetPassword from './components/Reset/resetPassword';
+
 
 
 
@@ -41,7 +42,7 @@ function Main()  {
             <Route path='/reports' element={<ReportComponent/>}/>
             <Route path='/statements' element={<Statements/>}/>
             <Route path='/profile' element={<MyProfile/>}/>
-            <Route path='/reset' element={<Reset/>}/>
+            <Route path='/reset' element={<ResetPassword/>}/>
             
       </Routes>
     </BrowserRouter> 
@@ -58,7 +59,7 @@ function Main()  {
                   <Route path='/' element={<Bankinfo />}/>
                   <Route path='/home' element={<Bankinfo />}/>
                   <Route path='/login' element={<LoginComponent/>} />
-                  <Route path='/signup' element={<RegisterComponent />} /> 
+                  <Route path='/signup' element={<RegisterComponent/>} /> 
                   <Route path='/bankDetails' element={<Dashboard/>}/>
                   <Route path='/account' element={<Accounts />}/>
                   <Route path='/transfer' element={<TransferMoney />}/>
@@ -67,8 +68,8 @@ function Main()  {
                   <Route path='/reports' element={<ReportComponent/>}/>
                   <Route path='/statements' element={<Statements/>}/>
                   <Route path='/profile' element={<MyProfile/>}/>
-                  <Route path='/reset' element={<Reset/>}/>
-                 
+                  <Route path='/reset' element={<ResetPassword/>}/>
+                  
             </Routes>
         </BrowserRouter>    
       <Footer/>

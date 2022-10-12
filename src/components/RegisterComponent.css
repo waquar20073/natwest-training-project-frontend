@@ -40,6 +40,8 @@
   border: 0px;
   cursor: pointer;
   transition: opacity 0.25s ease-out;
+  margin-top: 5px;
+  margin-bottom: 22px;
 }
 
 .reg_row1 button:hover{
@@ -49,6 +51,7 @@
 
 #button{
   padding-bottom: 1.5rem;
+
 }
 
 @media screen and (max-width: 430px) {

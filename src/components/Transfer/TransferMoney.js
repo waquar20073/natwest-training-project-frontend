@@ -1,10 +1,39 @@
 import React, { Component } from 'react';
 import "./TransferMoney.css";
 import { Link } from "react-router-dom";
-import { Row , Col, Button} from 'react-bootstrap';
+import { Row , Col} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import HeaderLogout from '../header1/headerLogout';
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
 function TransferMoney() {
+
+
+    const formSchema = Yup.object().shape({
+        accNo: Yup.string()
+          .required('Account Number is mandatory')
+          .min(10,'Account Number must be at 10 char long'),
+        IFSC: Yup.string()
+          .required('IFSC Code is mandatory')
+          .min(8,'IFSC Code must be at 8 char long'),
+        accName: Yup.string()
+          .required('Account Holder Name is mandatory')
+          .min(8,'Account Holder Name  must be at 8 char long'),
+        amount : Yup.string()
+          .required('Amount is mandatory')
+          .min(2, 'Amount must be at 2 digit amount')
+          .max(6, 'Amount must be at most 6 digit amount'),
+
+    })
+    const formOptions = { resolver: yupResolver(formSchema) }
+    const { register, handleSubmit, reset, formState } = useForm(formOptions)
+    const { errors } = formState
+    function onSubmit(data) {
+    console.log(JSON.stringify(data, null, 4))
+    return false
+  }
+
     
   return (
     
@@ -26,15 +55,15 @@ function TransferMoney() {
                                 <Link to="/reports" style={{textDecoration:"none"}}>
                                 <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Reports</span></a></li>
                                 </Link>
-                                <Link to="/statements" style={{textDecoration:"none"}}>
-                                <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Bank Statements</span></a></li>
-                                </Link>
+                               
                                 <Link to="/transfer" style={{textDecoration:"none"}}>
                                     <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transfer Money</span></a></li>
                                 </Link>
                                 <Link to="/transactions" style={{textDecoration:"none"}}>
                                     <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transaction History</span></a></li>
                                 </Link>
+                                <br></br>
+                                <br></br>
                                 <br></br>
                                 <br></br>
                                 <Link to="/login" style={{textDecoration:"none"}}>
@@ -50,7 +79,7 @@ function TransferMoney() {
                     <Col lg={8}>
                     <div id= "transfer_form" className='text-center'>
                     <h2 id="money_transfer_title">Money Transfer</h2>
-                    <Form>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
                         <Form.Group className="mb-3" >
                             <Form.Select>
                                 <option>Choose Destination Bank</option>
@@ -63,21 +92,25 @@ function TransferMoney() {
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3" >
-                            <Form.Control type="text" placeholder="Bank Account Number" />
+                            <Form.Control class={`form-control ${errors.accNo? 'is-invalid' : ''}`} {...register('accNo')}type="text" placeholder="Bank Account Number" />
+                            <div className="invalid-feedback">{errors.accNo?.message}</div>
                         </Form.Group>
                         <Form.Group className="mb-3" >
-                            <Form.Control type="text" placeholder="IFSC Code" />
+                            <Form.Control class={`form-control ${errors.IFSC? 'is-invalid' : ''}`} {...register('IFSC')} type="text" placeholder="IFSC Code" />
+                            <div className="invalid-feedback">{errors.IFSC?.message}</div>
                         </Form.Group>
                         <Form.Group className="mb-3" >
-                            <Form.Control type="text" placeholder="Account Holder Name" />
+                            <Form.Control class={`form-control ${errors.accName? 'is-invalid' : ''}`} {...register('accName')} type="text" placeholder="Account Holder Name" />
+                            <div className="invalid-feedback">{errors.accName?.message}</div>
                         </Form.Group>
                         <Form.Group className="mb-3" >
-                            <Form.Control type="number" placeholder="Amount" />
+                            <Form.Control class={`form-control ${errors.amount? 'is-invalid' : ''}`} {...register('amount')} type="text" placeholder="Amount" />
+                            <div className="invalid-feedback">{errors.amount?.message}</div>
                         </Form.Group>
-                        <h6 id="transactions_charges">Transaction Charges :</h6>
-                        <Link to="/alert">
-                            <Button id="transfer_button">Transfer</Button>
-                        </Link>
+                        <h6 id="transactions_charges">Transaction Charges : 15/-</h6>
+                        
+                        <button type='submit' id="transfer_button">Transfer</button>
+                        
                         
                         <br></br>
                     </Form>

@@ -1,15 +1,17 @@
 import React from "react";
 import './RegisterComponent.css'
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "./header/header";
-
-
-
+import { useState } from "react";
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
+import moment from "moment/moment";
 
   
-function  RegisterComponent(){ 
+function RegisterComponent(){ 
 
-  const [registerForm, setRegisterForm] = React.useState({
+  /*const [registerForm, setRegisterForm] = React.useState({
     "firstName":"",
     "lastName": "",
     "username": "",
@@ -18,43 +20,7 @@ function  RegisterComponent(){
     "dob" : ""
   })
 
-  const [formErrors, setFormErrors] = React.useState({});
   const [isSubmit, setIsSubmit] = React.useState(false);
-
-  const validate = (values) => {
-    const errors = {};
-    if (!values.firstName) {
-      errors.firstName = "FirstName is required!";
-    }
-    if (!values.lastName) {
-      errors.lastName = "LastName is required!";
-    }
-    if (!values.username) {
-      errors.username = "Username is required!";
-    }
-    const email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!values.email) {
-      errors.email = "Email is required!";
-    } else if (!email_regex.test(values.email)) {
-      errors.email = "This is not a valid email format!";
-    }
-    if (!values.password) {
-      errors.password = "Password is required!";
-    } else if (values.password.length < 4) {
-      errors.password = "Password must be more than 4 characters";
-    } else if (values.password.length > 10) {
-      errors.password = "Password cannot exceed more than 10 characters";
-    }
-    const date_regex = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/i;
-    if (!values.email) {
-      errors.email = "Email is required!";
-    } else if (!date_regex.test(values.dob)) {
-      errors.dob = "This is not a valid email format!";
-    }
-    return errors;
-  };
-
-
   const url = 'http://localhost:8085/api/v1/registration'
   const requestOptions = {
     method: "POST",
@@ -65,12 +31,12 @@ function  RegisterComponent(){
       "username": registerForm.username,
       "email": registerForm.email,
       "password": registerForm.password,
-      "dob" : registerForm.dob
+      
     })
   }
 
   
-  function handleFormChange(e) {
+   function handleFormChange(e) {
     setRegisterForm({
         ...registerForm,
         [e.target.name] : e.target.value
@@ -79,7 +45,7 @@ function  RegisterComponent(){
 
   function handleFormSubmit(e) { 
     console.log(registerForm) 
-    setFormErrors(validate(registerForm));
+    //setFormErrors(validate(registerForm));
     setIsSubmit(true); 
     window.scrollTo({
       top: 0, 
@@ -87,72 +53,88 @@ function  RegisterComponent(){
       
     });
 
-    
-  }
+  }*/
   
+
+  //Validations
+  const formSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .required('First Name is mandatory')
+      .min(8,'Firstname must be at 8 char long'),
+    lastName: Yup.string()
+      .required('Last Name is mandatory')
+      .min(8,'Lastname must be at 8 char long'),
+    userName: Yup.string()
+      .required('User Name is mandatory')
+      .min(8,'Username must be at 8 char long'),
+    password: Yup.string()
+      .required('Password is mandatory')
+      .min(3, 'Password must be at 3 char long'),
+    email : Yup.string()
+      .required('Email is required')
+      .email('Must be a valid email').max(255),
+    date : Yup.string()
+      .required("DOB is Required")
+      .test("DOB", "Please choose a valid date of birth", (value) => {
+      return moment().diff(moment(value), "years") >= 10;
+    }),
+    mobile : Yup.string()
+    .required("Phone number is mandatory")
+    .matches(
+      /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+      "Phone number is not valid"
+    )
+    .min(8)
+    .max(10)
+                       
+  })
+  
+  const formOptions = { resolver: yupResolver(formSchema) }
+  const { register, handleSubmit, reset, formState } = useForm(formOptions)
+  const { errors } = formState
+  function onSubmit(data) {
+    console.log(JSON.stringify(data, null, 4))
+    return false
+  }
+
+
+
+
+
   return(
+
     
     <div className="register_component">
     <Header/>
-    
-  
- 
- 
-
     <div className="container" id="register">
-    { isSubmit ? <FormSubmitMessage formErrors = {formErrors}/>: null }
     <div id="registerform" >
       <h2 id="headerTitle">Register</h2>
-        <form>
+        <form  onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
-          <div className="col-lg-6" id="name_col">
+          <div className="col-lg-4" id="name_col">
                     <div class="form-outline">
                       <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>First name</label>
-                      <input type="text" id="form3Example1m" class="form-control form-control-lg" placeholder="Enter your firstName" onChange={handleFormChange}/>
+                      <input type="text" id="form3Example1m" class={`form-control ${errors.firstName? 'is-invalid' : ''}`} {...register('firstName')} placeholder="Enter your firstName" />
+                      <div className="invalid-feedback">{errors.firstName?.message}</div>
                     </div>
           </div>
 
-          <div className="col-lg-6" id="name_col">
+          <div className="col-lg-4" id="name_col">
                     <div class="form-outline">
                       <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Last name</label>
-                      <input type="text" id="form3Example1m" class="form-control form-control-lg" placeholder="Enter your lastName" onChange={handleFormChange}/>
+                      <input type="text" id="form3Example1m" class={`form-control ${errors.lastName? 'is-invalid' : ''}`} {...register('lastName')} placeholder="Enter your lastName"/>
+                      <div className="invalid-feedback">{errors.lastName?.message}</div>
                     </div>
               
             </div>  
-          </div> 
-          <br></br>
-          <div className="row">
-              <div className="col-lg-6" id="name_col">
+
+            <div className="col-lg-4" id="name_col">
               <div class="form-outline">
                       <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Username</label>
-                      <input type="text" id="form3Example1m" class="form-control form-control-lg" placeholder="Enter your Username" onChange={handleFormChange}/>
+                      <input type="text" id="form3Example1m" class={`form-control ${errors.userName? 'is-invalid' : ''}`} {...register('userName')} placeholder="Enter your Username"/>
+                      <div className="invalid-feedback">{errors.userName?.message}</div>
                 </div>
               </div>
-
-              <div className="col-lg-6" id="gender_col">
-                                      
-              <div class="d-md-flex justify-content-start align-items-center mb-4 py-2">
-
-                        <h6 class="mb-0 me-3 form-label" style={{marginLeft:"5px",fontSize:"17px"}}>Gender: </h6> 
-                        <div class="form-check form-check-inline mb-0 me-4">
-                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"
-                            value="option1" />
-                          <label class="form-check-label" for="femaleGender">Female</label>
-                        </div>
-
-                        <div class="form-check form-check-inline mb-0 me-4">
-                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maleGender"
-                            value="option2" />
-                          <label class="form-check-label" for="maleGender">Male</label>
-                        </div>
-
-                        <div class="form-check form-check-inline mb-0">
-                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="otherGender"
-                            value="option3" />
-                          <label class="form-check-label" for="otherGender">Other</label>
-                        </div>
-                  </div>
-              </div>  
           </div> 
           
           <br></br>
@@ -160,29 +142,55 @@ function  RegisterComponent(){
               <div className="col-lg-6" id="name_col">
                         <div class="form-outline">
                           <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Email</label>
-                          <input type="text" id="form3Example1m" class="form-control form-control-lg" placeholder="Enter your email" onChange={handleFormChange}/>
+                          <input type="text" id="form3Example1m" class={`form-control ${errors.email ? 'is-invalid' : ''}`} {...register('email')} placeholder="Enter your email" />   
+                          <div className="invalid-feedback">{errors.email?.message}</div>
                         </div>
               </div>
 
               <div className="col-lg-6" id="name_col">
                        <div class="form-outline">
                           <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Password</label>
-                          <input type="text" id="form3Example1m" class="form-control form-control-lg" placeholder="Enter your password" onChange={handleFormChange}/>
-                        </div>
+                          <input type="password" id="form3Example1m" class={`form-control ${errors.password ? 'is-invalid' : ''}`} {...register('password')} placeholder="Enter your password" />
+                          <div className="invalid-feedback">{errors.password?.message}</div>
+                       </div>
                      
               </div>  
           </div> 
           <br></br>
-         
-          <div class="form-check d-flex justify-content-center mb-3 mt-1">
+          <div className="row">
+              <div className="col-lg-6" id="name_col">
+                        <div class="form-outline">
+                          <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Date of Birth</label>
+                          <input type="date" id="form3Example1m" class={`form-control ${errors.date ? 'is-invalid' : ''}`} {...register('date')} placeholder="Enter your email" />   
+                          <div className="invalid-feedback">{errors.date?.message}</div>
+                        </div>
+              </div>
+
+              <div className="col-lg-6" id="name_col">
+                       <div class="form-outline">
+                          <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Mobile Number</label>
+                          <input type="text" id="form3Example1m" class={`form-control ${errors.mobile ? 'is-invalid' : ''}`} {...register('mobile')} placeholder="Enter your password" />
+                          <div className="invalid-feedback">{errors.mobile?.message}</div>
+                       </div>
+                     
+              </div>  
+          </div> 
+          
+          <br></br>
+          <br></br>
+          
+          <div class="form-check d-flex justify-content-center mb-3 mt-1" >
                   <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
                   <label class="form-check-label" for="form2Example3g">
                     I agree all statements in Terms of service
                   </label>
            </div>
 
+          
           <div id="button" className="reg_row1 text-center">
-            <button type="button" value="Login" onClick={handleFormSubmit}>Create Account</button>
+            
+            <button type="submit" value="Login" >Create Account</button>
+            
           </div>
         
         </form> 
@@ -197,10 +205,10 @@ function  RegisterComponent(){
   )
 
  
-}
+  }
 
 
-const ListOfErrors = (props) => {
+/*const ListOfErrors = (props) => {
   {
     var arr = [];
     var json = props.errors
@@ -243,7 +251,7 @@ const FormSubmitMessage = (props) =>{
         
     
   )
-}
+}*/
 
 
 

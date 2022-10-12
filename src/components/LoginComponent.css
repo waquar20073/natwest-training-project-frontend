@@ -23,12 +23,28 @@
   margin-top: 14px;
 }
 
+
+
 #headerTitle{
-  text-align: left;
+  text-align: center;
+  margin:0 auto 30px;
+  line-height: 40px;
+  position: relative;
+  color:black;  
   font-family: 'open sans', sans-serif;
+  font-size: 30px;
   padding: 1rem 0;
-  margin-left: 70px;
-  font-size: 2rem;
+}
+#headerTitle::after{
+content: '';
+  background: #ff523b;
+  width:80px;
+  height:5px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 0;
+  left:50%;
+  transform: translateX(-50%);
 }
 
 .login_row1 {
@@ -102,3 +118,26 @@
   margin-bottom: 10px;
 }
 
+@media screen and (max-width: 430px) {
+  #headerTitle{
+    text-align: center;
+    margin:0 auto 30px;
+    line-height: 40px;
+    position: relative;
+    color:black;  
+    font-size: 30px;
+}
+#headerTitle::after{
+  content: '';
+    background: #ff523b;
+    width:80px;
+    height:5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 0;
+    left:50%;
+    transform: translateX(-50%);
+}
+  
+  
+}

@@ -14,13 +14,14 @@ class MyProfile extends Component {
                         <div class="col-lg-3" id='profile_page1' style={{backgroundColor:"#e9ecef"}}>
                         <ul class="nav flex-column p-3">
                             <li class="nav-item mb-2 mt-3"><a class="nav-link text-dark" href="#"><h5>Features</h5></a></li>
+                            <Link to="/account" style={{textDecoration:"none"}}>
+                                <li class="nav-item mb-2"><a class="nav-link" href="#"><span className="ml-3">Choose Bank</span></a></li>
+                            </Link>
                             <Link to="/statements" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link" href="#"><span className="ml-3">Bank Statements</span></a></li>
                             </Link>
         
-                            <Link to="/transactions" style={{textDecoration:"none"}}>
-                                <li class="nav-item mb-2"><a class="nav-link" href="#"><span className="ml-3">Transaction History</span></a></li>
-                            </Link>
+                            
                             <br></br>
                             <br></br>
                             <br></br>

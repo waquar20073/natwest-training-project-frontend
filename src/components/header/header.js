@@ -15,7 +15,10 @@ function Header() {
             <Link to="/home" id="nav-links" href="" style={{textDecoration:"none"}}><img id="home_icon" alt="" src="home.png" ></img>Home</Link>
             
             <Link to="/login" className="login1" id="nav-links" href="" style={{textDecoration:"none"}}><img id="login_icon" alt="" src="login.png"></img>Login </Link>
-            <Link to="/signup" className="register_title" id="nav-links" href="" style={{textDecoration:"none"}}><img id="register_icon" alt="" src="register.png"></img>Register</Link>   
+            
+            <Link to="/signup" className="register_title" id="nav-links" href="" style={{textDecoration:"none"}}><img id="register_icon" alt="" src="register.png"></img>Register</Link>
+
+               
           </Nav>
         </Navbar.Collapse>
       </Container>
