@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
+import Header from '../header/header';
 
 
 function ResetPassword(){
@@ -64,7 +65,7 @@ function ResetPassword(){
 //Form 
     return(
         <div className='reset_page' style={{backgroundColor:"whitesmoke"}}>
-           <HeaderLogout/>
+           <Header/>
            <div class="container">
               <form style={{marginTop:"40px"}}  onSubmit={handleSubmit(onSubmit)}>
                 <h2 className='reset_title'>Reset Password</h2>

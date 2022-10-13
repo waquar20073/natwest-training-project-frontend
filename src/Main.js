@@ -22,26 +22,27 @@ import ResetPassword from './components/Reset/resetPassword';
 
 function Main()  {
  
-  const { setToken,token} = useToken();
+  const {setToken,token} = useToken();
+  console.log("Main")
 
   if(!token) {
     return (
       <div>
-    <Header/>
     <BrowserRouter>
       <Routes>
             <Route path='/' element={<Bankinfo />}/>
             <Route path='/home' element={<Bankinfo />}/>
             <Route path='/signup' element={<RegisterComponent />} /> 
             <Route path='/login' element={<LoginComponent setToken={setToken}/>} />
-            <Route path='/bankDetails' element={<Dashboard/>} /> 
+            <Route path='*' element={<Bankinfo/>} />
+            {/* <Route path='/bankDetails' element={<Dashboard/>} /> 
             <Route path='/account' element={<Accounts />}/>
             <Route path='/transfer' element={<TransferMoney />}/>
             <Route path='/transactions' element={<TransactionHistory />}/>
             <Route path='/alert' element={<Alerting/>}/>
             <Route path='/reports' element={<ReportComponent/>}/>
             <Route path='/statements' element={<Statements/>}/>
-            <Route path='/profile' element={<MyProfile/>}/>
+            <Route path='/profile' element={<MyProfile/>}/> */}
             <Route path='/reset' element={<ResetPassword/>}/>
             
       </Routes>
@@ -56,10 +57,10 @@ function Main()  {
       
       <BrowserRouter>
             <Routes>                
-                  <Route path='/' element={<Bankinfo />}/>
-                  <Route path='/home' element={<Bankinfo />}/>
-                  <Route path='/login' element={<LoginComponent/>} />
-                  <Route path='/signup' element={<RegisterComponent/>} /> 
+                  <Route path='/' element={<Accounts />}/>
+                  {/* <Route path='/home' element={<Bankinfo />}/>
+                  <Route path='/login' element={<LoginComponent setToken={setToken}/>} />
+                  <Route path='/signup' element={<RegisterComponent/>} />  */}
                   <Route path='/bankDetails' element={<Dashboard/>}/>
                   <Route path='/account' element={<Accounts />}/>
                   <Route path='/transfer' element={<TransferMoney />}/>
@@ -68,7 +69,8 @@ function Main()  {
                   <Route path='/reports' element={<ReportComponent/>}/>
                   <Route path='/statements' element={<Statements/>}/>
                   <Route path='/profile' element={<MyProfile/>}/>
-                  <Route path='/reset' element={<ResetPassword/>}/>
+                  <Route path='*' element={<Accounts/>} />
+                  {/* <Route path='/reset' element={<ResetPassword/>}/> */}
                   
             </Routes>
         </BrowserRouter>    
