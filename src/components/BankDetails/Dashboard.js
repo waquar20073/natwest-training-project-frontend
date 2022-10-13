@@ -95,8 +95,8 @@ function Dashboard(){
                         <div class="card bg-success text-white h-100 text-center" id="dashboard_cards">
                                     <div id="card_title" class="card-body bg-success" style={{backgroundColor:"#57b960"}}>
                                        
-                                        <h6 class="text-uppercase " style={{color:"white"}}>Balance</h6>
-                                        <img style={{width:"50px",height:"auto"}} alt="" src="cash.png"></img>
+                                    <span class="text-uppercase " style={{color:"white",fontSize:"18px"}}><img style={{width:"50px",height:"auto",marginBottom:"15px",marginRight:"5px"}} alt="" src="cash.png"></img> Balance</span>
+                                    <h6 style={{color:"white"}}>2000/-</h6>
                                        
                                     </div>
                         </div>
@@ -104,8 +104,8 @@ function Dashboard(){
                     <div class="col-lg-4 col-sm-6 py-2">
                         <div class="card text-white bg-danger h-100 text-center" id="dashboard_cards">
                             <div class="card-body bg-danger ">
-                                <h6 class="text-uppercase " style={{color:"white"}}>Income</h6>
-                                <img style={{width:"50px",height:"auto"}} alt="" src="business-and-finance.png"></img>
+                                 <span class="text-uppercase " style={{color:"white",fontSize:"18px"}}><img style={{width:"50px",height:"auto",marginBottom:"15px",marginRight:"10px"}} alt="" src="business-and-finance.png"></img>Income</span>
+                                 <h6  style={{color:"white"}}>2000/-</h6>
                             </div>
         
                         </div>
@@ -117,8 +117,8 @@ function Dashboard(){
                                 <div class="rotate">
                                     <i class="fa fa-share fa-4x"></i>
                                 </div>
-                                <h6 class="text-uppercase">Expense</h6>
-                                <img style={{width:"50px",height:"auto"}} alt="" src="expense.png"></img>
+                                <span class="text-uppercase " style={{color:"white",fontSize:"18px"}}><img style={{width:"50px",height:"auto",marginBottom:"10px",marginRight:"5px"}} alt="" src="expense.png"></img>Expense</span>
+                                <h6  style={{color:"white"}}>2000/-</h6>
                             </div>
                         </div>
                     </div>
