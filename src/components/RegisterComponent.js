@@ -8,8 +8,14 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import moment from "moment/moment";
 
+
+var serverError = false;
+var isSubmit = false;
+var registerErrors = {};
   
 function RegisterComponent(){ 
+
+  const [formErrors, setFormErrors] = React.useState({});
 
   /*const [registerForm, setRegisterForm] = React.useState({
     "firstName":"",
@@ -59,21 +65,19 @@ function RegisterComponent(){
   //Validations
   const formSchema = Yup.object().shape({
     firstName: Yup.string()
-      .required('First Name is mandatory')
-      .min(8,'Firstname must be at 8 char long'),
+      .required('First Name is mandatory'),
     lastName: Yup.string()
-      .required('Last Name is mandatory')
-      .min(8,'Lastname must be at 8 char long'),
-    userName: Yup.string()
+      .required('Last Name is mandatory'),
+    username: Yup.string()
       .required('User Name is mandatory')
-      .min(8,'Username must be at 8 char long'),
+      .min(4,'Username must be at 8 char long'),
     password: Yup.string()
       .required('Password is mandatory')
-      .min(3, 'Password must be at 3 char long'),
+      .min(8, 'Password must be at 8 char long'),
     email : Yup.string()
       .required('Email is required')
       .email('Must be a valid email').max(255),
-    date : Yup.string()
+    dob : Yup.string()
       .required("DOB is Required")
       .test("DOB", "Please choose a valid date of birth", (value) => {
       return moment().diff(moment(value), "years") >= 10;
@@ -92,9 +96,49 @@ function RegisterComponent(){
   const formOptions = { resolver: yupResolver(formSchema) }
   const { register, handleSubmit, reset, formState } = useForm(formOptions)
   const { errors } = formState
-  function onSubmit(data) {
+  async function onSubmit(data) {
+    isSubmit = false;
     console.log(JSON.stringify(data, null, 4))
-    return false
+    registerErrors = {};   
+      serverError = false;  
+    
+  const url = 'http://localhost:8085/api/v1/registration'
+  const requestOptions = {
+    method: "POST",
+    headers : { 'Content-type': 'application/json' },
+    body: JSON.stringify(data, null, 4)
+  }
+      await fetch(url, requestOptions)
+      .then((response) => response.text())
+      .then((data) => {
+        if(data.match("username already taken")){
+          serverError = true;
+          registerErrors.errorMessageServer = data;
+          
+        }
+        if(data.match("email already taken")){
+          serverError = true;
+          registerErrors.errorMessageServer = data;
+        }
+        
+      })
+      .catch( (error) =>{ 
+        serverError = true;
+        registerErrors.errorMessageServer = "Failed to connect";
+      })
+      if(!serverError){   
+        console.log("Register Success ")
+      } 
+    
+    isSubmit = true;
+    setFormErrors(registerErrors);
+    window.scrollTo({
+      top: 0, 
+      behavior: 'smooth'
+    });
+    
+
+  
   }
 
 
@@ -106,6 +150,7 @@ function RegisterComponent(){
     
     <div className="register_component">
     <Header/>
+    { isSubmit ? <FormSubmitMessage formErrors = {formErrors}/>: null }
     <div className="container" id="register">
     <div id="registerform" >
       <h2 id="headerTitle">Register</h2>
@@ -131,8 +176,8 @@ function RegisterComponent(){
             <div className="col-lg-4" id="name_col">
               <div class="form-outline">
                       <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Username</label>
-                      <input type="text" id="form3Example1m" class={`form-control ${errors.userName? 'is-invalid' : ''}`} {...register('userName')} placeholder="Enter your Username"/>
-                      <div className="invalid-feedback">{errors.userName?.message}</div>
+                      <input type="text" id="form3Example1m" class={`form-control ${errors.username? 'is-invalid' : ''}`} {...register('username')} placeholder="Enter your Username"/>
+                      <div className="invalid-feedback">{errors.username?.message}</div>
                 </div>
               </div>
           </div> 
@@ -161,8 +206,8 @@ function RegisterComponent(){
               <div className="col-lg-6" id="name_col">
                         <div class="form-outline">
                           <label class="form-label" for="form3Example1m" style={{fontSize:"18px",marginLeft:"5px"}}>Date of Birth</label>
-                          <input type="date" id="form3Example1m" class={`form-control ${errors.date ? 'is-invalid' : ''}`} {...register('date')} placeholder="Enter your email" />   
-                          <div className="invalid-feedback">{errors.date?.message}</div>
+                          <input type="date" id="form3Example1m" class={`form-control ${errors.dob ? 'is-invalid' : ''}`} {...register('dob')} placeholder="Enter your email" />   
+                          <div className="invalid-feedback">{errors.dob?.message}</div>
                         </div>
               </div>
 
@@ -208,50 +253,48 @@ function RegisterComponent(){
   }
 
 
-/*const ListOfErrors = (props) => {
-  {
-    var arr = [];
-    var json = props.errors
-    var keys = Object.keys(json)
-    Object.keys(json).forEach(function(key) {
-    arr.push(json[key]);
-  });
+  const FormSubmitMessage = (props) =>{
+    return(
+      <div className="errors">
+        <br/><br/>
+        {(!serverError) ? (
+          <div className="alert alert-success" role="alert">
+          Account Created successfully. Please go to Log in page to access the application.
+          <Link to="/login">
+            <h3>Log in</h3>
+          </Link>
+          </div>
+        ) : (
+          <div className="alert alert-danger" role="alert">
+            <h4>Error! while creating account</h4>
+            <ListOfErrors errors= {props.formErrors} /> 
+          </div>
+        )}
+      </div>
+    )
   }
-  return (
-    
-      <ul>
-          {
-              arr.map(error => {
-                  return <li key = {error}>{error}</li>
-              })
-          }
-      </ul>
-  )
-}
-
-const FormSubmitMessage = (props) =>{
-  return(
-    <div className="errors">
-      <br/><br/>
-      {Object.keys(props.formErrors).length === 0 ? (
-        <div className="alert alert-success" role="alert">
-        Account Created successfully. Please go to Log in page to access the application.
-        <Link to="/login">
-          <h4>Log in</h4>
-        </Link>
-        </div>
-      ) : (
-        <div className="alert alert-danger" role="alert">
-          <h4>Error! while creating account</h4>
-          <ListOfErrors errors= {props.formErrors} /> 
-        </div>
-      )}
-     
-    </div>
-        
-    
-  )
-}*/
+  
+  
+  const ListOfErrors = (props) => {
+    {
+      var arr = [];
+      var json = props.errors
+      var keys = Object.keys(json)
+      Object.keys(json).forEach(function(key) {
+      arr.push(json[key]);
+    });
+    }
+    return (
+      
+        <ul>
+            {
+                arr.map(error => {
+                    return <li key = {error}>{error}</li>
+                })
+            }
+        </ul>
+    )
+  }
 
 
 

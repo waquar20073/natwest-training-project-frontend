@@ -7,6 +7,9 @@
   
   background-image: url("https://assets.website-files.com/5fc90bae06ffc61992fd0e1c/607ed5dab018c9b3398231fa_joint-us-img-large-p-2000.jpeg");
 }
+.invalid-feedback{
+  margin-left: 100px;
+}
 #loginform{
   border-width: 2px;
   border-style: solid;
