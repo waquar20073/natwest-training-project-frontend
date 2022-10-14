@@ -11,7 +11,7 @@ function HeaderLogout() {
   const {setToken,token} = useToken();
 
   function removeSessionDetails(){
-    console.log("Vishesh")
+    localStorage.clear()
     localStorage.removeItem("token");
     localStorage.removeItem("accountId");
     setToken(null)

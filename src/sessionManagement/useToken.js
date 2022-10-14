@@ -9,9 +9,10 @@ export default function useToken() {
 
   const [token, setToken] = useState(getToken());
 
-  const saveToken = (userToken,accountId) => {
+  const saveToken = (userToken,accountId, ownerName) => {
     localStorage.setItem('token', JSON.stringify(userToken));
-    localStorage.setItem('accountId', JSON.stringify(accountId));
+    localStorage.setItem('accountId', String(accountId));
+    localStorage.setItem('ownerName', String(ownerName));
     setToken(userToken.token);
   };
 

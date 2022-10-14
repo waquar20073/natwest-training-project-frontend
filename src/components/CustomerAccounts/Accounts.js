@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import './Accounts.css'
 import { useNavigate } from 'react-router-dom';
 import HeaderLogout from '../header1/headerLogout';
@@ -6,53 +6,83 @@ import Bankcard from './bankcard';
 
 function Accounts(){
 
+  const [accountsList, setaAcountsList] = useState([])
+  const [error, setError] = useState(null)
+  const [isLoaded, setIsLoaded] = useState(false)
 
-    //Dummy data 
-    const data = [
-        {
-          id:1,
-          bankname: "State Bank of India",
-          value: "true",
-          img : "SBI-logo.svg.png"
-        },
-        {
-          id:2,
-          bankname: "Royal Bank of Scotland",
-          value: "true",
-          img : "rbs.jpg"
-        },
-        {
-          id:3,
-          bankname: "HDFC Bank",
-          value: "true",
-          img : "hdfc.jpg"
-        },
-        {
-          id : 4,  
-          bankname: "ICICI Bank",
-          value: "false",
-          img :  "icici.png" 
-        },
-        {
-          id : 5,
-          bankname: "Canara Bank",
-          value: "false",
-          img: "canara.jpg"
-        },
-        {
-          id : 6,
-          bankname: "Standard Chatered Bank",
-          value: "false",
-          img : "standard-chartered.png"
-        }
-      ];
+  const url = 'http://localhost:8085/api/v1/linkaccount/listaccounts'
+
+  const requestOptions = {
+    method: "POST",
+    headers : { 'Content-type': 'application/json' },
+    body: JSON.stringify({
+      "accountId" : localStorage.getItem('accountId')
+    })
+  }
+
+
+  useEffect(() => {
+    fetch(url, requestOptions).then(response => response.json()).then(     
+      (result) => {
+        setaAcountsList(result)
+        localStorage.setItem("LinkedBanks" , JSON.stringify(result));
+        setIsLoaded(true)
+      },
+      (error) => {
+        setIsLoaded(false)
+        setError(error)
+      }
+    )
+  }, [])
+
+
+
+    // //Dummy data 
+    // const data = [
+    //     {
+    //       id:1,
+    //       bankname: "State Bank of India",
+    //       value: "true",
+    //       img : "SBI-logo.svg.png"
+    //     },
+    //     {
+    //       id:2,
+    //       bankname: "Royal Bank of Scotland",
+    //       value: "true",
+    //       img : "rbs.jpg"
+    //     },
+    //     {
+    //       id:3,
+    //       bankname: "HDFC Bank",
+    //       value: "true",
+    //       img : "hdfc.jpg"
+    //     },
+    //     {
+    //       id : 4,  
+    //       bankname: "ICICI Bank",
+    //       value: "false",
+    //       img :  "icici.png" 
+    //     },
+    //     {
+    //       id : 5,
+    //       bankname: "Canara Bank",
+    //       value: "false",
+    //       img: "canara.jpg"
+    //     },
+    //     {
+    //       id : 6,
+    //       bankname: "Standard Chatered Bank",
+    //       value: "false",
+    //       img : "standard-chartered.png"
+    //     }
+    //   ];
     
       //2 Different Lists for linked and non linked accounts  
       const linked_accounts = [];
       const non_linked_accounts = [];
 
       //Pushing data to lists
-      data.map(data =>{
+      accountsList.map(data =>{
         if(data.value == "true"){
             linked_accounts.push(data);
         }
@@ -67,7 +97,7 @@ function Accounts(){
             return(
             <div id="card_style" className='text-center'>
             <Bankcard key={item.id} {...item} />
-            <button className="enter" id={item.value} onClick={add}>Enter</button>
+            <button className="enter" onClick={()=>{navigate("/bankDetails", {state:item})}}>Enter</button>
             </div>)
         });
         
@@ -75,7 +105,7 @@ function Accounts(){
             return (
             <div id="card_style" className='text-center'>
             <Bankcard key={item.id} {...item} />
-            <button className="add" id={item.value} onClick={add}>Add</button>
+            <button className="add" onClick={()=>{navigate("/addAccount", {state:item})}}>Add</button>
             </div>
             )
       });
@@ -84,8 +114,10 @@ function Accounts(){
      //Button navigation for dashboard and add account pages
      let navigate  = useNavigate();
      function add(event){
-        let id = event.target.id;
-        if(id == "true"){
+        let value = event.target.value;
+        let bankname = event.target.bankname;
+        console.log(bankname)
+        if(value == "true"){
             navigate("/bankDetails");
         }
         else{

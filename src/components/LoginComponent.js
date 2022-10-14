@@ -11,6 +11,7 @@ var serverError = false;
 var isSubmit = false;
 var loginErrors = {};
 var accountId = -1;
+var ownerName = "";
 
 function  LoginComponent({setToken}){ 
   
@@ -73,23 +74,26 @@ function  LoginComponent({setToken}){
     console.log(JSON.stringify(data, null, 4))
     const url = 'http://localhost:8085/api/v1/login'
     const requestOptions = {
-    method: "POST",
-    headers : { 'Content-type': 'application/json' },
-    body: JSON.stringify(data, null, 4)
-  }
+      method: "POST",
+      headers : { 'Content-type': 'application/json' },
+      body: JSON.stringify(data, null, 4)
+    }
 
     accountId = -1;
+    ownerName ="";
     isSubmit = false;
     loginErrors = {}; 
       serverError = false;    
       await fetch(url, requestOptions)
       .then((response) => response.json())
-      .then((data) => {        
+      .then((data) => { 
+        console.log(data)       
         if(!data.status.match("authenticated")){
           serverError = true;
           loginErrors.errorMessageServer = data.status;
         }else{
           accountId = data.accountId;
+          ownerName = data.ownerName;
         } 
       })
       .catch( (error) =>{ 
@@ -99,7 +103,7 @@ function  LoginComponent({setToken}){
       if(!serverError){   
         console.log("Login Success ")
         setToken({"token" : "Login Success"                
-                  }, accountId); 
+                  }, accountId, ownerName); 
       }    
     
     isSubmit = true; 

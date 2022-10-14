@@ -111,6 +111,7 @@ function RegisterComponent(){
       await fetch(url, requestOptions)
       .then((response) => response.text())
       .then((data) => {
+        console.log(data)
         if(data.match("username already taken")){
           serverError = true;
           registerErrors.errorMessageServer = data;
