@@ -1,130 +1,129 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import "./ReportComponent.css";
 import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveContainer} from 'recharts';
 import HeaderLogout from '../header1/headerLogout';
-function ReportComponent(){
-    const data = [
-        {
-          "name": "Page A",
-          "uv": 4000,
-          "pv": 2400
-        },
-        {
-          "name": "Page B",
-          "uv": 3000,
-          "pv": 1398
-        },
-        {
-          "name": "Page C",
-          "uv": 2000,
-          "pv": 9800
-        },
-        {
-          "name": "Page D",
-          "uv": 2780,
-          "pv": 3908
-        },
-        {
-          "name": "Page E",
-          "uv": 1890,
-          "pv": 4800
-        },
-        {
-          "name": "Page F",
-          "uv": 2390,
-          "pv": 3800
-        },
-        {
-          "name": "Page G",
-          "uv": 3490,
-          "pv": 4300
-        }
-      ]
+import axios from "axios";
 
-      const data01 = [
-        {
-          "name": "Group A",
-          "value": 400
-        },
-        {
-          "name": "Group B",
-          "value": 300
-        },
-        {
-          "name": "Group C",
-          "value": 300
-        },
-        {
-          "name": "Group D",
-          "value": 200
-        },
-        {
-          "name": "Group E",
-          "value": 278
-        },
-        {
-          "name": "Group F",
-          "value": 189
+
+function ReportComponent(){
+    const [expenseReport, setExpenseReport] = useState({"daily":[{
+          "date": "Page A",
+          "amount": 4000
+        }],"month":"month","type":"type"});
+    const [incomeReport, setIncomeReport] = useState({"daily":[{
+          "date": "Page A",
+          "amount": 4000
+        }],"month":"month","type":"type"});
+    const [expensePartnerReport, setExpensePartnerReport] = useState({"data":[{
+          "partnerName": "Page A",
+          "frequency": 10
+        }],"month":"month","type":"type"});
+    const [incomePartnerReport, setIncomePartnerReport] = useState({"data":[{
+          "partnerName": "Page A",
+          "frequency": 20
+        }],"month":"month","type":"type"});
+
+    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1NjgwODkyLCJpYXQiOjE2NjU2NzcyOTJ9.newV04Tjq6k2Z9Utp-OMxxWTbn-b-mYyKn8j4D4pqZoF2MFyyJZqj4ygRmAbT6PvQxYNngAEvMa1lWQ-WZ-_8Q";
+    const host="http://localhost:5051/api/v1"
+    const accountId = 3;
+
+    // app.use(cors());
+
+    useEffect(() => {
+          loadAnalyticsData();
+      }, []);
+    useEffect(() => {
+        // console.log('expenseReport value:', expenseReport);
+      }, [expenseReport]);
+    useEffect(() => {
+        // console.log('incomeReport value:', incomeReport);
+      }, [incomeReport]);
+    useEffect(() => {
+        // console.log('expensePartnerReport value:', expensePartnerReport);
+      }, [expensePartnerReport]);
+    useEffect(() => {
+        console.log('incomePartnerReport value:', incomePartnerReport);
+      }, [incomePartnerReport]);
+
+    const loadAnalyticsData = async() => {
+      const json = `{"accountId":${accountId} }`;
+      const obj = JSON.parse(json);
+      const inc = await axios.post(`${host}/analytics/incomes`, obj, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
         }
-      ];
-      const data02 = [
-        {
-          "name": "Group A",
-          "value": 2400
-        },
-        {
-          "name": "Group B",
-          "value": 4567
-        },
-        {
-          "name": "Group C",
-          "value": 1398
-        },
-        {
-          "name": "Group D",
-          "value": 9800
-        },
-        {
-          "name": "Group E",
-          "value": 3908
-        },
-        {
-          "name": "Group F",
-          "value": 4800
+      }).then((reponse)=> {
+        setIncomeReport(reponse.data);
+      }).catch((err)=>{
+        console.error(err);
+      });
+      const exp = await axios.post(`${host}/analytics/expenses`, obj, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
         }
-      ];
+      }).then((reponse)=> {
+        setExpenseReport(reponse.data);
+      }).catch((err)=>{
+        console.error(err);
+      });
+      const inPar = await axios.post(`${host}/analytics/incomepartners`, obj, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }).then((reponse)=> {
+        setExpensePartnerReport(reponse.data);
+      }).catch((err)=>{
+        console.error(err);
+      });
+      const expPar = await axios.post(`${host}/analytics/expensepartners`, obj, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }).then((reponse)=> {
+        setExpensePartnerReport(reponse.data);
+      }).catch((err)=>{
+        console.error(err);
+      });
+    }
 
 
         return (
-          
+
             <div className='reports'>
                 <HeaderLogout/>
                 <div className='container'>
                 <br></br>
                 <div className='row'>
+                  <div className='col-lg-12'>
+                  <h3 className='month-title'>{expenseReport.month}</h3>
+                  </div>
                     <div className='col-lg-6'>
                     <ResponsiveContainer width="95%" height={400}>
-                        <BarChart width={600} height={300} data={data}>
-                            <XAxis dataKey="name" />
+                        <BarChart width={600} height={300} data={incomeReport.daily}>
+                            <XAxis dataKey="date" />
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            <Bar dataKey="pv" fill="#8884d8" />
-                            <Bar dataKey="uv" fill="#82ca9d" />
+                            <Bar dataKey="amount" fill="#82ca9d" />
                         </BarChart>
                     </ResponsiveContainer>
+                    <h5 className="chart-title">Daily Income for the Month</h5>
                     </div>
                     <div className='col-lg-6'>
                     <ResponsiveContainer width="95%" height={400}>
-                        <BarChart width={600} height={300} data={data}>
-                            <XAxis dataKey="name" />
+                        <BarChart width={600} height={300} data={expenseReport.daily}>
+                            <XAxis dataKey="date" />
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            <Bar dataKey="pv" fill="#8884d8" />
-                            <Bar dataKey="uv" fill="#82ca9d" />
+                            <Bar dataKey="amount" fill="#8884d8" />
                         </BarChart>
                         </ResponsiveContainer>
+                      <h5 className="chart-title">Daily Expenses for the Month</h5>
                     </div>
                 </div>
 
@@ -135,18 +134,18 @@ function ReportComponent(){
                     <div className='col-lg-6'>
                        <ResponsiveContainer width="95%" height={400}>
                         <PieChart width={600} height={300}>
-                            <Pie data={data01} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={50} fill="#8884d8" />
-                            <Pie data={data02} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#82ca9d" label />
+                            <Pie data={incomePartnerReport.data} dataKey="frequency" nameKey="partnerName" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#82ca9d" label />
                         </PieChart>
                         </ResponsiveContainer>
+                        <h5 className="chart-title">Most Frequent Trading Partners for Incomes</h5>
                     </div>
                     <div className='col-lg-6'>
                     <ResponsiveContainer width="95%" height={400}>
                         <PieChart width={600} height={300}>
-                            <Pie data={data01} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={50} fill="#8884d8" />
-                            <Pie data={data02} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#82ca9d" label />
+                            <Pie data={expensePartnerReport.data} dataKey="frequency" nameKey="partnerName" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#8884d8" label />
                         </PieChart>
                     </ResponsiveContainer>
+                    <h5 className="chart-title">Most Frequent Trading Partners for Expense</h5>
                     </div>
                 </div>
             </div>

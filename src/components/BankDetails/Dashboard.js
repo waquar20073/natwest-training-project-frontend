@@ -1,12 +1,70 @@
 import { Row , Col} from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
+import React, { Component, useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveContainer} from 'recharts';
 import HeaderLogout from '../header1/headerLogout';
- 
- 
+import axios from "axios";
+
 function Dashboard(){
+    const [balance, setBalance] = useState(0);
+    const [expense, setIncome] = useState(0);
+    const [income, setExpense] = useState(0);
+
+    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1NjgwODkyLCJpYXQiOjE2NjU2NzcyOTJ9.newV04Tjq6k2Z9Utp-OMxxWTbn-b-mYyKn8j4D4pqZoF2MFyyJZqj4ygRmAbT6PvQxYNngAEvMa1lWQ-WZ-_8Q";
+    const host="http://localhost:5051/api/v1"
+    const accountId = 3;
+
+    // app.use(cors());
+
+    useEffect(() => {
+          loadDashboardData();
+      }, []);
+    useEffect(() => {
+        // console.log('balance value:', balance);
+      }, [balance]);
+    useEffect(() => {
+        // console.log('expense value:', expense);
+      }, [expense]);
+    useEffect(() => {
+        // console.log('income value:', income);
+      }, [income]);
+    const loadDashboardData = async() => {
+      const json = `{"accountId":${accountId} }`;
+      const obj = JSON.parse(json);
+
+      const bal = await axios.post(`${host}/accounts/balance`, obj, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }).then((reponse)=> {
+        setBalance(reponse.data);
+      }).catch((err)=>{
+        console.error(err);
+      });
+      const inc = await axios.post(`${host}/transactions/incomes`, obj, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }).then((reponse)=> {
+        setIncome(reponse.data);
+      }).catch((err)=>{
+        console.error(err);
+      });
+      const exp = await axios.post(`${host}/transactions/expenses`, obj, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }).then((reponse)=> {
+        setExpense(reponse.data);
+      }).catch((err)=>{
+        console.error(err);
+      });
+    }
     const data = [
         {
           "name": "Page A",
@@ -44,18 +102,18 @@ function Dashboard(){
           "pv": 4300
         }
       ]
-   
-   
- 
-  
-    
-   
+
+
+
+
+
+
     return (
     <div>
          <HeaderLogout/>
-    
+
     <div class="col main pt-3 mt-3">
-       
+
          <Row id="main_row">
             <Col lg={3}>
                 <div id="sidebar">
@@ -68,7 +126,7 @@ function Dashboard(){
                             <Link to="/reports" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Reports</span></a></li>
                             </Link>
-                    
+
                             <Link to="/transfer" style={{textDecoration:"none"}}>
                                 <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transfer Money</span></a></li>
                             </Link>
@@ -80,7 +138,7 @@ function Dashboard(){
                             <br></br>
                             <br></br>
                             <Link to="/login" style={{textDecoration:"none"}}>
-                            <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="logout.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>   
+                            <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="logout.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>
                             </Link>
                         </ul>
                     </div>
@@ -88,42 +146,45 @@ function Dashboard(){
             </Col >
 
 
-            <Col lg={9}>  
+            <Col lg={9}>
             <div id="features">
                 <div class="row mb-3">
                     <div class="col-lg-4 col-sm-6 py-2">
                         <div class="card bg-success text-white h-100 text-center" id="dashboard_cards">
                                     <div id="card_title" class="card-body bg-success" style={{backgroundColor:"#57b960"}}>
-                                       
-                                    <span class="text-uppercase " style={{color:"white",fontSize:"18px"}}><img style={{width:"50px",height:"auto",marginBottom:"15px",marginRight:"5px"}} alt="" src="cash.png"></img> Balance</span>
-                                    <h6 style={{color:"white"}}>2000/-</h6>
-                                       
+
+                                        <h6 class="text-uppercase " style={{color:"white"}}>Balance</h6>
+                                        <h6 class="text-uppercase " style={{color:"white"}}>{balance}</h6>
+                                        <img style={{width:"50px",height:"auto"}} alt="" src="cash.png"></img>
+
                                     </div>
                         </div>
-                    </div>                       
+                    </div>
                     <div class="col-lg-4 col-sm-6 py-2">
-                        <div class="card text-white bg-danger h-100 text-center" id="dashboard_cards">
-                            <div class="card-body bg-danger ">
-                                 <span class="text-uppercase " style={{color:"white",fontSize:"18px"}}><img style={{width:"50px",height:"auto",marginBottom:"15px",marginRight:"10px"}} alt="" src="business-and-finance.png"></img>Income</span>
-                                 <h6  style={{color:"white"}}>2000/-</h6>
+                        <div class="card text-white bg-warning h-100 text-center" id="dashboard_cards">
+                            <div class="card-body bg-warning ">
+                                <h6 class="text-uppercase " style={{color:"white"}}>Income</h6>
+                                <h6 class="text-uppercase " style={{color:"white"}}>{income}</h6>
+                                <img style={{width:"50px",height:"auto"}} alt="" src="business-and-finance.png"></img>
                             </div>
-        
+
                         </div>
                     </div>
 
                     <div class="col-lg-4 col-sm-6 py-2">
-                        <div class="card text-white bg-warning h-100 text-center" id="dashboard_cards">
+                        <div class="card text-white bg-danger h-100 text-center" id="dashboard_cards">
                             <div class="card-body">
                                 <div class="rotate">
                                     <i class="fa fa-share fa-4x"></i>
                                 </div>
-                                <span class="text-uppercase " style={{color:"white",fontSize:"18px"}}><img style={{width:"50px",height:"auto",marginBottom:"10px",marginRight:"5px"}} alt="" src="expense.png"></img>Expense</span>
-                                <h6  style={{color:"white"}}>2000/-</h6>
+                                <h6 class="text-uppercase " style={{color:"white"}}>Expense</h6>
+                                <h6 class="text-uppercase " style={{color:"white"}}>{expense}</h6>
+                                <img style={{width:"50px",height:"auto"}} alt="" src="expense.png"></img>
                             </div>
                         </div>
                     </div>
                 </div>
- 
+
                 <hr/>
                 <div className="row mb-3">
                     <div class="col-lg-6 col-sm-6 py-2">
@@ -147,7 +208,7 @@ function Dashboard(){
                                 <tr>
                                 <td>3</td>
                                 <td colSpan={2}>Larry the Bird</td>
-                               
+
                                 </tr>
                                 <tr>
                                 <td>4</td>
@@ -172,7 +233,7 @@ function Dashboard(){
                         </BarChart>
                     </ResponsiveContainer>
                     </div>
-                </div>               
+                </div>
                 </div>
             </Col>
         </Row>
@@ -180,5 +241,5 @@ function Dashboard(){
     </div>
     )
 }
- 
+
 export default Dashboard
