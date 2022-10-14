@@ -3,35 +3,44 @@
     background-color: whitesmoke;
 }
 
+#r1{
+    display: flex;
+    float: left;
 
+}
 .banks .row{
     margin-bottom: 20px;
 }
 
-.banks .row .card .card-body #i1{
-    width: 60px;
-    height: auto;
+.enter{
+    border-radius: 20px;
+  width: 25%;
+  height: 40px;
+  font-size: 1.2rem;
+  color: white;
+  font-weight: 700;
+  background:#ff523b;  
+  border: 0px;
+  cursor: pointer;
+  transition: opacity 0.25s ease-out;
+  margin-bottom: 5px;
+  text-align: center;
 }
-.banks .row .card .card-body #i2{
-    width: 65px;
-    height: auto;
+.add{
+  border-radius: 20px;
+  width: 25%;
+  height: 40px;
+  font-size: 1.2rem;
+  color: white;
+  font-weight: 700;
+  background: rgb(58, 12, 104);  
+  border: 0px;
+  cursor: pointer;
+  transition: opacity 0.25s ease-out;
+  margin-bottom: 5px;
+  text-align: center;
 }
-.banks .row .card .card-body #i3{
-    width: 58px;
-    height: auto;
-}
-.banks .row .card .card-body #i4{
-    width: 70px;
-    height: auto;
-}
-.banks .row .card .card-body #i5{
-    width: 90px;
-    height: auto;
-}
-.banks .row .card .card-body #i6{
-    width: 72px;
-    height: auto;
-}
+
 
 .l-nl-banks{
     text-align: center;

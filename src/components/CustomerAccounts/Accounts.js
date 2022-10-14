@@ -1,115 +1,128 @@
 import React, { Component } from 'react';
-import Form from 'react-bootstrap/Form';
 import './Accounts.css'
-import { Link } from "react-router-dom";
-import Dashboard from '../BankDetails/Dashboard';
-import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import HeaderLogout from '../header1/headerLogout';
+import Bankcard from './bankcard';
+
 function Accounts(){
 
+
+    //Dummy data 
+    const data = [
+        {
+          id:1,
+          bankname: "State Bank of India",
+          value: "true",
+          img : "SBI-logo.svg.png"
+        },
+        {
+          id:2,
+          bankname: "Royal Bank of Scotland",
+          value: "true",
+          img : "rbs.jpg"
+        },
+        {
+          id:3,
+          bankname: "HDFC Bank",
+          value: "true",
+          img : "hdfc.jpg"
+        },
+        {
+          id : 4,  
+          bankname: "ICICI Bank",
+          value: "false",
+          img :  "icici.png" 
+        },
+        {
+          id : 5,
+          bankname: "Canara Bank",
+          value: "false",
+          img: "canara.jpg"
+        },
+        {
+          id : 6,
+          bankname: "Standard Chatered Bank",
+          value: "false",
+          img : "standard-chartered.png"
+        }
+      ];
     
-    
-    
+      //2 Different Lists for linked and non linked accounts  
+      const linked_accounts = [];
+      const non_linked_accounts = [];
+
+      //Pushing data to lists
+      data.map(data =>{
+        if(data.value == "true"){
+            linked_accounts.push(data);
+        }
+        else{
+            non_linked_accounts.push(data);
+        }
+      })
+ 
+
+      //Mapping card and button from bankcard.js
+        const cards = linked_accounts.map((item) => {
+            return(
+            <div id="card_style" className='text-center'>
+            <Bankcard key={item.id} {...item} />
+            <button className="enter" id={item.value} onClick={add}>Enter</button>
+            </div>)
+        });
+        
+        const cards1 = non_linked_accounts.map((item) => {
+            return (
+            <div id="card_style" className='text-center'>
+            <Bankcard key={item.id} {...item} />
+            <button className="add" id={item.value} onClick={add}>Add</button>
+            </div>
+            )
+      });
+
+
+     //Button navigation for dashboard and add account pages
+     let navigate  = useNavigate();
+     function add(event){
+        let id = event.target.id;
+        if(id == "true"){
+            navigate("/bankDetails");
+        }
+        else{
+            navigate("/addAccount");
+        }
+     }
+      
     
         
+
         return (
          
         <div className="acc">
-        <HeaderLogout/> 
-
-        
-        <div className='container'>
-
-                <div className="banks">
-                    <div class="row">
-                        <h3 class="l-nl-banks">Linked Accounts</h3>
-                        <div class="col-sm-4">
-                            <div class="card">
-                            <div class="card-body text-center">
-                                
-                                    <img id="i1" src="SBI-logo.svg.png" alt=""></img>
-                                    <h5 class="card-title">State Bank of India</h5> 
-                                
-                                <Link to="/bankDetails">
-                                <a href="" class="btn btn-primary">Enter</a>
-                                </Link>
-                            </div>
-                            </div>
+            <HeaderLogout/> 
+            <div className='container'>
+                <div className="banks" >
+                    <div className="row">
+                        
+                        <div className="col-lg-6">
+                            <h3 className="l-nl-banks">Linked Accounts</h3>
+                            {cards}      
                         </div>
-                        <br></br>
-                        <div class="col-sm-4">
-                            <div class="card">
-                            <div class="card-body text-center">
-                                <img id="i2" src ="rbs.jpg" alt=""></img>
-                                <h5 class="card-title">Royal Bank of Scotland</h5>
-                                <Link to="/bankDetails">
-                                <a href="" class="btn btn-primary ">Enter</a>
-                                </Link>
-                            </div>
-                            </div>
+                        <div className="col-lg-6">
+                            <h3 className="l-nl-banks">Non Linked Accounts</h3>   
+                            {cards1} 
+                             
                         </div>
-                        <div class="col-sm-4">
-                            <div class="card">
-                            <div class="card-body text-center">
-                                <img id="i3" src="hdfc.jpg" alt=""></img>
-                                <h5 class="card-title">HDFC Bank</h5>
-                                <Link to="/bankDetails">
-                                <a href="" class="btn btn-primary">Enter</a>
-                                </Link>
-                            </div>
-                            </div>
-                        </div>
+                        
                     </div>
-
-
-                    <br></br>
-
-                    <div class="row">
-                    <h3 class="l-nl-banks">Non-Linked Accounts</h3>
                     
-                        <div class="col-sm-4">
-                            <div class="card">
-                            <div class="card-body text-center">
-                                <img id="i4" src="icici.png" alt=""></img>
-                                <h5 class="card-title">ICICI Bank</h5>
-                                <Link to="/bankDetails">
-                                <a href="" class="btn btn-primary">Add</a>
-                                </Link>
-                            </div>
-                            </div>
-                        </div>
-                    
-                    
-                        <div class="col-sm-4">
-                            <div class="card">
-                            <div class="card-body text-center">
-                                <img id="i5" src="canara.jpg" alt=""></img>
-                                <h5 class="card-title">Canara Bank</h5>
-                                <Link to="/bankDetails">
-                                <a href="/bankDetails" class="btn btn-primary">Add</a>
-                                </Link>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card">
-                            <div class="card-body text-center">
-                                <img id="i6" src="standard-chartered.png" alt=""></img>
-                                <h5 class="card-title">Standard Chatered Bank</h5>
-                                <Link to="/bankDetails">
-                                <a href="/bankDetails" class="btn btn-primary">Add</a>
-                                </Link>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <br></br>
-                    </div>
-            </div>
-            </div>
-        );
-    }
+                </div>
 
 
+
+        </div>
+        </div>
+          );
+        }
+                          
 export default Accounts;

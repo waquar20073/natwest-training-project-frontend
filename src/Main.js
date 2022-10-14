@@ -16,6 +16,7 @@ import ReportComponent from './components/Reports/ReportComponent';
 import Statements from './components/BankStatements/Statements';
 import MyProfile from './components/Profile/MyProfile';
 import ResetPassword from './components/Reset/resetPassword';
+import AddAccount from './components/Non_Linked_accounts/addAccount';
 
 
 
@@ -69,6 +70,7 @@ function Main()  {
                   <Route path='/reports' element={<ReportComponent/>}/>
                   <Route path='/statements' element={<Statements/>}/>
                   <Route path='/profile' element={<MyProfile/>}/>
+                  <Route path='/addAccount' element={<AddAccount/>}/>
                   <Route path='*' element={<Accounts/>} />
                   {/* <Route path='/reset' element={<ResetPassword/>}/> */}
                   
