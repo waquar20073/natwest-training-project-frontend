@@ -94,7 +94,7 @@ function Accounts(){
 
       //Mapping card and button from bankcard.js
         const cards = linked_accounts.map((item) => {
-          console.log(item);
+          //console.log(item);
             return(
             <div id="card_style" className='text-center'>
             <Bankcard key={item.id} {...item} />
@@ -130,7 +130,7 @@ function Accounts(){
      function add(event){
         let value = event.target.value;
         let bankname = event.target.bankname;
-        console.log(bankname)
+        //console.log(bankname)
         if(value == "true"){
             navigate("/bankDetails");
         }
