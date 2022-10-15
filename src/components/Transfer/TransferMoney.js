@@ -18,6 +18,7 @@ function TransferMoney() {
 
 
     const formSchema = Yup.object().shape({
+        bankName : Yup.string().required(),
         accNo: Yup.string()
           .required('Account Number is mandatory')
           .min(1,'Account Number must be at 10 char long'),
@@ -34,7 +35,7 @@ function TransferMoney() {
 
     })
     const formOptions = { resolver: yupResolver(formSchema) }
-    const { register, handleSubmit, reset, formState } = useForm(formOptions)
+    const { register, handleSubmit, setValue, reset, formState } = useForm(formOptions)
     const { errors } = formState
 
 
@@ -42,21 +43,28 @@ function TransferMoney() {
         // console.log(JSON.stringify(data, null, 4))
         // return false
 
-        //Add Logic for port number as per the bank
-        localStorage.setItem('currentBankAccount', 'sbi');
-        localStorage.setItem('currentAccountNo', '1');
-        localStorage.setItem('sbiToken',
-        "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjY1NzM0NDE3LCJpYXQiOjE2NjU3MzA4MTd9.oxiSk0O4UGUZsbUGmKsyBcf7mIJThRuw70JBiS3dmpFSaouCY8H45Q9Npwr_WF1tHtQQm5e8BzJDUYB2Mn9z3A");
-        let portNumber = 5051
-        console.log(data);
-        console.log(JSON.stringify(data, null, 4))
+        
+        let linkedAccounts = JSON.parse(localStorage.getItem("LinkedBanks"));
+        var creditToken = "";
+        var creditServerAddress = "";
+        for (var i=0 ; i < linkedAccounts.length ; i++){
+            if (linkedAccounts[i]["bankname"] == data.bankName) {
+                creditToken = JSON.parse(linkedAccounts[0]["accessToken"])['token'];
+                creditServerAddress = linkedAccounts[i]["serverAddress"];
+            }
+        }
+        console.log(creditServerAddress)
+        //console.log(data);
+        //console.log(JSON.stringify(data, null, 4))
         let accountNoCreditParam = data.accNo;
-        let accountNoDebitParam = localStorage.getItem("currentAccountNo");
+        //let accountNoDebitParam = localStorage.getItem("customerAccountId");
+        let accountNoDebitParam = 1;
         let amountParam = data.amount;
-        let url = 'http://localhost:'+portNumber+'/api/v1/transfer/debit';
+        let url = `http://${localStorage.getItem("serverAddress")}/api/v1/transfer/debit`;
+        const accessToken = localStorage.getItem("accessToken");
         let requestOptions = {
             method: "POST",
-            headers : { 'Content-type': 'application/json' , 'Authorization' : localStorage.getItem("sbiToken")},
+            headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${accessToken}`},
             body: JSON.stringify({
                 "accountNo": accountNoDebitParam,
                 "amount": amountParam                
@@ -71,7 +79,7 @@ function TransferMoney() {
             console.log(data)     
             if(!data.match("Debit Success")){
                 serverError = true;
-                submitErrors.errorMessageDebit = data;
+                submitErrors.errorMessageDebit = "Transfer Fail";
             }
         })
         .catch( (error) =>{ 
@@ -79,10 +87,10 @@ function TransferMoney() {
             submitErrors.errorMessageServer = "Failed to connect";
         })
         if(!serverError){
-            url = 'http://localhost:5051/api/v1/transfer/credit'
+            url = `http://${creditServerAddress}/api/v1/transfer/credit`;
             requestOptions = {
                 method: "POST",
-                headers : { 'Content-type': 'application/json' , 'Authorization' : localStorage.getItem("sbiToken")},
+                headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${creditToken}`},
                 body: JSON.stringify({
                     "accountNo": accountNoCreditParam,
                     "amount": amountParam                
@@ -93,7 +101,7 @@ function TransferMoney() {
             .then((data) => {        
                 if(!data.match("Credit Success")){
                     serverError = true;
-                    submitErrors.errorMessageCredit = data;
+                    submitErrors.errorMessageCredit = "Transfer Failed";
                 }
             })
             .catch( (error) =>{ 
@@ -157,16 +165,19 @@ function TransferMoney() {
                     <h2 id="money_transfer_title">Money Transfer</h2>
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <Form.Group className="mb-3" >
-                            <Form.Select>
-                                <option>Choose Destination Bank</option>
-                                <option value="1">Royal Bank of Scotland</option>
-                                <option value="2">State Bank of India</option>
-                                <option value="3">Canara Bank</option>
-                                <option value="4">ICICI Bank</option>
-                                <option value="5">HDFC Bank</option>
-                                <option value="6">Standard Chartered Bank</option>
+                            <Form.Select
+                                {...register("bankName")}
+                                onChange={(e) => setValue('bankName', e.target.value, { shouldValidate: true })}                             >
+                                <option value = "">Choose Destination Bank</option>
+                                <option value="Royal Bank of Scotland">Royal Bank of Scotland</option>
+                                <option value="State Bank of India">State Bank of India</option>
+                                <option value="Canara Bank">Canara Bank</option>
+                                <option value="ICICI Bank">ICICI Bank</option>
+                                <option value="HDFC Bank">HDFC Bank</option>
+                                <option value="Standard Chartered Bank">Standard Chartered Bank</option>
                             </Form.Select>
                         </Form.Group>
+                        <div className="invalid-feedback">{errors.bankName?.message}</div>
                         <Form.Group className="mb-3" >
                             <Form.Control class={`form-control ${errors.accNo? 'is-invalid' : ''}`} {...register('accNo')}type="text" placeholder="Bank Account Number" />
                             <div className="invalid-feedback">{errors.accNo?.message}</div>

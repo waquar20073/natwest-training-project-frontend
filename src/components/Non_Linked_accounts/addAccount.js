@@ -16,6 +16,7 @@ export default function AddAccount() {
 
   const [formErrors, setFormErrors] = React.useState({});
   const currentBankDetails = useLocation();
+  localStorage.removeItem("currentBankDetails");
   localStorage.setItem("currentBankDetails" , JSON.stringify(currentBankDetails.state));
 
     const formSchema = Yup.object().shape({
