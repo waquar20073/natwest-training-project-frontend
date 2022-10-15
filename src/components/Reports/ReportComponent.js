@@ -4,7 +4,6 @@ import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveConta
 import HeaderLogout from '../header1/headerLogout';
 import axios from "axios";
 
-
 function ReportComponent(){
     const [expenseReport, setExpenseReport] = useState({"daily":[{
           "date": "Page A",
@@ -23,7 +22,7 @@ function ReportComponent(){
           "frequency": 20
         }],"month":"month","type":"type"});
 
-    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1NjgwODkyLCJpYXQiOjE2NjU2NzcyOTJ9.newV04Tjq6k2Z9Utp-OMxxWTbn-b-mYyKn8j4D4pqZoF2MFyyJZqj4ygRmAbT6PvQxYNngAEvMa1lWQ-WZ-_8Q";
+    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1ODQxNjI0LCJpYXQiOjE2NjU3NTUyMjR9.5blSGI3h3vNYVoHU_wXUHqeWUG7irDqJY4vORCJUo3ogSmv5cpR-7DckextYgUjgozmDTEJ3hBkNHyUdgzi3lg";
     const host="http://localhost:5051/api/v1"
     const accountId = 3;
 

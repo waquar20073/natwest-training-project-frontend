@@ -25,7 +25,7 @@ export default function AddAccount() {
         password: Yup.string()
           .required('Password is mandatory')
           .min(3, 'Password must be at 3 char long'),
-       
+
       })
 
 
@@ -33,15 +33,15 @@ export default function AddAccount() {
       const { register, handleSubmit, reset, formState } = useForm(formOptions)
       const { errors } = formState
 
-      
+
       async function onSubmit(data) {
         // console.log(currentBankDetails.state)
-        console.log(currentBankDetails) 
-        console.log(JSON.stringify(data, null, 4))
+        // console.log(currentBankDetails)
+        // console.log(JSON.stringify(data, null, 4))
         // return false
         isSubmit = false;
-        submitErrors = {}; 
-        serverError = false; 
+        submitErrors = {};
+        serverError = false;
         const url = 'http://localhost:8085/api/v1/linkaccount'
         const requestOptions = {
           method: "POST",
@@ -56,9 +56,9 @@ export default function AddAccount() {
         }
         await fetch(url, requestOptions)
         .then((response) => response.json())
-          .then((data) => { 
-            console.log("Inside Data")
-            console.log(data.token)       
+          .then((data) => {
+            // console.log("Inside Data")
+            // console.log(data.token)
             if(data.token == ""){
               serverError = true;
               submitErrors.errorMessageServer = "Wrong credentials";
@@ -66,14 +66,14 @@ export default function AddAccount() {
           })
           .catch( (error) =>{
             console.log("Inside Error")
-            console.log(error)  
+            console.log(error)
             serverError = true;
             submitErrors.errorMessageServer = "Failed to connect";
           })
           setFormErrors(submitErrors);
           isSubmit = true;
           window.scrollTo({
-          top: 0, 
+          top: 0,
           behavior: 'smooth'
           });
       }
@@ -103,7 +103,7 @@ export default function AddAccount() {
                 <button type="submit"
                     class="btn btn-success btn-lg gradient-custom-4"  style={{marginBottom:"5px"}}>Add
                 </button>
-                  
+
                 </div>
         </form>
     </div>
@@ -122,7 +122,7 @@ const FormSubmitMessage = (props) =>{
       ) : (
         <div className="alert alert-danger" role="alert">
           <h4>Error! while adding account</h4>
-          <ListOfErrors errors= {props.formErrors} /> 
+          <ListOfErrors errors= {props.formErrors} />
         </div>
       )}
     </div>
@@ -140,7 +140,7 @@ const ListOfErrors = (props) => {
   });
   }
   return (
-    
+
       <ul>
           {
               arr.map(error => {
@@ -150,4 +150,3 @@ const ListOfErrors = (props) => {
       </ul>
   )
 }
-

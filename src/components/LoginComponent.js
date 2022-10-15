@@ -13,8 +13,8 @@ var loginErrors = {};
 var accountId = -1;
 var ownerName = "";
 
-function  LoginComponent({setToken}){ 
-  
+function  LoginComponent({setToken}){
+
   const [formErrors, setFormErrors] = React.useState({});
 
   // const [loginForm, setLoginForm] = React.useState({
@@ -31,7 +31,7 @@ function  LoginComponent({setToken}){
   //   })
   // }
 
-  
+
   // function handleFormChange(e) {
   //   setLoginForm({
   //       ...loginForm,
@@ -40,38 +40,38 @@ function  LoginComponent({setToken}){
   //   console.log(loginForm)
   // }
 
-  // function handleFormSubmit(e) { 
-  //   console.log(loginForm) 
-  //   setToken({"token" : "test123"});  
+  // function handleFormSubmit(e) {
+  //   console.log(loginForm)
+  //   setToken({"token" : "test123"});
   //   fetch(url, requestOptions)
   //   .then((response) => response.text())
   //   .then((data) => {
   //     console.log(data)
   //   })
-    
+
   // }
-  
+
 
 
   const formSchema = Yup.object().shape({
-    
+
     username: Yup.string()
       .required('User Name is mandatory')
       .min(4,'Username must be at 4 char long'),
     password: Yup.string()
       .required('Password is mandatory')
       .min(8, 'Password must be at 8 char long'),
-    
-                       
+
+
   })
-  
+
   const formOptions = { resolver: yupResolver(formSchema) }
   const { register, handleSubmit, reset, formState } = useForm(formOptions)
   const { errors } = formState
 
 
   async function onSubmit(data) {
-    console.log(JSON.stringify(data, null, 4))
+    // console.log(JSON.stringify(data, null, 4))
     const url = 'http://localhost:8085/api/v1/login'
     const requestOptions = {
       method: "POST",
@@ -82,39 +82,39 @@ function  LoginComponent({setToken}){
     accountId = -1;
     ownerName ="";
     isSubmit = false;
-    loginErrors = {}; 
-      serverError = false;    
+    loginErrors = {};
+      serverError = false;
       await fetch(url, requestOptions)
       .then((response) => response.json())
-      .then((data) => { 
-        console.log(data)       
+      .then((data) => {
+        console.log(data)
         if(!data.status.match("authenticated")){
           serverError = true;
           loginErrors.errorMessageServer = data.status;
         }else{
           accountId = data.accountId;
           ownerName = data.ownerName;
-        } 
+        }
       })
-      .catch( (error) =>{ 
+      .catch( (error) =>{
         serverError = true;
         loginErrors.errorMessageServer = "Failed to connect";
       })
-      if(!serverError){   
+      if(!serverError){
         console.log("Login Success ")
-        setToken({"token" : "Login Success"                
-                  }, accountId, ownerName); 
-      }    
-    
-    isSubmit = true; 
+        setToken({"token" : "Login Success"
+                  }, accountId, ownerName);
+      }
+
+    isSubmit = true;
     setFormErrors(loginErrors);
     window.scrollTo({
-      top: 0, 
+      top: 0,
       behavior: 'smooth'
     });
-    
 
-  
+
+
   }
 
 
@@ -124,64 +124,64 @@ function  LoginComponent({setToken}){
     <div className='Login-component'>
     <Header/>
     { isSubmit ? <FormSubmitMessage formErrors = {formErrors}/>: null }
-    
+
     <div id="loginform" onSubmit={handleSubmit(onSubmit)}>
-      
+
         <form>
           <h2 id="headerTitle">Login</h2>
           <div className="login_row1">
             <label>Username</label>
             <input type="text" name="userName" class={`form-control ${errors.username? 'is-invalid' : ''}`} {...register('username')} placeholder="Enter your username" />
             <div className="invalid-feedback">{errors.username?.message}</div>
-          </div> 
-          <div className="login_row1">  
+          </div>
+          <div className="login_row1">
             <label>Password</label>
             <input type="password" name="password" placeholder="Enter your password" class={`form-control ${errors.password? 'is-invalid' : ''}`} {...register('password')} />
             <div className="invalid-feedback">{errors.password?.message}</div>
-          </div> 
-          
-          <div id="button" className="login_row1">
-            
-              <button type="submit"  value="Login" >Log in</button>
-            
           </div>
-          
-           
-         
+
+          <div id="button" className="login_row1">
+
+              <button type="submit"  value="Login" >Log in</button>
+
+          </div>
+
+
+
           <hr></hr>
           <div class="login_det">
-            <div> 
+            <div>
                 <Link to="/reset" style={{textDecoration:"none"}}>
                   <span style={{color:"black",fontSize:"18px",fontFamily:"Sans-serif"}}>Forgot the password ?</span>
-                  <span style={{color:"rgb(58, 12, 104)",fontSize:"18px", fontWeight:"bold"}}> Reset</span> 
+                  <span style={{color:"rgb(58, 12, 104)",fontSize:"18px", fontWeight:"bold"}}> Reset</span>
                 </Link>
             </div>
-            <div> 
-                  
+            <div>
+
                 <Link to="/signup" style={{textDecoration:"none"}}>
                   <span style={{color:"black",fontSize:"18px",fontFamily:"Sans-serif"}}>New User ?</span>
                   <span style={{color:"rgb(58, 12, 104)",fontSize:"18px",fontWeight:"bold"}}> Signup</span>
 
                 </Link>
-                
+
               </div>
           </div>
-            
-  
-          
-          
-        </form> 
-       
-          
-          
-           
-    </div> 
-    
+
+
+
+
+        </form>
+
+
+
+
     </div>
-    
+
+    </div>
+
   )
 
- 
+
 }
 LoginComponent.propTypes = {
   setToken: PropTypes.func.isRequired
@@ -201,7 +201,7 @@ const FormSubmitMessage = (props) =>{
       ) : (
         <div className="alert alert-danger" role="alert">
           <h4>Error! while creating account</h4>
-          <ListOfErrors errors= {props.formErrors} /> 
+          <ListOfErrors errors= {props.formErrors} />
         </div>
       )}
     </div>
@@ -219,7 +219,7 @@ const ListOfErrors = (props) => {
   });
   }
   return (
-    
+
       <ul>
           {
               arr.map(error => {
@@ -231,5 +231,3 @@ const ListOfErrors = (props) => {
 }
 
 export default LoginComponent;
-
-

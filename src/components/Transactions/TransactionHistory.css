@@ -1,7 +1,7 @@
 #sidebar2{
     margin-left: 40px;
     margin-right: 30px;
-    margin-bottom: 32px;
+    margin-bottom: 30px;
 }
 #sidebar2 ul li a span:hover{
    color:black;
@@ -18,7 +18,7 @@
     margin:0 auto 40px;
     line-height: 60px;
     position: relative;
-    color:#555;  
+    color:#555;
     font-size: 30px;
 }
 #transaction_title::after{
@@ -31,4 +31,16 @@
     bottom: 0;
     left:50%;
     transform: translateX(-50%);
+}
+.data_not_found{
+  text-align: center;
+}
+.button{
+  margin: 10px 10px;
+}
+.neg_money{
+  color:red;
+}
+.pos_money{
+  color:green;
 }

@@ -22,7 +22,7 @@ function Accounts(){
 
 
   useEffect(() => {
-    fetch(url, requestOptions).then(response => response.json()).then(     
+    fetch(url, requestOptions).then(response => response.json()).then(
       (result) => {
         setaAcountsList(result)
         localStorage.setItem("LinkedBanks" , JSON.stringify(result));
@@ -37,7 +37,7 @@ function Accounts(){
 
 
 
-    // //Dummy data 
+    // //Dummy data
     // const data = [
     //     {
     //       id:1,
@@ -58,10 +58,10 @@ function Accounts(){
     //       img : "hdfc.jpg"
     //     },
     //     {
-    //       id : 4,  
+    //       id : 4,
     //       bankname: "ICICI Bank",
     //       value: "false",
-    //       img :  "icici.png" 
+    //       img :  "icici.png"
     //     },
     //     {
     //       id : 5,
@@ -76,8 +76,8 @@ function Accounts(){
     //       img : "standard-chartered.png"
     //     }
     //   ];
-    
-      //2 Different Lists for linked and non linked accounts  
+
+      //2 Different Lists for linked and non linked accounts
       const linked_accounts = [];
       const non_linked_accounts = [];
 
@@ -90,22 +90,36 @@ function Accounts(){
             non_linked_accounts.push(data);
         }
       })
- 
+
 
       //Mapping card and button from bankcard.js
         const cards = linked_accounts.map((item) => {
+          console.log(item);
             return(
             <div id="card_style" className='text-center'>
             <Bankcard key={item.id} {...item} />
-            <button className="enter" onClick={()=>{navigate("/bankDetails", {state:item})}}>Enter</button>
+            <button className="enter" onClick={()=>{
+              navigate("/bankDetails", {state:item});
+              localStorage.removeItem("bankname");
+              localStorage.removeItem("accessToken");
+              localStorage.removeItem("serverAddress");
+              localStorage.removeItem("customerAccountId");
+              localStorage.setItem("bankname" , item.bankname);
+              localStorage.setItem("accessToken" , JSON.parse(item.accessToken).token);
+              localStorage.setItem("serverAddress" , item.serverAddress);
+              localStorage.setItem("customerAccountId" , item.bankAccountId);
+          }}>Enter</button>
             </div>)
         });
-        
+
         const cards1 = non_linked_accounts.map((item) => {
             return (
             <div id="card_style" className='text-center'>
             <Bankcard key={item.id} {...item} />
-            <button className="add" onClick={()=>{navigate("/addAccount", {state:item})}}>Add</button>
+            <button className="add" onClick={()=>{
+              navigate("/addAccount", {state:item});
+
+          }}>Add</button>
             </div>
             )
       });
@@ -124,30 +138,30 @@ function Accounts(){
             navigate("/addAccount");
         }
      }
-      
-    
-        
+
+
+
 
         return (
-         
+
         <div className="acc">
-            <HeaderLogout/> 
+            <HeaderLogout/>
             <div className='container'>
                 <div className="banks" >
                     <div className="row">
-                        
+
                         <div className="col-lg-6">
                             <h3 className="l-nl-banks">Linked Accounts</h3>
-                            {cards}      
+                            {cards}
                         </div>
                         <div className="col-lg-6">
-                            <h3 className="l-nl-banks">Non Linked Accounts</h3>   
-                            {cards1} 
-                             
+                            <h3 className="l-nl-banks">Non Linked Accounts</h3>
+                            {cards1}
+
                         </div>
-                        
+
                     </div>
-                    
+
                 </div>
 
 
@@ -156,5 +170,5 @@ function Accounts(){
         </div>
           );
         }
-                          
+
 export default Accounts;
