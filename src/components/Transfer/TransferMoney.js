@@ -53,7 +53,7 @@ function TransferMoney() {
                 creditServerAddress = linkedAccounts[i]["serverAddress"];
             }
         }
-        console.log(creditServerAddress)
+        //console.log(creditServerAddress)
         //console.log(data);
         //console.log(JSON.stringify(data, null, 4))
         let accountNoCreditParam = data.accNo;
@@ -76,7 +76,7 @@ function TransferMoney() {
         await fetch(url, requestOptions)
         .then((response) => response.text())
         .then((data) => {   
-            console.log(data)     
+            //console.log(data)     
             if(!data.match("Debit Success")){
                 serverError = true;
                 submitErrors.errorMessageDebit = "Transfer Fail";
@@ -108,7 +108,25 @@ function TransferMoney() {
                 serverError = true;
                 submitErrors.errorMessageServer = "Failed to connect";
             }) 
-        }            
+        }
+        const requestOptions2 = {
+            method: "POST",
+            headers : { 'Content-type': 'application/json' },
+            body: JSON.stringify({
+                "author": localStorage.getItem("accountId"),
+                "sourceAccountId" : accountNoDebitParam,
+                "sourceBankName" : localStorage.getItem("bankname"),
+                "destinationAccontId": accountNoDebitParam,
+                "destinationBankName":  data.bankName,
+                "amount":  amountParam              
+            })
+        }
+        fetch("http://localhost:8086/api/v1/record", requestOptions2)
+            .then((response) => response.text())
+            .then((data) => {         
+            })
+            .catch( (error) =>{  
+            })             
         setFormErrors(submitErrors);
         isSubmit = true;
         window.scrollTo({
