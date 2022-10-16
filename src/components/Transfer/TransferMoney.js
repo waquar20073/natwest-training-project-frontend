@@ -212,12 +212,12 @@ function TransferMoney() {
                             <Form.Control class={`form-control ${errors.amount? 'is-invalid' : ''}`} {...register('amount')} type="text" placeholder="Amount" />
                             <div className="invalid-feedback">{errors.amount?.message}</div>
                         </Form.Group>
-                        <h6 id="transactions_charges">Transaction Charges : 15/-</h6>
+                        <h6 id="transactions_charges">Transaction Charges : 0/-</h6>
                         
                         <button type='submit' id="transfer_button">Transfer</button>
                         
                         
-                        <br></br>
+                        <br></br><br></br><br></br><br></br><br></br><br></br>
                     </Form>
                     </div>
                     </Col>
