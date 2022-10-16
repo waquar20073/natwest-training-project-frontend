@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "./addAccount.css";
 import { useState } from "react";
 import { useForm } from 'react-hook-form'
@@ -13,6 +13,11 @@ var isSubmit = false;
 var submitErrors = {};
 
 export default function AddAccount() {
+  useEffect(() => {
+    serverError = false;
+    isSubmit = false;
+    submitErrors = {};
+  });
 
   const [formErrors, setFormErrors] = React.useState({});
   const currentBankDetails = useLocation();

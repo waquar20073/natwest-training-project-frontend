@@ -104,10 +104,12 @@ function Accounts(){
               localStorage.removeItem("accessToken");
               localStorage.removeItem("serverAddress");
               localStorage.removeItem("customerAccountId");
+              localStorage.removeItem("linkedAccounts");
               localStorage.setItem("bankname" , item.bankname);
               localStorage.setItem("accessToken" , JSON.parse(item.accessToken).token);
               localStorage.setItem("serverAddress" , item.serverAddress);
               localStorage.setItem("customerAccountId" , item.bankAccountId);
+              localStorage.setItem("linkedAccounts" , JSON.stringify(linked_accounts));
           }}>Enter</button>
             </div>)
         });

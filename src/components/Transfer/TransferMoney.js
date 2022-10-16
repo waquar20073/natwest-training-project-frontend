@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import "./TransferMoney.css";
 import { Link } from "react-router-dom";
 import { Row , Col} from 'react-bootstrap';
@@ -14,6 +14,10 @@ var submitErrors = {};
 var linkedBankError = false;
 
 function TransferMoney() {
+    
+    useEffect(() => {
+        isSubmit = false;   
+    });
 
     const [formErrors, setFormErrors] = React.useState({});
 
@@ -59,23 +63,23 @@ function TransferMoney() {
                  }
             }
         }
-        if(creditToken == ""){
-            //console.log(true)
-            linkedBankError = true;
-            serverError = true;
-            submitErrors.errorMessageServer = "Transfer to only linked banks is allowed";
-        }
+        // if(creditToken == ""){
+        //     linkedBankError = true;
+        //     serverError = true;
+        //     isSubmit = true;
+        //     submitErrors.errorMessageServer2 = "Transfer to only linked banks is allowed";
+        // }
         //console.log(creditServerAddress)
         //console.log(data);
         //console.log(JSON.stringify(data, null, 4))
-        if(!linkedBankError){
+        
             let accountNoCreditParam = data.accNo;
             let accountNoDebitParam = localStorage.getItem("customerAccountId");
             //let accountNoDebitParam = 1;
             let amountParam = data.amount;
-            let url = `http://${localStorage.getItem("serverAddress")}/api/v1/transfer/debit`;
+            const urlD = `http://${localStorage.getItem("serverAddress")}/api/v1/transfer/debit`;
             const accessToken = localStorage.getItem("accessToken");
-            let requestOptions = {
+            const requestOptionsD = {
                 method: "POST",
                 headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${accessToken}`},
                 body: JSON.stringify({
@@ -84,14 +88,45 @@ function TransferMoney() {
                 })
             }
             
-            await fetch(url, requestOptions)
+            await fetch(urlD, requestOptionsD)
             .then((response) => response.text())
-            .then((data) => {   
-                //console.log(data)     
+            .then((data) => {        
                 if(!data.match("Debit Success")){
                     serverError = true;
                     submitErrors.errorMessageDebit = "Transfer Fail";
                 }
+                
+            })
+            .catch( (error) =>{ 
+                serverError = true;
+                submitErrors.errorMessageServer = "Failed to connect";
+            })
+            if(!serverError){
+                const urlC = `http://${creditServerAddress}/api/v1/transfer/credit`;
+                const requestOptionsC = {
+                    method: "POST",
+                    headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${creditToken}`},
+                    body: JSON.stringify({
+                        "accountNo": accountNoCreditParam,
+                        "amount": amountParam                
+                    })
+                }
+                await fetch(urlC, requestOptionsC)
+                .then((response) => response.text())
+                .then((data) => {        
+                    if(!data.match("Credit Success")){
+                        serverError = true;
+                        submitErrors.errorMessageCredit = "Transfer Failed, You Entered Wrong Account Number";
+                        fetch(`http://${localStorage.getItem("serverAddress")}/api/v1/transfer/credit`, requestOptionsD)
+                    }
+                    
+                })
+                .catch( (error) =>{ 
+                    serverError = true;
+                    submitErrors.errorMessageServer = "Failed to connect";
+                }) 
+            }
+            if(!serverError){
                 const urlTransactionsDebit = `http://${localStorage.getItem("serverAddress")}/api/v1/transactions/newtransaction`;
                 const requestOptionsDebit = {
                     method: "POST",
@@ -104,71 +139,46 @@ function TransferMoney() {
                     })
                 }
                 fetch(urlTransactionsDebit, requestOptionsDebit)
-            })
-            .catch( (error) =>{ 
-                serverError = true;
-                submitErrors.errorMessageServer = "Failed to connect";
-            })
-            if(!serverError){
-                url = `http://${creditServerAddress}/api/v1/transfer/credit`;
-                requestOptions = {
+                const urlTransactionsCredit = `http://${creditServerAddress}/api/v1/transactions/newtransaction`;
+                const requestOptionsCredit = {
                     method: "POST",
                     headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${creditToken}`},
                     body: JSON.stringify({
-                        "accountNo": accountNoCreditParam,
-                        "amount": amountParam                
+                        "transactionWith": creditBankName,
+                        "accountId": accountNoCreditParam,
+                        "type":"credit",
+                        "amount": amountParam             
                     })
                 }
-                await fetch(url, requestOptions)
-                .then((response) => response.text())
-                .then((data) => {        
-                    if(!data.match("Credit Success")){
-                        serverError = true;
-                        submitErrors.errorMessageCredit = "Transfer Failed";
-                    }
-                    console.log(creditToken)
-                    const urlTransactionsCredit = `http://${creditServerAddress}/api/v1/transactions/newtransaction`;
-                    const requestOptionsCredit = {
-                        method: "POST",
-                        headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${creditToken}`},
-                        body: JSON.stringify({
-                            "transactionWith": creditBankName,
-                            "accountId": accountNoCreditParam,
-                            "type":"credit",
-                            "amount": amountParam             
-                        })
-                    }
-                    fetch(urlTransactionsCredit, requestOptionsCredit)
-                })
-                .catch( (error) =>{ 
-                    serverError = true;
-                    submitErrors.errorMessageServer = "Failed to connect";
-                }) 
-            }
-            const requestOptions2 = {
-                method: "POST",
-                headers : { 'Content-type': 'application/json' },
-                body: JSON.stringify({
-                    "author": localStorage.getItem("accountId"),
-                    "sourceAccountId" : accountNoDebitParam,
-                    "sourceBankName" : localStorage.getItem("bankname"),
-                    "destinationAccontId": accountNoDebitParam,
-                    "destinationBankName":  data.bankName,
-                    "amount":  amountParam              
-                })
+
+                fetch(urlTransactionsCredit, requestOptionsCredit)
+
+                const requestOptions2 = {
+                    method: "POST",
+                    headers : { 'Content-type': 'application/json' },
+                    body: JSON.stringify({
+                        "author": localStorage.getItem("accountId"),
+                        "sourceAccountId" : accountNoDebitParam,
+                        "sourceBankName" : localStorage.getItem("bankname"),
+                        "destinationAccontId": accountNoDebitParam,
+                        "destinationBankName":  data.bankName,
+                        "amount":  amountParam              
+                    })
+                }
+                
+                
+                fetch("http://localhost:8085/api/v1/record", requestOptions2)
+                    .then((response) => response.text())
+                    .then((data) => {         
+                    })
+                    .catch( (error) =>{  
+                    })
             }
             
-            
-            fetch("http://localhost:8085/api/v1/record", requestOptions2)
-                .then((response) => response.text())
-                .then((data) => {         
-                })
-                .catch( (error) =>{  
-                })
-        } 
-                        
-        setFormErrors(submitErrors);
-        isSubmit = true;
+        
+        
+        isSubmit = true;  
+        setFormErrors(submitErrors);     
         window.scrollTo({
         top: 0, 
         behavior: 'smooth'
@@ -225,14 +235,18 @@ function TransferMoney() {
                         <Form.Group className="mb-3" >
                             <Form.Select
                                 {...register("bankName")}
-                                onChange={(e) => setValue('bankName', e.target.value, { shouldValidate: true })}                             >
-                                <option value = "">Choose Destination Bank</option>
-                                <option value="Royal Bank of Scotland">Royal Bank of Scotland</option>
+                                onChange={(e) => setValue('bankName', e.target.value, { shouldValidate: true })}  
+                                                           >
+                                <option value = "">Choose Destination Bank</option>                                  
+                                {JSON.parse(localStorage.getItem("linkedAccounts")).map((e, key) => {  
+                                    return <option key={key} value={e.bankname}>{e.bankname}</option>;  
+                                    })}                             
+                                {/* <option value="Royal Bank of Scotland">Royal Bank of Scotland</option>
                                 <option value="State Bank of India">State Bank of India</option>
                                 <option value="Canara Bank">Canara Bank</option>
                                 <option value="ICICI Bank">ICICI Bank</option>
                                 <option value="HDFC Bank">HDFC Bank</option>
-                                <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+                                <option value="Standard Chartered Bank">Standard Chartered Bank</option> */}
                             </Form.Select>
                         </Form.Group>
                         <div className="invalid-feedback">{errors.bankName?.message}</div>
@@ -252,7 +266,8 @@ function TransferMoney() {
                             <Form.Control class={`form-control ${errors.amount? 'is-invalid' : ''}`} {...register('amount')} type="text" placeholder="Amount" />
                             <div className="invalid-feedback">{errors.amount?.message}</div>
                         </Form.Group>
-                        <h6 id="transactions_charges">Transaction Charges : 0/-</h6>
+                        <h6 id="transactions_charges">Note: Transfer to only linked banks is allowed</h6>
+                        <h6 id="transactions_charges">Transaction Charges : 0/</h6>
                         
                         <button type='submit' id="transfer_button">Transfer</button>
                         
