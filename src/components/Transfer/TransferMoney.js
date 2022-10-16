@@ -11,6 +11,7 @@ import * as Yup from 'yup'
 var serverError = false;
 var isSubmit = false;
 var submitErrors = {};
+var linkedBankError = false;
 
 function TransferMoney() {
 
@@ -42,91 +43,102 @@ function TransferMoney() {
    async function onSubmit(data) {
         // console.log(JSON.stringify(data, null, 4))
         // return false
-
-        
+        isSubmit = false;
+        submitErrors = {}; 
+        serverError = false; 
+        linkedBankError = false;
         let linkedAccounts = JSON.parse(localStorage.getItem("LinkedBanks"));
         var creditToken = "";
         var creditServerAddress = "";
         for (var i=0 ; i < linkedAccounts.length ; i++){
             if (linkedAccounts[i]["bankname"] == data.bankName) {
-                creditToken = JSON.parse(linkedAccounts[0]["accessToken"])['token'];
-                creditServerAddress = linkedAccounts[i]["serverAddress"];
+                if(linkedAccounts[i]["accessToken"]!=""){
+                    creditToken = JSON.parse(linkedAccounts[i]["accessToken"])['token'];
+                    creditServerAddress = linkedAccounts[i]["serverAddress"];
+                 }
             }
+        }
+        if(creditToken == ""){
+            //console.log(true)
+            linkedBankError = true;
+            serverError = true;
+            submitErrors.errorMessageServer = "Transfer to only linked banks is allowed";
         }
         //console.log(creditServerAddress)
         //console.log(data);
         //console.log(JSON.stringify(data, null, 4))
-        let accountNoCreditParam = data.accNo;
-        //let accountNoDebitParam = localStorage.getItem("customerAccountId");
-        let accountNoDebitParam = 1;
-        let amountParam = data.amount;
-        let url = `http://${localStorage.getItem("serverAddress")}/api/v1/transfer/debit`;
-        const accessToken = localStorage.getItem("accessToken");
-        let requestOptions = {
-            method: "POST",
-            headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${accessToken}`},
-            body: JSON.stringify({
-                "accountNo": accountNoDebitParam,
-                "amount": amountParam                
-              })
-        }
-        isSubmit = false;
-        submitErrors = {}; 
-        serverError = false;    
-        await fetch(url, requestOptions)
-        .then((response) => response.text())
-        .then((data) => {   
-            //console.log(data)     
-            if(!data.match("Debit Success")){
-                serverError = true;
-                submitErrors.errorMessageDebit = "Transfer Fail";
-            }
-        })
-        .catch( (error) =>{ 
-            serverError = true;
-            submitErrors.errorMessageServer = "Failed to connect";
-        })
-        if(!serverError){
-            url = `http://${creditServerAddress}/api/v1/transfer/credit`;
-            requestOptions = {
+        if(!linkedBankError){
+            let accountNoCreditParam = data.accNo;
+            let accountNoDebitParam = localStorage.getItem("customerAccountId");
+            //let accountNoDebitParam = 1;
+            let amountParam = data.amount;
+            let url = `http://${localStorage.getItem("serverAddress")}/api/v1/transfer/debit`;
+            const accessToken = localStorage.getItem("accessToken");
+            let requestOptions = {
                 method: "POST",
-                headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${creditToken}`},
+                headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${accessToken}`},
                 body: JSON.stringify({
-                    "accountNo": accountNoCreditParam,
+                    "accountNo": accountNoDebitParam,
                     "amount": amountParam                
                 })
             }
+            
             await fetch(url, requestOptions)
             .then((response) => response.text())
-            .then((data) => {        
-                if(!data.match("Credit Success")){
+            .then((data) => {   
+                //console.log(data)     
+                if(!data.match("Debit Success")){
                     serverError = true;
-                    submitErrors.errorMessageCredit = "Transfer Failed";
+                    submitErrors.errorMessageDebit = "Transfer Fail";
                 }
             })
             .catch( (error) =>{ 
                 serverError = true;
                 submitErrors.errorMessageServer = "Failed to connect";
-            }) 
-        }
-        const requestOptions2 = {
-            method: "POST",
-            headers : { 'Content-type': 'application/json' },
-            body: JSON.stringify({
-                "author": localStorage.getItem("accountId"),
-                "sourceAccountId" : accountNoDebitParam,
-                "sourceBankName" : localStorage.getItem("bankname"),
-                "destinationAccontId": accountNoDebitParam,
-                "destinationBankName":  data.bankName,
-                "amount":  amountParam              
             })
-        }
-        fetch("http://localhost:8086/api/v1/record", requestOptions2)
-            .then((response) => response.text())
-            .then((data) => {         
-            })
-            .catch( (error) =>{  
-            })             
+            if(!serverError){
+                url = `http://${creditServerAddress}/api/v1/transfer/credit`;
+                requestOptions = {
+                    method: "POST",
+                    headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${creditToken}`},
+                    body: JSON.stringify({
+                        "accountNo": accountNoCreditParam,
+                        "amount": amountParam                
+                    })
+                }
+                await fetch(url, requestOptions)
+                .then((response) => response.text())
+                .then((data) => {        
+                    if(!data.match("Credit Success")){
+                        serverError = true;
+                        submitErrors.errorMessageCredit = "Transfer Failed";
+                    }
+                })
+                .catch( (error) =>{ 
+                    serverError = true;
+                    submitErrors.errorMessageServer = "Failed to connect";
+                }) 
+            }
+            const requestOptions2 = {
+                method: "POST",
+                headers : { 'Content-type': 'application/json' },
+                body: JSON.stringify({
+                    "author": localStorage.getItem("accountId"),
+                    "sourceAccountId" : accountNoDebitParam,
+                    "sourceBankName" : localStorage.getItem("bankname"),
+                    "destinationAccontId": accountNoDebitParam,
+                    "destinationBankName":  data.bankName,
+                    "amount":  amountParam              
+                })
+            }
+            fetch("http://localhost:8085/api/v1/record", requestOptions2)
+                .then((response) => response.text())
+                .then((data) => {         
+                })
+                .catch( (error) =>{  
+                })
+        } 
+                        
         setFormErrors(submitErrors);
         isSubmit = true;
         window.scrollTo({
