@@ -5,7 +5,7 @@ class footer extends Component {
         return (
              
             <div id="footer">
-                <p>© 2021 Copyright: NatwestGroup.com</p>
+                <p>© 2022 Copyright: Natwest Group</p>
             </div>
         );
     }
