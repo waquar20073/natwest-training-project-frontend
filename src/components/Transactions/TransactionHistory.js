@@ -216,6 +216,7 @@ function TransactionHistory() {
                     <h5>Features</h5>
                   </a>
                 </li>
+                <Link to="/profile" style={{textDecoration:"none"}}>
                 <li class="nav-item mb-2">
                   <a class="nav-link text-secondary" href="#">
                     <span className="ml-3">
@@ -232,6 +233,7 @@ function TransactionHistory() {
                     </span>
                   </a>
                 </li>
+                </Link>
                 <Link to="/account" style={{ textDecoration: "none" }}>
                   <li class="nav-item mb-2">
                     <a class="nav-link text-secondary" href="#">
