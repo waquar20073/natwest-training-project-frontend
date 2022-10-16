@@ -43,6 +43,7 @@ function TransferMoney() {
    async function onSubmit(data) {
         // console.log(JSON.stringify(data, null, 4))
         // return false
+        let creditBankName = data.bankName
         isSubmit = false;
         submitErrors = {}; 
         serverError = false; 
@@ -91,6 +92,18 @@ function TransferMoney() {
                     serverError = true;
                     submitErrors.errorMessageDebit = "Transfer Fail";
                 }
+                const urlTransactionsDebit = `http://${localStorage.getItem("serverAddress")}/api/v1/transactions/newtransaction`;
+                const requestOptionsDebit = {
+                    method: "POST",
+                    headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${accessToken}`},
+                    body: JSON.stringify({
+                        "transactionWith": localStorage.getItem("bankname"),
+                        "accountId": accountNoDebitParam,
+                        "type":"debit",
+                        "amount": amountParam             
+                    })
+                }
+                fetch(urlTransactionsDebit, requestOptionsDebit)
             })
             .catch( (error) =>{ 
                 serverError = true;
@@ -113,6 +126,19 @@ function TransferMoney() {
                         serverError = true;
                         submitErrors.errorMessageCredit = "Transfer Failed";
                     }
+                    console.log(creditToken)
+                    const urlTransactionsCredit = `http://${creditServerAddress}/api/v1/transactions/newtransaction`;
+                    const requestOptionsCredit = {
+                        method: "POST",
+                        headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${creditToken}`},
+                        body: JSON.stringify({
+                            "transactionWith": creditBankName,
+                            "accountId": accountNoCreditParam,
+                            "type":"credit",
+                            "amount": amountParam             
+                        })
+                    }
+                    fetch(urlTransactionsCredit, requestOptionsCredit)
                 })
                 .catch( (error) =>{ 
                     serverError = true;
@@ -131,6 +157,8 @@ function TransferMoney() {
                     "amount":  amountParam              
                 })
             }
+            
+            
             fetch("http://localhost:8085/api/v1/record", requestOptions2)
                 .then((response) => response.text())
                 .then((data) => {         
