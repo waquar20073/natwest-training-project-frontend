@@ -1,0 +1,60 @@
+.navbar{
+    background-color: rgb(67, 7, 102);
+    padding: 5px;
+}
+
+#login_icon{
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    margin-bottom: 3px;
+
+}
+#register_icon{
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+    margin-bottom: 3px;
+}
+#home_icon{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    margin-bottom: 4px;
+}
+
+
+#logo{
+    width:140px;
+    height:45px;
+}
+.login1{
+    position: absolute;
+    right:20vw;
+}
+.register_title{
+    position: absolute;
+    right:10vw;
+}
+
+
+#nav-links{
+    color:white;
+    font-size: 18px;
+    margin-left: 30px;
+}
+
+
+@media screen and (max-width: 430px) {
+    .login1{
+        position: absolute;
+        left: 18px;
+        margin-top: 40px;
+    }
+    .register_title{
+        position: relative;
+        left: 0px;
+        margin-top: 50px;
+        margin-bottom: 10px;
+    }
+}
