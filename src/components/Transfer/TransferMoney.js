@@ -7,11 +7,13 @@ import HeaderLogout from '../header1/headerLogout';
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
+import axios from "axios";
 
 var serverError = false;
 var isSubmit = false;
 var submitErrors = {};
 var linkedBankError = false;
+var insufficientBalance =false;
 
 function TransferMoney() {
     
@@ -48,13 +50,35 @@ function TransferMoney() {
         // console.log(JSON.stringify(data, null, 4))
         // return false
         let creditBankName = data.bankName
+        insufficientBalance =false;
         isSubmit = false;
         submitErrors = {}; 
         serverError = false; 
         linkedBankError = false;
         let linkedAccounts = JSON.parse(localStorage.getItem("LinkedBanks"));
+        let accountNoDebitParam = localStorage.getItem("customerAccountId");
         var creditToken = "";
         var creditServerAddress = "";
+        const accessToken = localStorage.getItem("accessToken");
+        let amountParam = data.amount;
+        const host=`http://${localStorage.getItem("serverAddress")}/api/v1`;
+        const json = `{"accountId":${accountNoDebitParam} }`;
+        const obj = JSON.parse(json);
+        await axios.post(`${host}/accounts/balance`, obj, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
+            }
+          }).then((reponse)=> {
+             if(reponse.data < amountParam ){
+                serverError =true;
+                insufficientBalance = true;
+                submitErrors.errorMessageDebit = "Insufficient Balance";
+             }
+          }).catch((err)=>{
+            console.error(err);
+          });
+        if(!insufficientBalance){
         for (var i=0 ; i < linkedAccounts.length ; i++){
             if (linkedAccounts[i]["bankname"] == data.bankName) {
                 if(linkedAccounts[i]["accessToken"]!=""){
@@ -74,11 +98,11 @@ function TransferMoney() {
         //console.log(JSON.stringify(data, null, 4))
         
             let accountNoCreditParam = data.accNo;
-            let accountNoDebitParam = localStorage.getItem("customerAccountId");
+           
             //let accountNoDebitParam = 1;
-            let amountParam = data.amount;
+            
             const urlD = `http://${localStorage.getItem("serverAddress")}/api/v1/transfer/debit`;
-            const accessToken = localStorage.getItem("accessToken");
+            
             const requestOptionsD = {
                 method: "POST",
                 headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${accessToken}`},
@@ -176,7 +200,7 @@ function TransferMoney() {
             }
             
         
-        
+        }
         isSubmit = true;  
         setFormErrors(submitErrors);     
         window.scrollTo({
