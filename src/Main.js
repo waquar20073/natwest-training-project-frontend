@@ -62,7 +62,13 @@ function Main()  {
                   <Route path='/account' element={<Accounts />}/>
                   <Route path='/transfer' element={<TransferMoney />}/>
                   <Route path='/transactions' element={<TransactionHistory />}/>
+<<<<<<< HEAD
                   <Route path='/reports' element={<ReportComponent/>}/>
+=======
+                  
+                  <Route path='/reports' element={<ReportComponent/>}/>
+      
+>>>>>>> 73ea763 (Sidebar placed)
                   <Route path='/profile' element={<MyProfile/>}/>
                   <Route path='/addAccount' element={<AddAccount/>}/>
                   <Route path='*' element={<Accounts/>} />

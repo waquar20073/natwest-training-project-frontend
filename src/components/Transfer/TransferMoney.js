@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import HeaderLogout from '../header1/headerLogout';
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import Sidebar from '../Sidebar/sidebar';
 import * as Yup from 'yup'
 import Sidebar from '../Sidebar/sidebar';
 
@@ -119,8 +120,13 @@ function TransferMoney() {
             <div class="col main pt-1 mt-1">
                 <Row id="transfer_row">
                     <Col lg={3}>
+<<<<<<< HEAD
                         <Sidebar/>
                     </Col >
+=======
+                       <Sidebar/>
+                    </Col>
+>>>>>>> 73ea763 (Sidebar placed)
 
                
 

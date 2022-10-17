@@ -55,11 +55,19 @@ class MyProfile extends Component {
                                 <td >13-05-1998</td>
                                 </tr>
                                 <tr>
+<<<<<<< HEAD
                                 <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Age</td>
                                 <td >24</td>
                                 </tr>
                                 <tr>
                                 <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Account No</td>
+=======
+                                <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Username</td>
+                                <td >24</td>
+                                </tr>
+                                <tr>
+                                <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Email</td>
+>>>>>>> 73ea763 (Sidebar placed)
                                 <td>9456819952</td>
                                 </tr>
                                 <tr>

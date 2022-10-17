@@ -4,6 +4,10 @@ import { Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
+<<<<<<< HEAD
+=======
+import HeaderLogout from "../header1/headerLogout";
+>>>>>>> 73ea763 (Sidebar placed)
 import Sidebar from "../Sidebar/sidebar";
 
 function TransactionHistory() {

@@ -93,6 +93,7 @@ function ReportComponent(){
 
         return (
 
+<<<<<<< HEAD
             <div className='reports'>
                 <HeaderLogout/>
                 
@@ -164,6 +165,79 @@ function ReportComponent(){
                 
             </div>
           
+=======
+          <div className='reports'>
+          <HeaderLogout/>
+          
+          <br></br>
+
+          <div className='row'>
+            <div className='col-lg-3'>
+                <br></br>
+                <br></br>
+                <br></br>
+                <Sidebar/>
+            </div>
+            <div className = 'col-lg-9'>
+            <div className='row'>
+            <div className='col-lg-12'>
+            <h3 className='month-title'>{expenseReport.month}</h3>
+            </div>
+              
+              <div className='col-lg-6'>
+              <ResponsiveContainer width="95%" height={400}>
+                  <BarChart width={600} height={300} data={incomeReport.daily}>
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="amount" fill="#82ca9d" />
+                  </BarChart>
+              </ResponsiveContainer>
+              <h5 className="chart-title">Daily Income for the Month</h5>
+              </div>
+              <div className='col-lg-6'>
+              <ResponsiveContainer width="95%" height={400}>
+                  <BarChart width={600} height={300} data={expenseReport.daily}>
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="amount" fill="#8884d8" />
+                  </BarChart>
+                  </ResponsiveContainer>
+                <h5 className="chart-title">Daily Expenses for the Month</h5>
+              </div>
+          </div>
+
+
+
+          <hr></hr>
+          <div className='row'>
+              <div className='col-lg-6'>
+                 <ResponsiveContainer width="95%" height={400}>
+                  <PieChart width={600} height={300}>
+                      <Pie data={incomePartnerReport.data} dataKey="frequency" nameKey="partnerName" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#82ca9d" label />
+                  </PieChart>
+                  </ResponsiveContainer>
+                  <h5 className="chart-title">Most Frequent Trading Partners for Incomes</h5>
+              </div>
+              <div className='col-lg-6'>
+              <ResponsiveContainer width="95%" height={400}>
+                  <PieChart width={600} height={300}>
+                      <Pie data={expensePartnerReport.data} dataKey="frequency" nameKey="partnerName" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#8884d8" label />
+                  </PieChart>
+              </ResponsiveContainer>
+              <h5 className="chart-title">Most Frequent Trading Partners for Expense</h5>
+              </div>
+          </div>
+
+            </div>
+          </div>
+          
+      </div>
+    
+>>>>>>> 73ea763 (Sidebar placed)
         );
     }
 
