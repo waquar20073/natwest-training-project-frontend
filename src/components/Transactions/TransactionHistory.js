@@ -12,31 +12,39 @@ function TransactionHistory() {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [sortBy, setSortBy] = useState("");
+  const [filterBy, setFilterBy] = useState("");
 
   useEffect(() => {
     loadTransactionHistory();
+    console.log("Transaction history loaded")
   }, []);
 
   useEffect(() => {
     console.log("transactionData value:", transactionData);
   }, [transactionData]);
   useEffect(() => {
-    console.log("transactionData value:", transactionData);
+    console.log("searchValue value:", searchValue);
   }, [searchValue]);
   useEffect(() => {
-    console.log("transactionData value:", transactionData);
+    console.log("fromDate value:", fromDate);
   }, [fromDate]);
   useEffect(() => {
-    console.log("transactionData value:", transactionData);
+    console.log("toDate value:", toDate);
   }, [toDate]);
   useEffect(() => {
-    console.log("transactionData value:", transactionData);
+    console.log("sortBy value:", sortBy);
   }, [sortBy]);
+  useEffect(() => {
+    console.log("filterBy value:", filterBy);
+  }, [filterBy]);
 
-  const host = "http://localhost:5051";
-  const accessToken =
-    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1ODQxNjI0LCJpYXQiOjE2NjU3NTUyMjR9.5blSGI3h3vNYVoHU_wXUHqeWUG7irDqJY4vORCJUo3ogSmv5cpR-7DckextYgUjgozmDTEJ3hBkNHyUdgzi3lg";
-  const accountId = 3;
+  // const host = "http://localhost:5051";
+  // const accessToken =
+  //   "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1ODQxNjI0LCJpYXQiOjE2NjU3NTUyMjR9.5blSGI3h3vNYVoHU_wXUHqeWUG7irDqJY4vORCJUo3ogSmv5cpR-7DckextYgUjgozmDTEJ3hBkNHyUdgzi3lg";
+  // const accountId = 3;
+  const accessToken = localStorage.getItem("accessToken");
+  const host=`http://${localStorage.getItem("serverAddress")}`;
+  const accountId = localStorage.getItem("customerAccountId");
 
   const loadTransactionHistory = async () => {
     const json = `{
@@ -109,16 +117,18 @@ function TransactionHistory() {
       });
   };
   const handleReset = (e) => {
-    loadTransactionHistory();
     setFromDate((val) => "");
     setToDate((val) => "");
     setSearchValue("");
     setSortBy("");
+    setFilterBy("");
+    loadTransactionHistory();
   };
   const handleFilter = (value) => {
     let filteredTransactions = [];
     transactionData.forEach((trans) => {
       if (trans.type == value) {
+        console.log("type",trans.type);
         filteredTransactions.push(trans);
       }
     });
@@ -126,76 +136,76 @@ function TransactionHistory() {
   };
   const handleFilterFromDate = async (date) => {
     setFromDate(date);
-    const json = `{
-      "accountId": ${accountId},
-    	"from": "${fromDate}",
-    	"to": "${toDate}",
-    	"search": "${searchValue}",
-    	"sortBy": "${sortBy}"
-    }`;
-    const obj = JSON.parse(json);
-    const inc = await axios
-      .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        setTransactionData(response.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    // const json = `{
+    //   "accountId": ${accountId},
+    // 	"from": "${fromDate}",
+    // 	"to": "${toDate}",
+    // 	"search": "${searchValue}",
+    // 	"sortBy": "${sortBy}"
+    // }`;
+    // const obj = JSON.parse(json);
+    // const inc = await axios
+    //   .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //       "Content-Type": "application/json",
+    //     },
+    //   })
+    //   .then((response) => {
+    //     setTransactionData(response.data);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
   };
   const handleFilterToDate = async (date) => {
     setToDate(date);
-    const json = `{
-      "accountId": ${accountId},
-    	"from": "${fromDate}",
-    	"to": "${toDate}",
-    	"search": "${searchValue}",
-    	"sortBy": "${sortBy}"
-    }`;
-    const obj = JSON.parse(json);
-    const inc = await axios
-      .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        setTransactionData(response.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    // const json = `{
+    //   "accountId": ${accountId},
+    // 	"from": "${fromDate}",
+    // 	"to": "${toDate}",
+    // 	"search": "${searchValue}",
+    // 	"sortBy": "${sortBy}"
+    // }`;
+    // const obj = JSON.parse(json);
+    // const inc = await axios
+    //   .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //       "Content-Type": "application/json",
+    //     },
+    //   })
+    //   .then((response) => {
+    //     setTransactionData(response.data);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
   };
   const handleSortBy = async (sortBy) => {
     // Implement sort logic locally in frontend
     setSortBy(sortBy);
-    const json = `{
-      "accountId": ${accountId},
-    	"from": "${fromDate}",
-    	"to": "${toDate}",
-    	"search": "${searchValue}",
-    	"sortBy": "${sortBy}"
-    }`;
-    const obj = JSON.parse(json);
-    const inc = await axios
-      .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        setTransactionData(response.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    // const json = `{
+    //   "accountId": ${accountId},
+    // 	"from": "${fromDate}",
+    // 	"to": "${toDate}",
+    // 	"search": "${searchValue}",
+    // 	"sortBy": "${sortBy}"
+    // }`;
+    // const obj = JSON.parse(json);
+    // const inc = await axios
+    //   .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //       "Content-Type": "application/json",
+    //     },
+    //   })
+    //   .then((response) => {
+    //     setTransactionData(response.data);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
   };
   return (
     <div>
@@ -354,25 +364,26 @@ function TransactionHistory() {
                     </button>
                   </div>
                 </div>
-                <div className="col-lg-6">
-                  <div className="form-group">
-                    <h7>Filter by Type</h7>
-                    <button
-                      className="btn btn-success button"
-                      onClick={(e) => handleFilter("credit")}
-                    >
-                      Credit
-                    </button>
-                    <button
-                      className="btn btn-danger button"
-                      onClick={(e) => handleFilter("debit")}
-                    >
-                      Debit
-                    </button>
-                  </div>
-                </div>
+
               </div>
             </form>
+            <div className="col-lg-6">
+              <div className="form-group">
+                <div><h7>Filter by Type</h7></div>
+                <button
+                  className="btn btn-success button"
+                  onClick={(e) => handleFilter("credit")}
+                >
+                  Credit
+                </button>
+                <button
+                  className="btn btn-danger button"
+                  onClick={(e) => handleFilter("debit")}
+                >
+                  Debit
+                </button>
+              </div>
+            </div>
             <br></br>
             <Table bordered hover table-responsive>
               <thead>

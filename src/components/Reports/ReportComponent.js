@@ -22,9 +22,12 @@ function ReportComponent(){
           "frequency": 20
         }],"month":"month","type":"type"});
 
-    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1ODQxNjI0LCJpYXQiOjE2NjU3NTUyMjR9.5blSGI3h3vNYVoHU_wXUHqeWUG7irDqJY4vORCJUo3ogSmv5cpR-7DckextYgUjgozmDTEJ3hBkNHyUdgzi3lg";
-    const host="http://localhost:5051/api/v1"
-    const accountId = 3;
+    // const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1ODQxNjI0LCJpYXQiOjE2NjU3NTUyMjR9.5blSGI3h3vNYVoHU_wXUHqeWUG7irDqJY4vORCJUo3ogSmv5cpR-7DckextYgUjgozmDTEJ3hBkNHyUdgzi3lg";
+    // const host="http://localhost:5051/api/v1"
+    // const accountId = 3;
+    const accessToken = localStorage.getItem("accessToken");
+    const host=`http://${localStorage.getItem("serverAddress")}/api/v1`;
+    const accountId = localStorage.getItem("customerAccountId");
 
     // app.use(cors());
 
