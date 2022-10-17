@@ -11,9 +11,7 @@ import Dashboard from './components/BankDetails/Dashboard';
 import Accounts from './components/CustomerAccounts/Accounts';
 import TransferMoney from './components/Transfer/TransferMoney';
 import TransactionHistory from './components/Transactions/TransactionHistory';
-import Alerting from './components/Alert';
 import ReportComponent from './components/Reports/ReportComponent';
-import Statements from './components/BankStatements/Statements';
 import MyProfile from './components/Profile/MyProfile';
 import ResetPassword from './components/Reset/resetPassword';
 import AddAccount from './components/Non_Linked_accounts/addAccount';
@@ -40,9 +38,7 @@ function Main()  {
             <Route path='/account' element={<Accounts />}/>
             <Route path='/transfer' element={<TransferMoney />}/>
             <Route path='/transactions' element={<TransactionHistory />}/>
-            <Route path='/alert' element={<Alerting/>}/>
             <Route path='/reports' element={<ReportComponent/>}/>
-            <Route path='/statements' element={<Statements/>}/>
             <Route path='/profile' element={<MyProfile/>}/> */}
             <Route path='/reset' element={<ResetPassword/>}/>
             
@@ -66,9 +62,7 @@ function Main()  {
                   <Route path='/account' element={<Accounts />}/>
                   <Route path='/transfer' element={<TransferMoney />}/>
                   <Route path='/transactions' element={<TransactionHistory />}/>
-                  <Route path='/alert' element={<Alerting/>}/>
                   <Route path='/reports' element={<ReportComponent/>}/>
-                  <Route path='/statements' element={<Statements/>}/>
                   <Route path='/profile' element={<MyProfile/>}/>
                   <Route path='/addAccount' element={<AddAccount/>}/>
                   <Route path='*' element={<Accounts/>} />

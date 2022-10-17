@@ -1,0 +1,9 @@
+#sidebar{
+    margin-left: 20px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+}
+#sidebar ul li a span:hover{
+   color:black;
+}
+

@@ -17,9 +17,9 @@ class MyProfile extends Component {
                             <Link to="/account" style={{textDecoration:"none"}}>
                                 <li class="nav-item mb-2"><a class="nav-link" href="#"><span className="ml-3">Choose Bank</span></a></li>
                             </Link>
-                            {/* <Link to="/statements" style={{textDecoration:"none"}}>
-                            <li class="nav-item mb-2"><a class="nav-link" href="#"><span className="ml-3">Bank Statements</span></a></li>
-                            </Link> */}
+                            <Link to="/transfer" style={{textDecoration:"none"}}>
+                            <li class="nav-item mb-2"><a class="nav-link" href="#"><span className="ml-3">Transfer History</span></a></li>
+                            </Link>
         
                             
                             <br></br>
@@ -32,9 +32,9 @@ class MyProfile extends Component {
                             <Link to="/reset" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link" href=""><span className="ml-3"><img src="reset_password.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Reset Password</span></a></li>
                             </Link>
-                            {/* <Link to="/login" style={{textDecoration:"none"}}>
+                            <Link to="/login" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link " href="#"><span className="ml-3"><img src="logout.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>   
-                            </Link> */}
+                            </Link>
                         </ul>
                             
                         </div>
@@ -48,28 +48,28 @@ class MyProfile extends Component {
                                 <tr><td></td><td></td></tr>
                                 <tr>
                                 <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Full name</td>
-                                <td >John Snow</td>
+                                <td >Johny</td>
                                 </tr>
                                 <tr>
                                 <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Date of Birth</td>
                                 <td >13-05-1998</td>
                                 </tr>
                                 <tr>
-                                <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Username</td>
-                                <td >21</td>
+                                <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Age</td>
+                                <td >24</td>
                                 </tr>
                                 <tr>
-                                <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Email</td>
-                                <td>5252552252</td>
+                                <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Account No</td>
+                                <td>9456819952</td>
                                 </tr>
                                 <tr>
-                                <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Mobile Number</td>
+                                <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>IFSC code</td>
                                 <td >SBI1254687434</td>
                                 </tr>
-                                {/* <tr>
+                                <tr>
                                 <td id="c1" style={{fontWeight:"bold",fontFamily:"Sans-serif"}}>Location</td>
                                 <td>Bangalore,India</td>
-                                </tr> */}
+                                </tr>
                                 <tr><td></td><td></td></tr>
                                 </tbody>
                             </table>
@@ -85,19 +85,18 @@ class MyProfile extends Component {
                                 <img class="card-img-top" src="https://i.imgur.com/K7A78We.jpg" alt="Card image cap"></img>
                                 <div class="card-body little-profile text-center">
                                     <div class="pro-img"><img src="https://i.imgur.com/8RKXAIV.jpg" alt="user"></img></div>
-                                    <h3 class="m-b-0">John Snow</h3>
+                                    <h3 class="m-b-0">Johny</h3>
                                     <br></br>
                                    
                                 </div>
                                 <div className='details text-center'>
-                                    <div className='phone_no'><img src="phonenumber.png" alt="" id="phone_no"></img>5757541255</div>
-                                    <div className='email'><img src="email.png" alt="" id="email"></img>john@gmail.com</div>
+                                    <div className='phone_no'><img src="phonenumber.png" alt="" id="phone_no"></img>9456819952</div>
+                                    <div className='email'><img src="email.png" alt="" id="email"></img>johny1@gmail.com</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     </div>
-                    <br/><br/><br/><br/>
                 </div>  
         );
     }

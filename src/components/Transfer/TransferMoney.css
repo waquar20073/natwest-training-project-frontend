@@ -6,14 +6,6 @@ h2{
 #transfer_row{
     margin-right: 0px;
 }
-#sidebar1{
-    margin-left: 40px;
-    margin-right: 30px;
-    margin-bottom: 36px;
-}
-#sidebar1 ul li a span:hover{
-   color:black;
-}
 
 #transfer_form{
     margin-top: 40px;
@@ -22,7 +14,7 @@ h2{
 
 #transactions_charges{
     text-align: left;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
     margin-left: 5px;
 }
 

@@ -4,7 +4,7 @@ import { Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
-import HeaderLogout from "../header1/headerLogout";
+import Sidebar from "../Sidebar/sidebar";
 
 function TransactionHistory() {
   const [transactionData, setTransactionData] = useState([]);
@@ -12,39 +12,31 @@ function TransactionHistory() {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const [filterBy, setFilterBy] = useState("");
 
   useEffect(() => {
     loadTransactionHistory();
-    console.log("Transaction history loaded")
   }, []);
 
   useEffect(() => {
     console.log("transactionData value:", transactionData);
   }, [transactionData]);
   useEffect(() => {
-    console.log("searchValue value:", searchValue);
+    console.log("transactionData value:", transactionData);
   }, [searchValue]);
   useEffect(() => {
-    console.log("fromDate value:", fromDate);
+    console.log("transactionData value:", transactionData);
   }, [fromDate]);
   useEffect(() => {
-    console.log("toDate value:", toDate);
+    console.log("transactionData value:", transactionData);
   }, [toDate]);
   useEffect(() => {
-    console.log("sortBy value:", sortBy);
+    console.log("transactionData value:", transactionData);
   }, [sortBy]);
-  useEffect(() => {
-    console.log("filterBy value:", filterBy);
-  }, [filterBy]);
 
-  // const host = "http://localhost:5051";
-  // const accessToken =
-  //   "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1ODQxNjI0LCJpYXQiOjE2NjU3NTUyMjR9.5blSGI3h3vNYVoHU_wXUHqeWUG7irDqJY4vORCJUo3ogSmv5cpR-7DckextYgUjgozmDTEJ3hBkNHyUdgzi3lg";
-  // const accountId = 3;
-  const accessToken = localStorage.getItem("accessToken");
-  const host=`http://${localStorage.getItem("serverAddress")}`;
-  const accountId = localStorage.getItem("customerAccountId");
+  const host = "http://localhost:5051";
+  const accessToken =
+    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1ODQxNjI0LCJpYXQiOjE2NjU3NTUyMjR9.5blSGI3h3vNYVoHU_wXUHqeWUG7irDqJY4vORCJUo3ogSmv5cpR-7DckextYgUjgozmDTEJ3hBkNHyUdgzi3lg";
+  const accountId = 3;
 
   const loadTransactionHistory = async () => {
     const json = `{
@@ -117,18 +109,16 @@ function TransactionHistory() {
       });
   };
   const handleReset = (e) => {
+    loadTransactionHistory();
     setFromDate((val) => "");
     setToDate((val) => "");
     setSearchValue("");
     setSortBy("");
-    setFilterBy("");
-    loadTransactionHistory();
   };
   const handleFilter = (value) => {
     let filteredTransactions = [];
     transactionData.forEach((trans) => {
       if (trans.type == value) {
-        console.log("type",trans.type);
         filteredTransactions.push(trans);
       }
     });
@@ -136,170 +126,82 @@ function TransactionHistory() {
   };
   const handleFilterFromDate = async (date) => {
     setFromDate(date);
-    // const json = `{
-    //   "accountId": ${accountId},
-    // 	"from": "${fromDate}",
-    // 	"to": "${toDate}",
-    // 	"search": "${searchValue}",
-    // 	"sortBy": "${sortBy}"
-    // }`;
-    // const obj = JSON.parse(json);
-    // const inc = await axios
-    //   .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //   .then((response) => {
-    //     setTransactionData(response.data);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
+    const json = `{
+      "accountId": ${accountId},
+    	"from": "${fromDate}",
+    	"to": "${toDate}",
+    	"search": "${searchValue}",
+    	"sortBy": "${sortBy}"
+    }`;
+    const obj = JSON.parse(json);
+    const inc = await axios
+      .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        setTransactionData(response.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
   const handleFilterToDate = async (date) => {
     setToDate(date);
-    // const json = `{
-    //   "accountId": ${accountId},
-    // 	"from": "${fromDate}",
-    // 	"to": "${toDate}",
-    // 	"search": "${searchValue}",
-    // 	"sortBy": "${sortBy}"
-    // }`;
-    // const obj = JSON.parse(json);
-    // const inc = await axios
-    //   .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //   .then((response) => {
-    //     setTransactionData(response.data);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
+    const json = `{
+      "accountId": ${accountId},
+    	"from": "${fromDate}",
+    	"to": "${toDate}",
+    	"search": "${searchValue}",
+    	"sortBy": "${sortBy}"
+    }`;
+    const obj = JSON.parse(json);
+    const inc = await axios
+      .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        setTransactionData(response.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
   const handleSortBy = async (sortBy) => {
     // Implement sort logic locally in frontend
     setSortBy(sortBy);
-    // const json = `{
-    //   "accountId": ${accountId},
-    // 	"from": "${fromDate}",
-    // 	"to": "${toDate}",
-    // 	"search": "${searchValue}",
-    // 	"sortBy": "${sortBy}"
-    // }`;
-    // const obj = JSON.parse(json);
-    // const inc = await axios
-    //   .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //   .then((response) => {
-    //     setTransactionData(response.data);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
+    const json = `{
+      "accountId": ${accountId},
+    	"from": "${fromDate}",
+    	"to": "${toDate}",
+    	"search": "${searchValue}",
+    	"sortBy": "${sortBy}"
+    }`;
+    const obj = JSON.parse(json);
+    const inc = await axios
+      .post(`${host}/api/v1/transactions/transactionfilter`, obj, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        setTransactionData(response.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
   return (
-    <div>
-    <HeaderLogout/>
-  
     <div class="col main pt-1 mt-1">
       <Row id="transaction_row">
         <Col lg={3}>
-          <div id="sidebar2">
-            <div
-              class="sidebar-offcanvas"
-              role="navigation"
-              style={{ backgroundColor: "#e9ecef" }}
-            >
-              <ul class="nav flex-column sticky-top pl-0 pt-4 p-3 mt-3 ">
-                <li class="nav-item mb-2 mt-3">
-                  <a class="nav-link text-dark" href="#">
-                    <h5>Features</h5>
-                  </a>
-                </li>
-                <Link to="/profile" style={{textDecoration:"none"}}>
-                <li class="nav-item mb-2">
-                  <a class="nav-link text-secondary" href="#">
-                    <span className="ml-3">
-                      <img
-                        src="profile.png"
-                        style={{
-                          width: "18px",
-                          height: "18px",
-                          marginRight: "8px",
-                          marginBottom: "5px",
-                        }}
-                      ></img>
-                      My Profile
-                    </span>
-                  </a>
-                </li>
-                </Link>
-                <Link to="/account" style={{ textDecoration: "none" }}>
-                  <li class="nav-item mb-2">
-                    <a class="nav-link text-secondary" href="#">
-                      <span className="ml-3">Choose Bank</span>
-                    </a>
-                  </li>
-                </Link>
-                <Link to="/reports" style={{ textDecoration: "none" }}>
-                <li class="nav-item mb-2">
-                  <a class="nav-link text-secondary" href="#">
-                    <span className="ml-3">Reports</span>
-                  </a>
-                </li>
-                </Link>
-                {/* <li class="nav-item mb-2">
-                  <a class="nav-link text-secondary" href="#">
-                    <span className="ml-3">Bank Statements</span>
-                  </a>
-                </li> */}
-                <Link to="/transfer" style={{ textDecoration: "none" }}>
-                  <li class="nav-item mb-2">
-                    <a class="nav-link text-secondary" href="#">
-                      <span className="ml-3">Transfer Money</span>
-                    </a>
-                  </li>
-                </Link>
-                <Link to="/transactions" style={{ textDecoration: "none" }}>
-                  <li class="nav-item mb-2">
-                    <a class="nav-link text-secondary" href="#">
-                      <span className="ml-3">Transaction History</span>
-                    </a>
-                  </li>
-                </Link>
-                <br></br>
-                <br></br>
-                {/* <Link to="/login" style={{ textDecoration: "none" }}>
-                  <li class="nav-item mb-2">
-                    <a class="nav-link text-secondary" href="#">
-                      <span className="ml-3">
-                        <img
-                          src="logout.png"
-                          style={{
-                            width: "18px",
-                            height: "18px",
-                            marginRight: "8px",
-                            marginBottom: "3px",
-                          }}
-                        ></img>
-                        Logout
-                      </span>
-                    </a>
-                  </li>
-                </Link> */}
-              </ul>
-            </div>
-          </div>
+          <Sidebar/>
         </Col>
         <Col lg={9}>
           <h2 id="transaction_title">Transaction History </h2>
@@ -364,26 +266,25 @@ function TransactionHistory() {
                     </button>
                   </div>
                 </div>
-
+                <div className="col-lg-6">
+                  <div className="form-group">
+                    <h7>Filter by Type</h7>
+                    <button
+                      className="btn btn-success button"
+                      onClick={(e) => handleFilter("credit")}
+                    >
+                      Credit
+                    </button>
+                    <button
+                      className="btn btn-danger button"
+                      onClick={(e) => handleFilter("debit")}
+                    >
+                      Debit
+                    </button>
+                  </div>
+                </div>
               </div>
             </form>
-            <div className="col-lg-6">
-              <div className="form-group">
-                <div><h7>Filter by Type</h7></div>
-                <button
-                  className="btn btn-success button"
-                  onClick={(e) => handleFilter("credit")}
-                >
-                  Credit
-                </button>
-                <button
-                  className="btn btn-danger button"
-                  onClick={(e) => handleFilter("debit")}
-                >
-                  Debit
-                </button>
-              </div>
-            </div>
             <br></br>
             <Table bordered hover table-responsive>
               <thead>
@@ -427,8 +328,6 @@ function TransactionHistory() {
           </div>
         </Col>
       </Row>
-    </div>
-    <br/><br/><br/><br/><br/><br/><br/><br/>
     </div>
   );
 }

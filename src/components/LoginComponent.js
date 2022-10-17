@@ -123,7 +123,6 @@ function  LoginComponent({setToken}){
   return(
     <div className='Login-component'>
     <Header/>
-    <br/>
     { isSubmit ? <FormSubmitMessage formErrors = {formErrors}/>: null }
 
     <div id="loginform" onSubmit={handleSubmit(onSubmit)}>
@@ -175,9 +174,9 @@ function  LoginComponent({setToken}){
 
 
 
-      
+
     </div>
-    <br/><br/>
+
     </div>
 
   )

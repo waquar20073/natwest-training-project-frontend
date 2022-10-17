@@ -94,7 +94,7 @@ function Accounts(){
 
       //Mapping card and button from bankcard.js
         const cards = linked_accounts.map((item) => {
-          //console.log(item);
+          console.log(item);
             return(
             <div id="card_style" className='text-center'>
             <Bankcard key={item.id} {...item} />
@@ -104,12 +104,10 @@ function Accounts(){
               localStorage.removeItem("accessToken");
               localStorage.removeItem("serverAddress");
               localStorage.removeItem("customerAccountId");
-              localStorage.removeItem("linkedAccounts");
               localStorage.setItem("bankname" , item.bankname);
               localStorage.setItem("accessToken" , JSON.parse(item.accessToken).token);
               localStorage.setItem("serverAddress" , item.serverAddress);
               localStorage.setItem("customerAccountId" , item.bankAccountId);
-              localStorage.setItem("linkedAccounts" , JSON.stringify(linked_accounts));
           }}>Enter</button>
             </div>)
         });
@@ -132,7 +130,7 @@ function Accounts(){
      function add(event){
         let value = event.target.value;
         let bankname = event.target.bankname;
-        //console.log(bankname)
+        console.log(bankname)
         if(value == "true"){
             navigate("/bankDetails");
         }

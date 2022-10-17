@@ -1,11 +1,12 @@
 import { Row , Col} from 'react-bootstrap';
-import { Link } from "react-router-dom";
+
 import "./Dashboard.css";
 import Table from 'react-bootstrap/Table';
 import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveContainer} from 'recharts';
 import HeaderLogout from '../header1/headerLogout';
 import axios from "axios";
 import React, { Component, useState, useEffect } from 'react';
+import Sidebar from '../Sidebar/sidebar';
 
 function Dashboard(){
 
@@ -133,33 +134,7 @@ function Dashboard(){
           <h1 className="bankname">{localStorage.getItem("bankname")}</h1>
          <Row id="main_row">
             <Col lg={3}>
-                <div id="sidebar">
-                 <div class="sidebar-offcanvas"  role="navigation" style={{backgroundColor:"#e9ecef"}}>
-                        <ul class="nav flex-column sticky-top pl-0 pt-4 p-3 mt-3 ">
-                            <li class="nav-item mb-2 mt-3"><a class="nav-link text-dark" href="#"><h5>Features</h5></a></li>
-                            <Link to="/profile" style={{textDecoration:"none"}}>
-                            <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="profile.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"5px"}}></img>My Profile</span></a></li>
-                            </Link>
-                            <Link to="/reports" style={{textDecoration:"none"}}>
-                            <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Reports</span></a></li>
-                            </Link>
-
-                            <Link to="/transfer" style={{textDecoration:"none"}}>
-                                <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transfer Money</span></a></li>
-                            </Link>
-                            <Link to="/transactions" style={{textDecoration:"none"}}>
-                                <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transaction History</span></a></li>
-                            </Link>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            {/* <Link to="/login" style={{textDecoration:"none"}}>
-                            <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="logout.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>
-                            </Link> */}
-                        </ul>
-                    </div>
-                    </div>
+                <Sidebar/>
             </Col >
 
 

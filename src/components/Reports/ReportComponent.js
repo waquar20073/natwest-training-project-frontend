@@ -3,31 +3,29 @@ import "./ReportComponent.css";
 import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveContainer} from 'recharts';
 import HeaderLogout from '../header1/headerLogout';
 import axios from "axios";
+import Sidebar from '../Sidebar/sidebar';
 
 function ReportComponent(){
     const [expenseReport, setExpenseReport] = useState({"daily":[{
           "date": "Page A",
           "amount": 4000
-        }],"month":"month","type":"type"});
+        }],"month":"Month","type":"type"});
     const [incomeReport, setIncomeReport] = useState({"daily":[{
           "date": "Page A",
           "amount": 4000
-        }],"month":"month","type":"type"});
+        }],"month":"Month","type":"type"});
     const [expensePartnerReport, setExpensePartnerReport] = useState({"data":[{
           "partnerName": "Page A",
           "frequency": 10
-        }],"month":"month","type":"type"});
+        }],"month":"Month","type":"type"});
     const [incomePartnerReport, setIncomePartnerReport] = useState({"data":[{
           "partnerName": "Page A",
           "frequency": 20
-        }],"month":"month","type":"type"});
+        }],"month":"Month","type":"type"});
 
-    // const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1ODQxNjI0LCJpYXQiOjE2NjU3NTUyMjR9.5blSGI3h3vNYVoHU_wXUHqeWUG7irDqJY4vORCJUo3ogSmv5cpR-7DckextYgUjgozmDTEJ3hBkNHyUdgzi3lg";
-    // const host="http://localhost:5051/api/v1"
-    // const accountId = 3;
-    const accessToken = localStorage.getItem("accessToken");
-    const host=`http://${localStorage.getItem("serverAddress")}/api/v1`;
-    const accountId = localStorage.getItem("customerAccountId");
+    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1ODQxNjI0LCJpYXQiOjE2NjU3NTUyMjR9.5blSGI3h3vNYVoHU_wXUHqeWUG7irDqJY4vORCJUo3ogSmv5cpR-7DckextYgUjgozmDTEJ3hBkNHyUdgzi3lg";
+    const host="http://localhost:5051/api/v1"
+    const accountId = 3;
 
     // app.use(cors());
 
@@ -97,12 +95,22 @@ function ReportComponent(){
 
             <div className='reports'>
                 <HeaderLogout/>
-                <div className='container'>
+                
                 <br></br>
+
                 <div className='row'>
+                  <div className='col-lg-3'>
+                      <br></br>
+                      <br></br>
+                      <br></br>
+                      <Sidebar/>
+                  </div>
+                  <div className = 'col-lg-9'>
+                  <div className='row'>
                   <div className='col-lg-12'>
                   <h3 className='month-title'>{expenseReport.month}</h3>
                   </div>
+                    
                     <div className='col-lg-6'>
                     <ResponsiveContainer width="95%" height={400}>
                         <BarChart width={600} height={300} data={incomeReport.daily}>
@@ -150,8 +158,12 @@ function ReportComponent(){
                     <h5 className="chart-title">Most Frequent Trading Partners for Expense</h5>
                     </div>
                 </div>
+
+                  </div>
+                </div>
+                
             </div>
-          </div>
+          
         );
     }
 

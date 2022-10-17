@@ -247,7 +247,6 @@ function RegisterComponent(){
       
     </div> 
     </div>
-    <br/><br/><br/><br/>
     </div>
   )
 
