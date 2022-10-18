@@ -154,9 +154,9 @@ function Dashboard(){
                             <br></br>
                             <br></br>
                             <br></br>
-                            <Link to="/login" style={{textDecoration:"none"}}>
+                            {/* <Link to="/login" style={{textDecoration:"none"}}>
                             <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="logout.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>
-                            </Link>
+                            </Link> */}
                         </ul>
                     </div>
                     </div>

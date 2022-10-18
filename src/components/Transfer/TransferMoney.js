@@ -16,6 +16,10 @@ var linkedBankError = false;
 var insufficientBalance =false;
 
 function TransferMoney() {
+    
+    useEffect(() => {
+        isSubmit = false;   
+    });
 
     useEffect(() => {
         isSubmit = false;
@@ -52,8 +56,10 @@ function TransferMoney() {
         let creditBankName = data.bankName
         insufficientBalance =false;
         isSubmit = false;
-        submitErrors = {};
-        serverError = false;
+
+        submitErrors = {}; 
+        serverError = false; 
+        
         linkedBankError = false;
         let linkedAccounts = JSON.parse(localStorage.getItem("LinkedBanks"));
         let accountNoDebitParam = localStorage.getItem("customerAccountId");
@@ -68,6 +74,7 @@ function TransferMoney() {
             headers: {
               'Authorization': `Bearer ${accessToken}`,
               'Content-Type': 'application/json'
+
             }
           }).then((reponse)=> {
              if(reponse.data < amountParam ){
@@ -86,6 +93,7 @@ function TransferMoney() {
                     creditServerAddress = linkedAccounts[i]["serverAddress"];
                  }
             }
+
         }
         // if(creditToken == ""){
         //     linkedBankError = true;
@@ -97,24 +105,28 @@ function TransferMoney() {
         //console.log(data);
         //console.log(JSON.stringify(data, null, 4))
 
+        
             let accountNoCreditParam = data.accNo;
-
+           
             //let accountNoDebitParam = 1;
-
+            
             const urlD = `http://${localStorage.getItem("serverAddress")}/api/v1/transfer/debit`;
+            
 
             const requestOptionsD = {
                 method: "POST",
                 headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${accessToken}`},
                 body: JSON.stringify({
                     "accountNo": accountNoDebitParam,
-                    "amount": amountParam
+
+                    "amount": amountParam                
                 })
             }
-
+            
             await fetch(urlD, requestOptionsD)
             .then((response) => response.text())
-            .then((data) => {
+            .then((data) => {        
+
                 if(!data.match("Debit Success")){
                     serverError = true;
                     submitErrors.errorMessageDebit = "Transfer Fail";
@@ -132,23 +144,29 @@ function TransferMoney() {
                     headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${creditToken}`},
                     body: JSON.stringify({
                         "accountNo": accountNoCreditParam,
-                        "amount": amountParam
+
+                        "amount": amountParam                
+
                     })
                 }
                 await fetch(urlC, requestOptionsC)
                 .then((response) => response.text())
-                .then((data) => {
+
+                .then((data) => {        
+
                     if(!data.match("Credit Success")){
                         serverError = true;
                         submitErrors.errorMessageCredit = "Transfer Failed, You Entered Wrong Account Number";
                         fetch(`http://${localStorage.getItem("serverAddress")}/api/v1/transfer/credit`, requestOptionsD)
                     }
 
+                    
                 })
-                .catch( (error) =>{
+                .catch( (error) =>{ 
                     serverError = true;
                     submitErrors.errorMessageServer = "Failed to connect";
-                })
+                }) 
+
             }
             if(!serverError){
                 const urlTransactionsDebit = `http://${localStorage.getItem("serverAddress")}/api/v1/transactions/newtransaction`;
@@ -159,7 +177,9 @@ function TransferMoney() {
                         "transactionWith": localStorage.getItem("bankname"),
                         "accountId": accountNoDebitParam,
                         "type":"debit",
-                        "amount": amountParam
+
+                        "amount": amountParam             
+
                     })
                 }
                 fetch(urlTransactionsDebit, requestOptionsDebit)
@@ -171,7 +191,9 @@ function TransferMoney() {
                         "transactionWith": creditBankName,
                         "accountId": accountNoCreditParam,
                         "type":"credit",
-                        "amount": amountParam
+
+                        "amount": amountParam             
+
                     })
                 }
 
@@ -186,23 +208,24 @@ function TransferMoney() {
                         "sourceBankName" : localStorage.getItem("bankname"),
                         "destinationAccontId": accountNoDebitParam,
                         "destinationBankName":  data.bankName,
-                        "amount":  amountParam
+                        "amount":  amountParam              
                     })
                 }
-
-
+                
+                
                 fetch("http://localhost:8085/api/v1/record", requestOptions2)
                     .then((response) => response.text())
-                    .then((data) => {
+                    .then((data) => {         
                     })
-                    .catch( (error) =>{
+                    .catch( (error) =>{  
                     })
             }
-
-
+            
+        
         }
-        isSubmit = true;
-        setFormErrors(submitErrors);
+        isSubmit = true;  
+        setFormErrors(submitErrors);     
+
         window.scrollTo({
         top: 0,
         behavior: 'smooth'
@@ -259,12 +282,13 @@ function TransferMoney() {
                         <Form.Group className="mb-3" >
                             <Form.Select
                                 {...register("bankName")}
-                                onChange={(e) => setValue('bankName', e.target.value, { shouldValidate: true })}
+
+                                onChange={(e) => setValue('bankName', e.target.value, { shouldValidate: true })}  
                                                            >
-                                <option value = "">Choose Destination Bank</option>
-                                {JSON.parse(localStorage.getItem("linkedAccounts")).map((e, key) => {
-                                    return <option key={key} value={e.bankname}>{e.bankname}</option>;
-                                    })}
+                                <option value = "">Choose Destination Bank</option>                                  
+                                {JSON.parse(localStorage.getItem("linkedAccounts")).map((e, key) => {  
+                                    return <option key={key} value={e.bankname}>{e.bankname}</option>;  
+                                    })}                             
                                 {/* <option value="Royal Bank of Scotland">Royal Bank of Scotland</option>
                                 <option value="State Bank of India">State Bank of India</option>
                                 <option value="Canara Bank">Canara Bank</option>
@@ -293,8 +317,9 @@ function TransferMoney() {
                         <h6 id="transactions_charges">Note: Transfer to only linked banks is allowed</h6>
                         <h6 id="transactions_charges">Transaction Charges : 0/</h6>
 
+                        
                         <button type='submit' id="transfer_button">Transfer</button>
-
+                        
 
                         <br></br><br></br><br></br><br></br><br></br><br></br>
                     </Form>

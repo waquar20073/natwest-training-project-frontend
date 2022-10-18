@@ -4,6 +4,7 @@ import { Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
+import HeaderLogout from "../header1/headerLogout";
 
 function TransactionHistory() {
   const [transactionData, setTransactionData] = useState([]);
@@ -207,6 +208,9 @@ function TransactionHistory() {
     //   });
   };
   return (
+    <div>
+    <HeaderLogout/>
+  
     <div class="col main pt-1 mt-1">
       <Row id="transaction_row">
         <Col lg={3}>
@@ -222,6 +226,7 @@ function TransactionHistory() {
                     <h5>Features</h5>
                   </a>
                 </li>
+                <Link to="/profile" style={{textDecoration:"none"}}>
                 <li class="nav-item mb-2">
                   <a class="nav-link text-secondary" href="#">
                     <span className="ml-3">
@@ -238,6 +243,7 @@ function TransactionHistory() {
                     </span>
                   </a>
                 </li>
+                </Link>
                 <Link to="/account" style={{ textDecoration: "none" }}>
                   <li class="nav-item mb-2">
                     <a class="nav-link text-secondary" href="#">
@@ -245,16 +251,18 @@ function TransactionHistory() {
                     </a>
                   </li>
                 </Link>
+                <Link to="/reports" style={{ textDecoration: "none" }}>
                 <li class="nav-item mb-2">
                   <a class="nav-link text-secondary" href="#">
                     <span className="ml-3">Reports</span>
                   </a>
                 </li>
-                <li class="nav-item mb-2">
+                </Link>
+                {/* <li class="nav-item mb-2">
                   <a class="nav-link text-secondary" href="#">
                     <span className="ml-3">Bank Statements</span>
                   </a>
-                </li>
+                </li> */}
                 <Link to="/transfer" style={{ textDecoration: "none" }}>
                   <li class="nav-item mb-2">
                     <a class="nav-link text-secondary" href="#">
@@ -271,7 +279,7 @@ function TransactionHistory() {
                 </Link>
                 <br></br>
                 <br></br>
-                <Link to="/login" style={{ textDecoration: "none" }}>
+                {/* <Link to="/login" style={{ textDecoration: "none" }}>
                   <li class="nav-item mb-2">
                     <a class="nav-link text-secondary" href="#">
                       <span className="ml-3">
@@ -288,7 +296,7 @@ function TransactionHistory() {
                       </span>
                     </a>
                   </li>
-                </Link>
+                </Link> */}
               </ul>
             </div>
           </div>
@@ -420,6 +428,8 @@ function TransactionHistory() {
           </div>
         </Col>
       </Row>
+    </div>
+    <br/><br/><br/><br/><br/><br/><br/><br/>
     </div>
   );
 }
