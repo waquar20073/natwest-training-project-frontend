@@ -151,12 +151,12 @@ function  LoginComponent({setToken}){
 
           <hr></hr>
           <div class="login_det">
-            <div>
+            {/*<div>
                 <Link to="/reset" style={{textDecoration:"none"}}>
                   <span style={{color:"black",fontSize:"18px",fontFamily:"Sans-serif"}}>Forgot the password ?</span>
                   <span style={{color:"rgb(58, 12, 104)",fontSize:"18px", fontWeight:"bold"}}> Reset</span>
                 </Link>
-            </div>
+            </div>*/}
             <div>
 
                 <Link to="/signup" style={{textDecoration:"none"}}>

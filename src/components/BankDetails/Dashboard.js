@@ -2,7 +2,7 @@ import { Row , Col} from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 import Table from 'react-bootstrap/Table';
-import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveContainer} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveContainer, Label} from 'recharts';
 import HeaderLogout from '../header1/headerLogout';
 import axios from "axios";
 import React, { Component, useState, useEffect } from 'react';
@@ -10,8 +10,8 @@ import React, { Component, useState, useEffect } from 'react';
 function Dashboard(){
 
     const [balance, setBalance] = useState(0);
-    const [expense, setIncome] = useState(0);
-    const [income, setExpense] = useState(0);
+    const [expense, setExpense] = useState(0);
+    const [income, setIncome] = useState(0);
     const [transactionData, setTransactionData] = useState([]);
     const [expenseReport, setExpenseReport] = useState({"daily":[{
           "date": "Page A",
@@ -26,9 +26,9 @@ function Dashboard(){
     const host=`http://${localStorage.getItem("serverAddress")}/api/v1`;
     const accountId = localStorage.getItem("customerAccountId");
 
-    console.log(accessToken);
-    console.log(host);
-    console.log(accountId);
+    // console.log(accessToken);
+    // console.log(host);
+    // console.log(accountId);
     // app.use(cors());
 
     useEffect(() => {
@@ -171,15 +171,17 @@ function Dashboard(){
                                     <div id="card_title" class="card-body bg-success" style={{backgroundColor:"#57b960"}}>
 
                                     <span class="text-uppercase " style={{color:"white",fontSize:"18px"}}><img style={{width:"50px",height:"auto",marginBottom:"15px",marginRight:"5px"}} alt="" src="cash.png"></img> Balance</span>
-                                    <h6 style={{color:"white"}}>{balance}/-</h6>
+                                    <h6 style={{color:"white"}}>{balance.toFixed(2)}/-</h6>
 
                                     </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-sm-6 py-2">
-                        <div class="card text-white bg-danger h-100 text-center" id="dashboard_cards">
-                            <div class="card-body bg-danger ">
-                                 <span class="text-uppercase " style={{color:"white",fontSize:"18px"}}><img style={{width:"50px",height:"auto",marginBottom:"15px",marginRight:"10px"}} alt="" src="business-and-finance.png"></img>Income</span>
+                        <div class="card text-white bg-warning h-100 text-center" id="dashboard_cards">
+                            <div class="card-body bg-warning ">
+                                 <span class="text-uppercase " style={{color:"white",fontSize:"18px"}}>
+                                 <img style={{width:"50px",height:"auto",marginBottom:"15px",marginRight:"10px"}} alt="" src="business-and-finance.png">
+                                 </img>Income</span>
                                  <h6  style={{color:"white"}}>{income}/-</h6>
                             </div>
 
@@ -187,7 +189,7 @@ function Dashboard(){
                     </div>
 
                     <div class="col-lg-4 col-sm-6 py-2">
-                        <div class="card text-white bg-warning h-100 text-center" id="dashboard_cards">
+                        <div class="card text-white bg-danger h-100 text-center" id="dashboard_cards">
                             <div class="card-body">
                                 <div class="rotate">
                                     <i class="fa fa-share fa-4x"></i>
@@ -202,7 +204,7 @@ function Dashboard(){
                 <hr/>
                 <div className="row mb-3">
                     <div class="col-lg-6 col-sm-6 py-2">
-                      <h5 className="graph-head">Insights</h5>
+                      <h5 className="graph-head">Insights - Previous 10 Transactions</h5>
                       <Table bordered hover table-responsive>
                         <thead>
                           <tr>
@@ -244,17 +246,18 @@ function Dashboard(){
                       </Table>
                     </div>
                     <div className="col-lg-6">
-                    <h5 className="graph-head">Income</h5>
+                    <h5 className="graph-head">Expense for Previous 7 Days</h5>
                       <ResponsiveContainer width="95%" height={400}>
                           <BarChart width={600} height={300} data={expenseReport.daily}>
-                              <XAxis dataKey="date" />
-                              <YAxis />
+                              <XAxis dataKey="date">
+                                <Label value="Previous 7 Dates" offset={0} position="insideBottom" />
+                              </XAxis>
+                              <YAxis label={{ value: 'Expense for the day', angle: -90, position: 'insideLeft' }} />
                               <Tooltip />
                               <Legend />
-                              <Bar dataKey="amount" fill="#82ca9d" />
+                              <Bar dataKey="amount" fill="#8884d8" />
                           </BarChart>
                       </ResponsiveContainer>
-                      <h5 className="graph-title">Date</h5>
                     </div>
                 </div>
                 </div>

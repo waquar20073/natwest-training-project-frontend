@@ -1,8 +1,82 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useCallback } from 'react';
 import "./ReportComponent.css";
-import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveContainer} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveContainer, Label, Sector} from 'recharts';
 import HeaderLogout from '../header1/headerLogout';
 import axios from "axios";
+
+
+const renderActiveShape = (props: any) => {
+  const RADIAN = Math.PI / 180;
+  const {
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    fill,
+    payload,
+    percent,
+    value
+  } = props;
+  const sin = Math.sin(-RADIAN * midAngle);
+  const cos = Math.cos(-RADIAN * midAngle);
+  const sx = cx + (outerRadius + 10) * cos;
+  const sy = cy + (outerRadius + 10) * sin;
+  const mx = cx + (outerRadius + 30) * cos;
+  const my = cy + (outerRadius + 30) * sin;
+  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+  const ey = my;
+  const textAnchor = cos >= 0 ? "start" : "end";
+
+  return (
+    <g>
+      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
+        {payload.partnerName}
+      </text>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+      />
+      <Sector
+        cx={cx}
+        cy={cy}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        innerRadius={outerRadius + 6}
+        outerRadius={outerRadius + 10}
+        fill={fill}
+      />
+      <path
+        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
+        stroke={fill}
+        fill="none"
+      />
+      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+      <text
+        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        y={ey}
+        textAnchor={textAnchor}
+        fill="#333"
+      >{`PV ${value}`}</text>
+      <text
+        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        y={ey}
+        dy={18}
+        textAnchor={textAnchor}
+        fill="#999"
+      >
+        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+      </text>
+    </g>
+  );
+};
 
 function ReportComponent(){
     const [expenseReport, setExpenseReport] = useState({"daily":[{
@@ -21,6 +95,13 @@ function ReportComponent(){
           "partnerName": "Page A",
           "frequency": 20
         }],"month":"month","type":"type"});
+    const [activeIndex, setActiveIndex] = useState(0);
+    const onPieEnter = useCallback(
+      (_, index) => {
+        setActiveIndex(index);
+      },
+      [setActiveIndex]
+    );
 
     // const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZXhwIjoxNjY1ODQxNjI0LCJpYXQiOjE2NjU3NTUyMjR9.5blSGI3h3vNYVoHU_wXUHqeWUG7irDqJY4vORCJUo3ogSmv5cpR-7DckextYgUjgozmDTEJ3hBkNHyUdgzi3lg";
     // const host="http://localhost:5051/api/v1"
@@ -76,7 +157,7 @@ function ReportComponent(){
           'Content-Type': 'application/json'
         }
       }).then((reponse)=> {
-        setExpensePartnerReport(reponse.data);
+        setIncomePartnerReport(reponse.data);
       }).catch((err)=>{
         console.error(err);
       });
@@ -106,8 +187,10 @@ function ReportComponent(){
                     <div className='col-lg-6'>
                     <ResponsiveContainer width="95%" height={400}>
                         <BarChart width={600} height={300} data={incomeReport.daily}>
-                            <XAxis dataKey="date" />
-                            <YAxis />
+                            <XAxis dataKey="date">
+                              <Label value="Dates of current Month" offset={0} position="insideBottom" />
+                            </XAxis>
+                            <YAxis label={{ value: 'Expense for the day', angle: -90, position: 'insideLeft' }} />
                             <Tooltip />
                             <Legend />
                             <Bar dataKey="amount" fill="#82ca9d" />
@@ -118,8 +201,10 @@ function ReportComponent(){
                     <div className='col-lg-6'>
                     <ResponsiveContainer width="95%" height={400}>
                         <BarChart width={600} height={300} data={expenseReport.daily}>
-                            <XAxis dataKey="date" />
-                            <YAxis />
+                            <XAxis dataKey="date">
+                              <Label value="Dates of current Month" offset={0} position="insideBottom" />
+                            </XAxis>
+                            <YAxis label={{ value: 'Expense for the day', angle: -90, position: 'insideLeft' }} />
                             <Tooltip />
                             <Legend />
                             <Bar dataKey="amount" fill="#8884d8" />
@@ -135,18 +220,40 @@ function ReportComponent(){
                 <div className='row'>
                     <div className='col-lg-6'>
                        <ResponsiveContainer width="95%" height={400}>
-                        <PieChart width={600} height={300}>
-                            <Pie data={incomePartnerReport.data} dataKey="frequency" nameKey="partnerName" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#82ca9d" label />
-                        </PieChart>
+                       <PieChart width={400} height={400}>
+                         <Pie
+                           activeIndex={activeIndex}
+                           activeShape={renderActiveShape}
+                           data={incomePartnerReport.data}
+                           cx={200}
+                           cy={200}
+                           innerRadius={60}
+                           outerRadius={80}
+                           fill="#82ca9d"
+                           dataKey="frequency"
+                           onMouseEnter={onPieEnter}
+                         />
+                       </PieChart>
                         </ResponsiveContainer>
                         <h5 className="chart-title">Most Frequent Trading Partners for Incomes</h5>
                     </div>
                     <div className='col-lg-6'>
                     <ResponsiveContainer width="95%" height={400}>
-                        <PieChart width={600} height={300}>
-                            <Pie data={expensePartnerReport.data} dataKey="frequency" nameKey="partnerName" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#8884d8" label />
-                        </PieChart>
-                    </ResponsiveContainer>
+                    <PieChart width={400} height={400}>
+                      <Pie
+                        activeIndex={activeIndex}
+                        activeShape={renderActiveShape}
+                        data={expensePartnerReport.data}
+                        cx={200}
+                        cy={200}
+                        innerRadius={60}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="frequency"
+                        onMouseEnter={onPieEnter}
+                      />
+                    </PieChart>
+                     </ResponsiveContainer>
                     <h5 className="chart-title">Most Frequent Trading Partners for Expense</h5>
                     </div>
                 </div>

@@ -21,6 +21,10 @@ function TransferMoney() {
         isSubmit = false;   
     });
 
+    useEffect(() => {
+        isSubmit = false;
+    });
+
     const [formErrors, setFormErrors] = React.useState({});
 
 
@@ -52,8 +56,10 @@ function TransferMoney() {
         let creditBankName = data.bankName
         insufficientBalance =false;
         isSubmit = false;
+
         submitErrors = {}; 
         serverError = false; 
+        
         linkedBankError = false;
         let linkedAccounts = JSON.parse(localStorage.getItem("LinkedBanks"));
         let accountNoDebitParam = localStorage.getItem("customerAccountId");
@@ -68,6 +74,7 @@ function TransferMoney() {
             headers: {
               'Authorization': `Bearer ${accessToken}`,
               'Content-Type': 'application/json'
+
             }
           }).then((reponse)=> {
              if(reponse.data < amountParam ){
@@ -86,6 +93,7 @@ function TransferMoney() {
                     creditServerAddress = linkedAccounts[i]["serverAddress"];
                  }
             }
+
         }
         // if(creditToken == ""){
         //     linkedBankError = true;
@@ -96,6 +104,7 @@ function TransferMoney() {
         //console.log(creditServerAddress)
         //console.log(data);
         //console.log(JSON.stringify(data, null, 4))
+
         
             let accountNoCreditParam = data.accNo;
            
@@ -103,11 +112,13 @@ function TransferMoney() {
             
             const urlD = `http://${localStorage.getItem("serverAddress")}/api/v1/transfer/debit`;
             
+
             const requestOptionsD = {
                 method: "POST",
                 headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${accessToken}`},
                 body: JSON.stringify({
                     "accountNo": accountNoDebitParam,
+
                     "amount": amountParam                
                 })
             }
@@ -115,13 +126,14 @@ function TransferMoney() {
             await fetch(urlD, requestOptionsD)
             .then((response) => response.text())
             .then((data) => {        
+
                 if(!data.match("Debit Success")){
                     serverError = true;
                     submitErrors.errorMessageDebit = "Transfer Fail";
                 }
-                
+
             })
-            .catch( (error) =>{ 
+            .catch( (error) =>{
                 serverError = true;
                 submitErrors.errorMessageServer = "Failed to connect";
             })
@@ -132,23 +144,29 @@ function TransferMoney() {
                     headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${creditToken}`},
                     body: JSON.stringify({
                         "accountNo": accountNoCreditParam,
+
                         "amount": amountParam                
+
                     })
                 }
                 await fetch(urlC, requestOptionsC)
                 .then((response) => response.text())
+
                 .then((data) => {        
+
                     if(!data.match("Credit Success")){
                         serverError = true;
                         submitErrors.errorMessageCredit = "Transfer Failed, You Entered Wrong Account Number";
                         fetch(`http://${localStorage.getItem("serverAddress")}/api/v1/transfer/credit`, requestOptionsD)
                     }
+
                     
                 })
                 .catch( (error) =>{ 
                     serverError = true;
                     submitErrors.errorMessageServer = "Failed to connect";
                 }) 
+
             }
             if(!serverError){
                 const urlTransactionsDebit = `http://${localStorage.getItem("serverAddress")}/api/v1/transactions/newtransaction`;
@@ -159,7 +177,9 @@ function TransferMoney() {
                         "transactionWith": localStorage.getItem("bankname"),
                         "accountId": accountNoDebitParam,
                         "type":"debit",
+
                         "amount": amountParam             
+
                     })
                 }
                 fetch(urlTransactionsDebit, requestOptionsDebit)
@@ -171,7 +191,9 @@ function TransferMoney() {
                         "transactionWith": creditBankName,
                         "accountId": accountNoCreditParam,
                         "type":"credit",
+
                         "amount": amountParam             
+
                     })
                 }
 
@@ -203,15 +225,16 @@ function TransferMoney() {
         }
         isSubmit = true;  
         setFormErrors(submitErrors);     
+
         window.scrollTo({
-        top: 0, 
+        top: 0,
         behavior: 'smooth'
         });
   }
 
-    
+
   return (
-    
+
     <div>
             <HeaderLogout/>
             { isSubmit ? <FormSubmitMessage formErrors = {formErrors}/>: null }
@@ -231,7 +254,7 @@ function TransferMoney() {
                                 <Link to="/reports" style={{textDecoration:"none"}}>
                                 <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Reports</span></a></li>
                                 </Link>
-                               
+
                                 <Link to="/transfer" style={{textDecoration:"none"}}>
                                     <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transfer Money</span></a></li>
                                 </Link>
@@ -243,14 +266,14 @@ function TransferMoney() {
                                 <br></br>
                                 <br></br>
                                 {/* <Link to="/login" style={{textDecoration:"none"}}>
-                                <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="logout.png"alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>   
+                                <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="logout.png"alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>
                                 </Link> */}
                             </ul>
                             </div>
                         </div>
                     </Col >
 
-               
+
 
                     <Col lg={8}>
                     <div id= "transfer_form" className='text-center'>
@@ -259,6 +282,7 @@ function TransferMoney() {
                         <Form.Group className="mb-3" >
                             <Form.Select
                                 {...register("bankName")}
+
                                 onChange={(e) => setValue('bankName', e.target.value, { shouldValidate: true })}  
                                                            >
                                 <option value = "">Choose Destination Bank</option>                                  
@@ -292,10 +316,11 @@ function TransferMoney() {
                         </Form.Group>
                         <h6 id="transactions_charges">Note: Transfer to only linked banks is allowed</h6>
                         <h6 id="transactions_charges">Transaction Charges : 0/</h6>
+
                         
                         <button type='submit' id="transfer_button">Transfer</button>
                         
-                        
+
                         <br></br><br></br><br></br><br></br><br></br><br></br>
                     </Form>
                     </div>
@@ -320,14 +345,14 @@ function TransferMoney() {
             ) : (
               <div className="alert alert-danger" role="alert">
                 <h4>Error! while transferring amount</h4>
-                <ListOfErrors errors= {props.formErrors} /> 
+                <ListOfErrors errors= {props.formErrors} />
               </div>
             )}
           </div>
         )
       }
-      
-      
+
+
       const ListOfErrors = (props) => {
         {
           var arr = [];
@@ -338,7 +363,7 @@ function TransferMoney() {
         });
         }
         return (
-          
+
             <ul>
                 {
                     arr.map(error => {
