@@ -3,6 +3,7 @@ import "./ReportComponent.css";
 import { BarChart, Bar, XAxis, YAxis,Legend,Tooltip,Pie,PieChart,ResponsiveContainer, Label, Sector} from 'recharts';
 import HeaderLogout from '../header1/headerLogout';
 import axios from "axios";
+import Sidebar from '../Sidebar/sidebar';
 
 
 const renderActiveShape = (props: any) => {
@@ -177,13 +178,24 @@ function ReportComponent(){
         return (
 
             <div className='reports'>
-                <HeaderLogout/>
-                <div className='container'>
-                <br></br>
+            <HeaderLogout/>
+
+            <br></br>
+
+            <div className='row'>
+              <div className='col-lg-3'>
+                  <br></br>
+                  <br></br>
+                  <br></br>
+                  <Sidebar/>
+              </div>
+              <div className = 'col-lg-9'>
                 <div className='row'>
                   <div className='col-lg-12'>
-                  <h3 className='month-title'>{expenseReport.month}</h3>
+                    <h3 className='month-title'>{expenseReport.month}</h3>
                   </div>
+
+
                     <div className='col-lg-6'>
                     <ResponsiveContainer width="95%" height={400}>
                         <BarChart width={600} height={300} data={incomeReport.daily}>
@@ -198,6 +210,7 @@ function ReportComponent(){
                     </ResponsiveContainer>
                     <h5 className="chart-title">Daily Income for the Month</h5>
                     </div>
+
                     <div className='col-lg-6'>
                     <ResponsiveContainer width="95%" height={400}>
                         <BarChart width={600} height={300} data={expenseReport.daily}>
@@ -257,7 +270,8 @@ function ReportComponent(){
                     <h5 className="chart-title">Most Frequent Trading Partners for Expense</h5>
                     </div>
                 </div>
-            </div>
+                </div>
+                </div>
           </div>
         );
     }

@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import axios from "axios";
+import Sidebar from '../Sidebar/sidebar';
 
 var serverError = false;
 var isSubmit = false;
@@ -16,9 +17,9 @@ var linkedBankError = false;
 var insufficientBalance =false;
 
 function TransferMoney() {
-    
+
     useEffect(() => {
-        isSubmit = false;   
+        isSubmit = false;
     });
 
     useEffect(() => {
@@ -57,9 +58,9 @@ function TransferMoney() {
         insufficientBalance =false;
         isSubmit = false;
 
-        submitErrors = {}; 
-        serverError = false; 
-        
+        submitErrors = {};
+        serverError = false;
+
         linkedBankError = false;
         let linkedAccounts = JSON.parse(localStorage.getItem("LinkedBanks"));
         let accountNoDebitParam = localStorage.getItem("customerAccountId");
@@ -105,13 +106,13 @@ function TransferMoney() {
         //console.log(data);
         //console.log(JSON.stringify(data, null, 4))
 
-        
+
             let accountNoCreditParam = data.accNo;
-           
+
             //let accountNoDebitParam = 1;
-            
+
             const urlD = `http://${localStorage.getItem("serverAddress")}/api/v1/transfer/debit`;
-            
+
 
             const requestOptionsD = {
                 method: "POST",
@@ -119,13 +120,13 @@ function TransferMoney() {
                 body: JSON.stringify({
                     "accountNo": accountNoDebitParam,
 
-                    "amount": amountParam                
+                    "amount": amountParam
                 })
             }
-            
+
             await fetch(urlD, requestOptionsD)
             .then((response) => response.text())
-            .then((data) => {        
+            .then((data) => {
 
                 if(!data.match("Debit Success")){
                     serverError = true;
@@ -145,14 +146,14 @@ function TransferMoney() {
                     body: JSON.stringify({
                         "accountNo": accountNoCreditParam,
 
-                        "amount": amountParam                
+                        "amount": amountParam
 
                     })
                 }
                 await fetch(urlC, requestOptionsC)
                 .then((response) => response.text())
 
-                .then((data) => {        
+                .then((data) => {
 
                     if(!data.match("Credit Success")){
                         serverError = true;
@@ -160,12 +161,12 @@ function TransferMoney() {
                         fetch(`http://${localStorage.getItem("serverAddress")}/api/v1/transfer/credit`, requestOptionsD)
                     }
 
-                    
+
                 })
-                .catch( (error) =>{ 
+                .catch( (error) =>{
                     serverError = true;
                     submitErrors.errorMessageServer = "Failed to connect";
-                }) 
+                })
 
             }
             if(!serverError){
@@ -178,7 +179,7 @@ function TransferMoney() {
                         "accountId": accountNoDebitParam,
                         "type":"debit",
 
-                        "amount": amountParam             
+                        "amount": amountParam
 
                     })
                 }
@@ -192,7 +193,7 @@ function TransferMoney() {
                         "accountId": accountNoCreditParam,
                         "type":"credit",
 
-                        "amount": amountParam             
+                        "amount": amountParam
 
                     })
                 }
@@ -208,23 +209,23 @@ function TransferMoney() {
                         "sourceBankName" : localStorage.getItem("bankname"),
                         "destinationAccontId": accountNoDebitParam,
                         "destinationBankName":  data.bankName,
-                        "amount":  amountParam              
+                        "amount":  amountParam
                     })
                 }
-                
-                
+
+
                 fetch("http://localhost:8085/api/v1/record", requestOptions2)
                     .then((response) => response.text())
-                    .then((data) => {         
+                    .then((data) => {
                     })
-                    .catch( (error) =>{  
+                    .catch( (error) =>{
                     })
             }
-            
-        
+
+
         }
-        isSubmit = true;  
-        setFormErrors(submitErrors);     
+        isSubmit = true;
+        setFormErrors(submitErrors);
 
         window.scrollTo({
         top: 0,
@@ -241,36 +242,7 @@ function TransferMoney() {
             <div class="col main pt-1 mt-1">
                 <Row id="transfer_row">
                     <Col lg={3}>
-                        <div id="sidebar1">
-                            <div class="sidebar-offcanvas"  role="navigation" style={{backgroundColor:"#e9ecef"}}>
-                            <ul class="nav flex-column sticky-top pl-0 pt-4 p-3 mt-3 ">
-                                <li class="nav-item mb-2 mt-3"><a class="nav-link text-dark" href="#"><h5>Features</h5></a></li>
-                                <Link to="/profile" style={{textDecoration:"none"}}>
-                                <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="profile.png" alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"5px"}}></img>My Profile</span></a></li>
-                                </Link>
-                                <Link to="/account" style={{textDecoration:"none"}}>
-                                    <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Choose Bank</span></a></li>
-                                </Link>
-                                <Link to="/reports" style={{textDecoration:"none"}}>
-                                <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Reports</span></a></li>
-                                </Link>
-
-                                <Link to="/transfer" style={{textDecoration:"none"}}>
-                                    <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transfer Money</span></a></li>
-                                </Link>
-                                <Link to="/transactions" style={{textDecoration:"none"}}>
-                                    <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transaction History</span></a></li>
-                                </Link>
-                                <br></br>
-                                <br></br>
-                                <br></br>
-                                <br></br>
-                                {/* <Link to="/login" style={{textDecoration:"none"}}>
-                                <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="logout.png"alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>
-                                </Link> */}
-                            </ul>
-                            </div>
-                        </div>
+                        <Sidebar />
                     </Col >
 
 
@@ -283,12 +255,12 @@ function TransferMoney() {
                             <Form.Select
                                 {...register("bankName")}
 
-                                onChange={(e) => setValue('bankName', e.target.value, { shouldValidate: true })}  
+                                onChange={(e) => setValue('bankName', e.target.value, { shouldValidate: true })}
                                                            >
-                                <option value = "">Choose Destination Bank</option>                                  
-                                {JSON.parse(localStorage.getItem("linkedAccounts")).map((e, key) => {  
-                                    return <option key={key} value={e.bankname}>{e.bankname}</option>;  
-                                    })}                             
+                                <option value = "">Choose Destination Bank</option>
+                                {JSON.parse(localStorage.getItem("linkedAccounts")).map((e, key) => {
+                                    return <option key={key} value={e.bankname}>{e.bankname}</option>;
+                                    })}
                                 {/* <option value="Royal Bank of Scotland">Royal Bank of Scotland</option>
                                 <option value="State Bank of India">State Bank of India</option>
                                 <option value="Canara Bank">Canara Bank</option>
@@ -317,11 +289,13 @@ function TransferMoney() {
                         <h6 id="transactions_charges">Note: Transfer to only linked banks is allowed</h6>
                         <h6 id="transactions_charges">Transaction Charges : 0/</h6>
 
-                        
+
                         <button type='submit' id="transfer_button">Transfer</button>
-                        
+
 
                         <br></br><br></br><br></br><br></br><br></br><br></br>
+                        <br></br><br></br><br></br><br></br><br></br><br></br>
+                        <br></br><br></br><br />
                     </Form>
                     </div>
                     </Col>
