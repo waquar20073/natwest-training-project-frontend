@@ -4,7 +4,6 @@ import { Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
-import HeaderLogout from "../header1/headerLogout";
 
 function TransactionHistory() {
   const [transactionData, setTransactionData] = useState([]);
@@ -13,6 +12,8 @@ function TransactionHistory() {
   const [toDate, setToDate] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [filterBy, setFilterBy] = useState("");
+  const [sortByAmountOrderDesc, setSortByAmountOrderDesc] = useState(false);
+  const [sortByTimesOrderDesc, setSortByTimeOrderDesc] = useState(false);
 
   useEffect(() => {
     loadTransactionHistory();
@@ -37,6 +38,12 @@ function TransactionHistory() {
   useEffect(() => {
     console.log("filterBy value:", filterBy);
   }, [filterBy]);
+  useEffect(() => {
+    console.log("sortByAmountOrderDesc value:", sortByAmountOrderDesc);
+  }, [sortByAmountOrderDesc],[]);
+  useEffect(() => {
+    console.log("sortByTimesOrderDesc value:", sortByTimesOrderDesc);
+  }, [sortByTimesOrderDesc],[]);
 
   // const host = "http://localhost:5051";
   // const accessToken =
@@ -116,6 +123,30 @@ function TransactionHistory() {
         console.error(err);
       });
   };
+  const sortByAmount = async(e) =>{
+    console.log("Sort By Amount Triggered");
+    setSortByAmountOrderDesc((val) => !val);
+    if(sortByAmountOrderDesc){
+      // sort decreasing order by amount
+      setSortBy("amount desc");
+    }else{
+      // sort increasing order by amount
+      setSortBy("amount");
+    }
+    await handleSearch();
+  }
+  const sortByTime = async(e) =>{
+    console.log("Sort By Amount Triggered");
+    setSortByAmountOrderDesc((val) => !val);
+    if(sortByAmountOrderDesc){
+      // sort decreasing order by amount
+      setSortBy("timestamp desc");
+    }else{
+      // sort increasing order by amount
+      setSortBy("timestamp");
+    }
+    await handleSearch();
+  }
   const handleReset = (e) => {
     setFromDate((val) => "");
     setToDate((val) => "");
@@ -208,9 +239,6 @@ function TransactionHistory() {
     //   });
   };
   return (
-    <div>
-    <HeaderLogout/>
-  
     <div class="col main pt-1 mt-1">
       <Row id="transaction_row">
         <Col lg={3}>
@@ -226,7 +254,6 @@ function TransactionHistory() {
                     <h5>Features</h5>
                   </a>
                 </li>
-                <Link to="/profile" style={{textDecoration:"none"}}>
                 <li class="nav-item mb-2">
                   <a class="nav-link text-secondary" href="#">
                     <span className="ml-3">
@@ -243,7 +270,6 @@ function TransactionHistory() {
                     </span>
                   </a>
                 </li>
-                </Link>
                 <Link to="/account" style={{ textDecoration: "none" }}>
                   <li class="nav-item mb-2">
                     <a class="nav-link text-secondary" href="#">
@@ -251,18 +277,16 @@ function TransactionHistory() {
                     </a>
                   </li>
                 </Link>
-                <Link to="/reports" style={{ textDecoration: "none" }}>
                 <li class="nav-item mb-2">
                   <a class="nav-link text-secondary" href="#">
                     <span className="ml-3">Reports</span>
                   </a>
                 </li>
-                </Link>
-                {/* <li class="nav-item mb-2">
+                <li class="nav-item mb-2">
                   <a class="nav-link text-secondary" href="#">
                     <span className="ml-3">Bank Statements</span>
                   </a>
-                </li> */}
+                </li>
                 <Link to="/transfer" style={{ textDecoration: "none" }}>
                   <li class="nav-item mb-2">
                     <a class="nav-link text-secondary" href="#">
@@ -279,7 +303,7 @@ function TransactionHistory() {
                 </Link>
                 <br></br>
                 <br></br>
-                {/* <Link to="/login" style={{ textDecoration: "none" }}>
+                <Link to="/login" style={{ textDecoration: "none" }}>
                   <li class="nav-item mb-2">
                     <a class="nav-link text-secondary" href="#">
                       <span className="ml-3">
@@ -296,7 +320,7 @@ function TransactionHistory() {
                       </span>
                     </a>
                   </li>
-                </Link> */}
+                </Link>
               </ul>
             </div>
           </div>
@@ -389,9 +413,9 @@ function TransactionHistory() {
               <thead>
                 <tr>
                   <th>Transaction # </th>
-                  <th className="table-header">Amount <i class="fa fa-fw fa-sort"></i></th>
+                  <th className="table-header">Amount <i class="fa fa-fw fa-sort" onClick={(e)=>sortByAmount(e)}></i></th>
                   <th>Sender/Recipient</th>
-                  <th className="table-header">Timestamp <i class="fa fa-fw fa-sort"></i></th>
+                  <th className="table-header">Timestamp <i class="fa fa-fw fa-sort" onClick={(e)=>sortByTime(e)}></i></th>
                 </tr>
               </thead>
               {transactionData.length === 0 ? (
@@ -428,8 +452,6 @@ function TransactionHistory() {
           </div>
         </Col>
       </Row>
-    </div>
-    <br/><br/><br/><br/><br/><br/><br/><br/>
     </div>
   );
 }
