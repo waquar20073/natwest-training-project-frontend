@@ -1,3 +1,4 @@
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
 #sidebar2{
     margin-left: 40px;
     margin-right: 30px;
@@ -43,4 +44,12 @@
 }
 .pos_money{
   color:green;
+}
+.sort-icon{
+  margin-left: 10px;
+  margin-right: 0px;
+}
+.table-header{
+  display:flex;
+  justify-content:space-between;
 }

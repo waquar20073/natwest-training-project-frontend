@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import "./TransferMoney.css";
 import { Link } from "react-router-dom";
 import { Row , Col} from 'react-bootstrap';
@@ -7,17 +7,25 @@ import HeaderLogout from '../header1/headerLogout';
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
+import axios from "axios";
 
 var serverError = false;
 var isSubmit = false;
 var submitErrors = {};
+var linkedBankError = false;
+var insufficientBalance =false;
 
 function TransferMoney() {
+
+    useEffect(() => {
+        isSubmit = false;
+    });
 
     const [formErrors, setFormErrors] = React.useState({});
 
 
     const formSchema = Yup.object().shape({
+        bankName : Yup.string().required(),
         accNo: Yup.string()
           .required('Account Number is mandatory')
           .min(1,'Account Number must be at 10 char long'),
@@ -34,84 +42,176 @@ function TransferMoney() {
 
     })
     const formOptions = { resolver: yupResolver(formSchema) }
-    const { register, handleSubmit, reset, formState } = useForm(formOptions)
+    const { register, handleSubmit, setValue, reset, formState } = useForm(formOptions)
     const { errors } = formState
 
 
    async function onSubmit(data) {
         // console.log(JSON.stringify(data, null, 4))
         // return false
-
-        //Add Logic for port number as per the bank
-        localStorage.setItem('currentBankAccount', 'sbi');
-        localStorage.setItem('currentAccountNo', '1');
-        localStorage.setItem('sbiToken',
-        "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjY1NzM0NDE3LCJpYXQiOjE2NjU3MzA4MTd9.oxiSk0O4UGUZsbUGmKsyBcf7mIJThRuw70JBiS3dmpFSaouCY8H45Q9Npwr_WF1tHtQQm5e8BzJDUYB2Mn9z3A");
-        let portNumber = 5051
-        console.log(data);
-        console.log(JSON.stringify(data, null, 4))
-        let accountNoCreditParam = data.accNo;
-        let accountNoDebitParam = localStorage.getItem("currentAccountNo");
-        let amountParam = data.amount;
-        let url = 'http://localhost:'+portNumber+'/api/v1/transfer/debit';
-        let requestOptions = {
-            method: "POST",
-            headers : { 'Content-type': 'application/json' , 'Authorization' : localStorage.getItem("sbiToken")},
-            body: JSON.stringify({
-                "accountNo": accountNoDebitParam,
-                "amount": amountParam                
-              })
-        }
+        let creditBankName = data.bankName
+        insufficientBalance =false;
         isSubmit = false;
-        submitErrors = {}; 
-        serverError = false;    
-        await fetch(url, requestOptions)
-        .then((response) => response.text())
-        .then((data) => {   
-            console.log(data)     
-            if(!data.match("Debit Success")){
-                serverError = true;
-                submitErrors.errorMessageDebit = data;
+        submitErrors = {};
+        serverError = false;
+        linkedBankError = false;
+        let linkedAccounts = JSON.parse(localStorage.getItem("LinkedBanks"));
+        let accountNoDebitParam = localStorage.getItem("customerAccountId");
+        var creditToken = "";
+        var creditServerAddress = "";
+        const accessToken = localStorage.getItem("accessToken");
+        let amountParam = data.amount;
+        const host=`http://${localStorage.getItem("serverAddress")}/api/v1`;
+        const json = `{"accountId":${accountNoDebitParam} }`;
+        const obj = JSON.parse(json);
+        await axios.post(`${host}/accounts/balance`, obj, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
             }
-        })
-        .catch( (error) =>{ 
-            serverError = true;
-            submitErrors.errorMessageServer = "Failed to connect";
-        })
-        if(!serverError){
-            url = 'http://localhost:5051/api/v1/transfer/credit'
-            requestOptions = {
+          }).then((reponse)=> {
+             if(reponse.data < amountParam ){
+                serverError =true;
+                insufficientBalance = true;
+                submitErrors.errorMessageDebit = "Insufficient Balance";
+             }
+          }).catch((err)=>{
+            console.error(err);
+          });
+        if(!insufficientBalance){
+        for (var i=0 ; i < linkedAccounts.length ; i++){
+            if (linkedAccounts[i]["bankname"] == data.bankName) {
+                if(linkedAccounts[i]["accessToken"]!=""){
+                    creditToken = JSON.parse(linkedAccounts[i]["accessToken"])['token'];
+                    creditServerAddress = linkedAccounts[i]["serverAddress"];
+                 }
+            }
+        }
+        // if(creditToken == ""){
+        //     linkedBankError = true;
+        //     serverError = true;
+        //     isSubmit = true;
+        //     submitErrors.errorMessageServer2 = "Transfer to only linked banks is allowed";
+        // }
+        //console.log(creditServerAddress)
+        //console.log(data);
+        //console.log(JSON.stringify(data, null, 4))
+
+            let accountNoCreditParam = data.accNo;
+
+            //let accountNoDebitParam = 1;
+
+            const urlD = `http://${localStorage.getItem("serverAddress")}/api/v1/transfer/debit`;
+
+            const requestOptionsD = {
                 method: "POST",
-                headers : { 'Content-type': 'application/json' , 'Authorization' : localStorage.getItem("sbiToken")},
+                headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${accessToken}`},
                 body: JSON.stringify({
-                    "accountNo": accountNoCreditParam,
-                    "amount": amountParam                
+                    "accountNo": accountNoDebitParam,
+                    "amount": amountParam
                 })
             }
-            await fetch(url, requestOptions)
+
+            await fetch(urlD, requestOptionsD)
             .then((response) => response.text())
-            .then((data) => {        
-                if(!data.match("Credit Success")){
+            .then((data) => {
+                if(!data.match("Debit Success")){
                     serverError = true;
-                    submitErrors.errorMessageCredit = data;
+                    submitErrors.errorMessageDebit = "Transfer Fail";
                 }
+
             })
-            .catch( (error) =>{ 
+            .catch( (error) =>{
                 serverError = true;
                 submitErrors.errorMessageServer = "Failed to connect";
-            }) 
-        }            
-        setFormErrors(submitErrors);
+            })
+            if(!serverError){
+                const urlC = `http://${creditServerAddress}/api/v1/transfer/credit`;
+                const requestOptionsC = {
+                    method: "POST",
+                    headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${creditToken}`},
+                    body: JSON.stringify({
+                        "accountNo": accountNoCreditParam,
+                        "amount": amountParam
+                    })
+                }
+                await fetch(urlC, requestOptionsC)
+                .then((response) => response.text())
+                .then((data) => {
+                    if(!data.match("Credit Success")){
+                        serverError = true;
+                        submitErrors.errorMessageCredit = "Transfer Failed, You Entered Wrong Account Number";
+                        fetch(`http://${localStorage.getItem("serverAddress")}/api/v1/transfer/credit`, requestOptionsD)
+                    }
+
+                })
+                .catch( (error) =>{
+                    serverError = true;
+                    submitErrors.errorMessageServer = "Failed to connect";
+                })
+            }
+            if(!serverError){
+                const urlTransactionsDebit = `http://${localStorage.getItem("serverAddress")}/api/v1/transactions/newtransaction`;
+                const requestOptionsDebit = {
+                    method: "POST",
+                    headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${accessToken}`},
+                    body: JSON.stringify({
+                        "transactionWith": localStorage.getItem("bankname"),
+                        "accountId": accountNoDebitParam,
+                        "type":"debit",
+                        "amount": amountParam
+                    })
+                }
+                fetch(urlTransactionsDebit, requestOptionsDebit)
+                const urlTransactionsCredit = `http://${creditServerAddress}/api/v1/transactions/newtransaction`;
+                const requestOptionsCredit = {
+                    method: "POST",
+                    headers : { 'Content-type': 'application/json' , 'Authorization' : `Bearer ${creditToken}`},
+                    body: JSON.stringify({
+                        "transactionWith": creditBankName,
+                        "accountId": accountNoCreditParam,
+                        "type":"credit",
+                        "amount": amountParam
+                    })
+                }
+
+                fetch(urlTransactionsCredit, requestOptionsCredit)
+
+                const requestOptions2 = {
+                    method: "POST",
+                    headers : { 'Content-type': 'application/json' },
+                    body: JSON.stringify({
+                        "author": localStorage.getItem("accountId"),
+                        "sourceAccountId" : accountNoDebitParam,
+                        "sourceBankName" : localStorage.getItem("bankname"),
+                        "destinationAccontId": accountNoDebitParam,
+                        "destinationBankName":  data.bankName,
+                        "amount":  amountParam
+                    })
+                }
+
+
+                fetch("http://localhost:8085/api/v1/record", requestOptions2)
+                    .then((response) => response.text())
+                    .then((data) => {
+                    })
+                    .catch( (error) =>{
+                    })
+            }
+
+
+        }
         isSubmit = true;
+        setFormErrors(submitErrors);
         window.scrollTo({
-        top: 0, 
+        top: 0,
         behavior: 'smooth'
         });
   }
 
-    
+
   return (
-    
+
     <div>
             <HeaderLogout/>
             { isSubmit ? <FormSubmitMessage formErrors = {formErrors}/>: null }
@@ -131,7 +231,7 @@ function TransferMoney() {
                                 <Link to="/reports" style={{textDecoration:"none"}}>
                                 <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Reports</span></a></li>
                                 </Link>
-                               
+
                                 <Link to="/transfer" style={{textDecoration:"none"}}>
                                     <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3">Transfer Money</span></a></li>
                                 </Link>
@@ -143,30 +243,37 @@ function TransferMoney() {
                                 <br></br>
                                 <br></br>
                                 {/* <Link to="/login" style={{textDecoration:"none"}}>
-                                <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="logout.png"alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>   
+                                <li class="nav-item mb-2"><a class="nav-link text-secondary" href="#"><span className="ml-3"><img src="logout.png"alt="" style={{width:"18px",height:"18px",marginRight:"8px",marginBottom:"3px"}}></img>Logout</span></a></li>
                                 </Link> */}
                             </ul>
                             </div>
                         </div>
                     </Col >
 
-               
+
 
                     <Col lg={8}>
                     <div id= "transfer_form" className='text-center'>
                     <h2 id="money_transfer_title">Money Transfer</h2>
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <Form.Group className="mb-3" >
-                            <Form.Select>
-                                <option>Choose Destination Bank</option>
-                                <option value="1">Royal Bank of Scotland</option>
-                                <option value="2">State Bank of India</option>
-                                <option value="3">Canara Bank</option>
-                                <option value="4">ICICI Bank</option>
-                                <option value="5">HDFC Bank</option>
-                                <option value="6">Standard Chartered Bank</option>
+                            <Form.Select
+                                {...register("bankName")}
+                                onChange={(e) => setValue('bankName', e.target.value, { shouldValidate: true })}
+                                                           >
+                                <option value = "">Choose Destination Bank</option>
+                                {JSON.parse(localStorage.getItem("linkedAccounts")).map((e, key) => {
+                                    return <option key={key} value={e.bankname}>{e.bankname}</option>;
+                                    })}
+                                {/* <option value="Royal Bank of Scotland">Royal Bank of Scotland</option>
+                                <option value="State Bank of India">State Bank of India</option>
+                                <option value="Canara Bank">Canara Bank</option>
+                                <option value="ICICI Bank">ICICI Bank</option>
+                                <option value="HDFC Bank">HDFC Bank</option>
+                                <option value="Standard Chartered Bank">Standard Chartered Bank</option> */}
                             </Form.Select>
                         </Form.Group>
+                        <div className="invalid-feedback">{errors.bankName?.message}</div>
                         <Form.Group className="mb-3" >
                             <Form.Control class={`form-control ${errors.accNo? 'is-invalid' : ''}`} {...register('accNo')}type="text" placeholder="Bank Account Number" />
                             <div className="invalid-feedback">{errors.accNo?.message}</div>
@@ -183,12 +290,13 @@ function TransferMoney() {
                             <Form.Control class={`form-control ${errors.amount? 'is-invalid' : ''}`} {...register('amount')} type="text" placeholder="Amount" />
                             <div className="invalid-feedback">{errors.amount?.message}</div>
                         </Form.Group>
-                        <h6 id="transactions_charges">Transaction Charges : 15/-</h6>
-                        
+                        <h6 id="transactions_charges">Note: Transfer to only linked banks is allowed</h6>
+                        <h6 id="transactions_charges">Transaction Charges : 0/</h6>
+
                         <button type='submit' id="transfer_button">Transfer</button>
-                        
-                        
-                        <br></br>
+
+
+                        <br></br><br></br><br></br><br></br><br></br><br></br>
                     </Form>
                     </div>
                     </Col>
@@ -212,14 +320,14 @@ function TransferMoney() {
             ) : (
               <div className="alert alert-danger" role="alert">
                 <h4>Error! while transferring amount</h4>
-                <ListOfErrors errors= {props.formErrors} /> 
+                <ListOfErrors errors= {props.formErrors} />
               </div>
             )}
           </div>
         )
       }
-      
-      
+
+
       const ListOfErrors = (props) => {
         {
           var arr = [];
@@ -230,7 +338,7 @@ function TransferMoney() {
         });
         }
         return (
-          
+
             <ul>
                 {
                     arr.map(error => {

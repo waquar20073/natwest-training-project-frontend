@@ -380,10 +380,10 @@ function TransactionHistory() {
             <Table bordered hover table-responsive>
               <thead>
                 <tr>
-                  <th>Transaction #</th>
+                  <th>Transaction # </th>
+                  <th className="table-header">Amount <i class="fa fa-fw fa-sort"></i></th>
                   <th>Sender/Recipient</th>
-                  <th>Amount</th>
-                  <th>Timestamp</th>
+                  <th className="table-header">Timestamp <i class="fa fa-fw fa-sort"></i></th>
                 </tr>
               </thead>
               {transactionData.length === 0 ? (
@@ -402,7 +402,6 @@ function TransactionHistory() {
                         {transaction.account.account_id}
                         {transaction.id}
                       </th>
-                      <td>{transaction.transactionWith}</td>
                       <td
                         className={
                           transaction.amount < 0 ? "neg_money" : "pos_money"
@@ -410,7 +409,9 @@ function TransactionHistory() {
                       >
                         {transaction.amount}
                       </td>
-                      <td>{transaction.timestamp}</td>
+                      <td>{transaction.transactionWith}</td>
+
+                      <td>{new Date(transaction.timestamp).toLocaleString("en-US")}</td>
                     </tr>
                   ))}
                 </tbody>
